@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/04/26 16:21:03 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/04/29 15:59:59 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,11 @@
 # include <string.h>				// strerror
 # include <sys/ioctl.h>				// ioctl
 # include <termios.h>				// tcsetattr, tcgetattr
-// # include <curses.h>				// tgetent, tgetflag, tgetnum, tgetstr ...
-// # include <readline/readline.h>
-// # include <readline/history.h>
+//# include <curses.h>				// tgetent, tgetflag, tgetnum, tgetstr ...
+# include <readline/readline.h>
+# include <readline/history.h>
+
+//PARSE.C
+void	parsing(void);
+
 #endif

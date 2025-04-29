@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 17:16:22 by dicosta-          #+#    #+#             */
-/*   Updated: 2024/11/21 14:56:46 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:34:51 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <stddef.h>
+# include <stdarg.h>
+# include <fcntl.h>
+
+//LIBFT
 
 int			ft_tolower(int c);
 int			ft_toupper(int c);
@@ -71,5 +75,20 @@ void		ft_lstdelone(t_list *lst, void (*del)(void*));
 void		ft_lstiter(t_list *lst, void (*f)(void *));
 t_list		*ft_lstlast(t_list *lst);
 t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+
+//FT_PRINTF
+
+# define LC_HEX "0123456789abcdef"
+# define UP_HEX "0123456789ABCDEF"
+# define DEC "0123456789"
+
+int	ft_printf(const char *s, ...);
+int	ft_putchar_ft(int c, int fd);
+int	ft_putstr_ft(char *s, int fd);
+int	ft_putunbr_base_ft(unsigned long bnb, int fd, char *base, unsigned int bs);
+int	ft_putperc_ft(int fd);
+int	ft_check_char(const char *s, va_list args);
+int	ft_putnbr_base_ft(int n, int fd, char *base, int bs);
+int	ft_putptr_ft(void *n, int fd, char *base, unsigned int bs);
 
 #endif

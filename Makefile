@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+         #
+#    By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/04/26 16:29:22 by dicosta-         ###   ########.fr        #
+#    Updated: 2025/04/29 16:02:07 by rmota-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,13 +16,15 @@ NAME = minishell
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -lreadline -lncurses -g
+CFLAGS = -Wall -Wextra -Werror
+
+EXTRAFLAGS = -lreadline -lncurses -g
 
 # Sources and objects
 
 LIBFT = includes/libft/libft.a
 
-SRCS = minishell.c
+SRCS = minishell.c parse.c
 
 SRCS_DIR = srcs
 
@@ -61,7 +63,7 @@ CLEAN_DONE = @echo "$(COLOR_GREEN)Clean complete!\n"
 all: $(NAME)
 	
 $(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(EXTRAFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 	@$(MINISHELL_OK)
 	
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJS_DIR)
@@ -90,3 +92,5 @@ fclean:
 	@$(MINISHELL_KO)
 
 re: fclean all
+
+.PHONY: all clean fclean re

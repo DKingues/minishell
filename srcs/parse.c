@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/04/29 17:37:51 by rmota-ma         ###   ########.fr       */
+/*   Created: 2025/04/29 15:18:17 by rmota-ma          #+#    #+#             */
+/*   Updated: 2025/04/29 15:21:54 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(void)
+void	parsing(void)
 {
-	while(1)
-	{
-		readline("minishell>");
-		parsing();
-	}
-	return (0);
+	return ;
 }
