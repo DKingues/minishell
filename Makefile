@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+         #
+#    By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/04/29 16:02:07 by rmota-ma         ###   ########.fr        #
+#    Updated: 2025/04/30 12:13:10 by scorpot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,7 +63,7 @@ CLEAN_DONE = @echo "$(COLOR_GREEN)Clean complete!\n"
 all: $(NAME)
 	
 $(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) $(EXTRAFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(EXTRAFLAGS) -o $(NAME)
 	@$(MINISHELL_OK)
 	
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJS_DIR)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/04/29 15:59:59 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/04/30 12:07:23 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <string.h>				// strerror
 # include <sys/ioctl.h>				// ioctl
 # include <termios.h>				// tcsetattr, tcgetattr
-//# include <curses.h>				// tgetent, tgetflag, tgetnum, tgetstr ...
+# include <curses.h>				// tgetent, tgetflag, tgetnum, tgetstr ...
 # include <readline/readline.h>
 # include <readline/history.h>
 
