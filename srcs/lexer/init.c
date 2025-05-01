@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:08:01 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/05/01 17:17:02 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:32:09 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,12 @@ void init_shell(char **ev)
 		var = find_path(ev, var);
 		if (var == 1)
 			shell()->env[0] = ft_strdup(ABS_PATH);
-		var2 = 0;
-		while(ev[var])
+		while (ev[var])
 		{
 			shell()->env[var] = ft_strdup(ev[var2]);
 			var++;
 			var2++;
 		}
-	}
-	var = 0;
-	while(shell()->env[var])
-	{
-		printf("%s\n", shell()->env[var]);
-		var++;
 	}
 }
 

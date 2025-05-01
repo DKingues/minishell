@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 15:02:50 by dicosta-          #+#    #+#             */
-/*   Updated: 2024/11/20 19:40:30 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:33:38 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static char	*ft_write_word(const char *str, char c)
 	return (mal);
 }
 
-static void	ft_free_split(char **mal)
+void	ft_free_split(char **mal)
 {
 	size_t	i;
 

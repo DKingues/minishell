@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/01 16:44:18 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/05/01 18:20:24 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@
 
 typedef struct s_shell
 {
+	long	count;
+	long	plica;
+	long	aspas;
 	char **env;
 }				t_shell;
 
@@ -47,6 +50,7 @@ typedef struct s_shell
 int	parsing(char *line);
 int	quoting_check(char **args);
 int	find_path(char **envp, int var);
+char **quoting_break(char **args);
 
 //INIT.C
 void init_shell(char **ev);

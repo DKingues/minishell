@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:18:17 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/05/01 17:19:42 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/05/01 18:20:34 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,34 +18,38 @@ int	parsing(char *line)
 	
 	args = ft_split(line, ' ');
 	if (quoting_check(args))
-		return(ft_printf("Syntax Error\n"), 1);
+		return(ft_free_split(args), ft_printf("Syntax Error\n"), 1);
+	args = quoting_break(args);
+	ft_free_split(args);
 	return (0);
 }
 
 int	quoting_check(char **args)
 {
-	int	var;
-	int	var2;
-	int plica;
-	int aspas;
+	long	var;
 
-	var2 = 0;
-	while(args[var2])
+	shell()->count = 0;
+	shell()->aspas = 0;
+	shell()->plica = 0;
+	while(args[shell()->count])
 	{
-		aspas = 0;
-		plica = 0;
 		var = 0;
-		while(args[var2][var])
+		while(args[shell()->count][var])
 		{
-			if (args[var2][var] == 34)
-				aspas++;
-			if (args[var2][var] == 39)
-				plica++;
+			if (args[shell()->count][var] == 34)
+				shell()->aspas++;
+			if (args[shell()->count][var] == 39)
+				shell()->plica++;
 			var++;
 		}
-		if (plica % 2 != 0 || aspas % 2 != 0)
-			return (1);
-		var2++;
+		shell()->count++;
 	}
+	if (shell()->plica % 2 != 0 || shell()->aspas % 2 != 0)
+			return (1);
 	return (0);
+}
+
+char **quoting_break(char **args)
+{
+	return (args);
 }
