@@ -6,11 +6,11 @@
 /*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:18:17 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/05/01 16:01:01 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:19:42 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	parsing(char *line)
 {

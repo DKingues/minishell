@@ -6,7 +6,7 @@
 #    By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/05/01 16:17:33 by rmota-ma         ###   ########.fr        #
+#    Updated: 2025/05/01 17:21:13 by rmota-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,13 +24,25 @@ EXTRAFLAGS = -lreadline -lncurses -g
 
 LIBFT = includes/libft/libft.a
 
-SRCS = minishell.c parse.c init.c
+SRCS = main.c
+
+LEXER = init.c
+
+PARSER = parse.c
 
 SRCS_DIR = srcs
+
+LEXER_DIR = lexer
+
+PARSER_DIR = parser
 
 OBJS_DIR = objs
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.c=.o))
+
+LEXER_OBJS = $(addprefix $(OBJS_DIR)/, $(LEXER:.c=.o))
+
+PARSER_OBJS = $(addprefix $(OBJS_DIR)/, $(PARSER:.c=.o))
 
 # Colors
 
@@ -62,11 +74,17 @@ CLEAN_DONE = @echo "$(COLOR_GREEN)Clean complete!\n"
 
 all: $(NAME)
 	
-$(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(EXTRAFLAGS) -o $(NAME)
+$(NAME): $(OBJS) $(LEXER_OBJS) $(PARSER_OBJS) $(LIBFT)
+	@$(CC) $(CFLAGS) $(OBJS) $(LEXER_OBJS) $(PARSER_OBJS) $(LIBFT) $(EXTRAFLAGS) -o $(NAME)
 	@$(MINISHELL_OK)
 	
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJS_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/$(LEXER_DIR)/%.c | $(OBJS_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
+	
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/$(PARSER_DIR)/%.c | $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJS_DIR):
