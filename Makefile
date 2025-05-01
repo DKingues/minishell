@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+         #
+#    By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/04/30 12:13:10 by scorpot          ###   ########.fr        #
+#    Updated: 2025/05/01 16:17:33 by rmota-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ EXTRAFLAGS = -lreadline -lncurses -g
 
 LIBFT = includes/libft/libft.a
 
-SRCS = minishell.c parse.c
+SRCS = minishell.c parse.c init.c
 
 SRCS_DIR = srcs
 

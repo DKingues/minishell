@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/04/30 12:35:41 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/01 16:07:45 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 int	main(int ac, char **av, char **ev)
 {
 	(void)av;
-	(void)ev;
+	char *line;
+	
 	if (ac != 1)
 		return (ft_printf("No arguments are needed\n"), 1);
+	init_shell(ev);
 	while(1)
 	{
-		readline("minishell>");
-		parsing();
+		line = readline("minishell>");
+		parsing(line);
 	}
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/04/30 12:07:23 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/01 16:44:18 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,28 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+# ifndef ABS_PATH
+#  define ABS_PATH "PATH=/home/rmota-ma/bin:/usr/local/sbin:/usr/local/bin:\
+	/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+# endif
+
+# ifdef ABS_PATH
+#  define ABS_PATH "PATH=/home/rmota-ma/bin:/usr/local/sbin:/usr/local/bin:\
+	/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+# endif
+
+typedef struct s_shell
+{
+	char **env;
+}				t_shell;
+
 //PARSE.C
-void	parsing(void);
+int	parsing(char *line);
+int	quoting_check(char **args);
+int	find_path(char **envp, int var);
+
+//INIT.C
+void init_shell(char **ev);
+t_shell	*shell(void);
 
 #endif
