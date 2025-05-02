@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/01 18:20:24 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/05/02 12:13:44 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-# ifndef ABS_PATH
-#  define ABS_PATH "PATH=/home/rmota-ma/bin:/usr/local/sbin:/usr/local/bin:\
-	/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
-# endif
-
-# ifdef ABS_PATH
-#  define ABS_PATH "PATH=/home/rmota-ma/bin:/usr/local/sbin:/usr/local/bin:\
-	/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
-# endif
-
 typedef struct s_shell
 {
 	long	count;
@@ -48,12 +38,10 @@ typedef struct s_shell
 
 //PARSE.C
 int	parsing(char *line);
-int	quoting_check(char **args);
-int	find_path(char **envp, int var);
-char **quoting_break(char **args);
 
 //INIT.C
 void init_shell(char **ev);
+void	init_env(char **ev);
 t_shell	*shell(void);
 
 #endif

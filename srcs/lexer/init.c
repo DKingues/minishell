@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:08:01 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/05/01 17:32:09 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/05/02 12:15:33 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,48 +14,30 @@
 
 void init_shell(char **ev)
 {
-	int	var;
-	int var2;
-	
-	var = 0;
-	var2 = 0;
-	if(!ev[0])
-	{
-		shell()->env = ft_calloc(sizeof(char *), 2);
-		shell()->env[0] = ft_strdup(ABS_PATH);
-	}
-	else
-	{		
-		while(ev[var])
-			var++;
-		var = find_path(ev, var);
-		if (var == 1)
-			shell()->env[0] = ft_strdup(ABS_PATH);
-		while (ev[var])
-		{
-			shell()->env[var] = ft_strdup(ev[var2]);
-			var++;
-			var2++;
-		}
-	}
+	init_env(ev);
 }
 
-int	find_path(char **envp, int var)
+void	init_env(char **ev)
 {
-	int		var2;
-
-	var2 = 0;
-	while (ft_strnstr(envp[var2], "PATH", 4) == 0 && envp[var2 + 1])
-		var2++;
-	if (!envp[var2 + 1])
+	int	var;
+	
+	var = 0;
+	if(ev[0])
 	{
-		shell()->env = ft_calloc(sizeof(char *), var + 2);
-		return (1);
+		while(ev[var])
+			var++;
+		shell()->env = ft_calloc(sizeof(char *), var + 1);
+		var = 0;
+		while (ev[var])
+		{
+			shell()->env[var] = ft_strdup(ev[var]);
+			var++;
+		}
 	}
 	else
 	{
-		shell()->env = ft_calloc(sizeof(char *), var + 1);
-		return(0);
+		shell()->env = ft_calloc(sizeof(char *), 1);
+		shell()->env[0] = ft_calloc(sizeof(char), 1);
 	}
 }
 
