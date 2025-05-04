@@ -6,7 +6,7 @@
 /*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/02 12:13:44 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/04 16:10:46 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,8 @@ int	parsing(char *line);
 void init_shell(char **ev);
 void	init_env(char **ev);
 t_shell	*shell(void);
+
+//PIPE.C
+
 
 #endif

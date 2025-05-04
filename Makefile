@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+         #
+#    By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/05/01 17:21:13 by rmota-ma         ###   ########.fr        #
+#    Updated: 2025/05/04 16:10:38 by scorpot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,11 +30,15 @@ LEXER = init.c
 
 PARSER = parse.c
 
+EXECUTER = pipe.c
+
 SRCS_DIR = srcs
 
 LEXER_DIR = lexer
 
 PARSER_DIR = parser
+
+EXECUTER_DIR = execute
 
 OBJS_DIR = objs
 
@@ -43,6 +47,8 @@ OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.c=.o))
 LEXER_OBJS = $(addprefix $(OBJS_DIR)/, $(LEXER:.c=.o))
 
 PARSER_OBJS = $(addprefix $(OBJS_DIR)/, $(PARSER:.c=.o))
+
+EXECUTER_OBJS = $(addprefix $(OBJS_DIR)/, $(EXECUTER:.c=.o))
 
 # Colors
 
@@ -74,11 +80,14 @@ CLEAN_DONE = @echo "$(COLOR_GREEN)Clean complete!\n"
 
 all: $(NAME)
 	
-$(NAME): $(OBJS) $(LEXER_OBJS) $(PARSER_OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) $(OBJS) $(LEXER_OBJS) $(PARSER_OBJS) $(LIBFT) $(EXTRAFLAGS) -o $(NAME)
+$(NAME): $(OBJS) $(EXECUTER_OBJS) $(LEXER_OBJS) $(PARSER_OBJS) $(LIBFT)
+	@$(CC) $(CFLAGS) $(OBJS) $(EXECUTER_OBJS) $(LEXER_OBJS) $(PARSER_OBJS) $(LIBFT) $(EXTRAFLAGS) -o $(NAME)
 	@$(MINISHELL_OK)
 	
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJS_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/$(EXECUTER_DIR)/%.c | $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/$(LEXER_DIR)/%.c | $(OBJS_DIR)
