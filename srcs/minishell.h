@@ -6,7 +6,7 @@
 /*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/04 16:10:46 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/04 17:36:41 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,8 @@
 
 typedef struct s_shell
 {
-	long	count;
-	long	plica;
-	long	aspas;
-	char **env;
+	int		exit;
+	char	**env;
 }				t_shell;
 
 //PARSE.C

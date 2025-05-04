@@ -6,7 +6,7 @@
 /*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:08:01 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/05/02 12:15:33 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/04 17:38:09 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void init_shell(char **ev)
 {
 	init_env(ev);
+	shell()->exit = 0;
 }
 
 void	init_env(char **ev)
