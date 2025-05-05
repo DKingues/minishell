@@ -1,30 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/05 13:40:50 by dicosta-         ###   ########.fr       */
+/*   Created: 2025/05/05 13:42:01 by dicosta-          #+#    #+#             */
+/*   Updated: 2025/05/05 13:48:24 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int ac, char **av, char **ev)
+// Ignores signals acordingly "CTRL-C", "CTRL-Z", "CTRL-\"
+
+void	ignore_shell_signal(void)
 {
-	(void)av;
-	char *line;
-	
-	ignore_shell_signal();
-	if (ac != 1)
-		return (ft_printf("No arguments are needed\n"), 1);
-	init_shell(ev);
-	while(1)
-	{
-		line = readline("minishell>");
-		parsing(line);
-	}
-	return (0);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 }

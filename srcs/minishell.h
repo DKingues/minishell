@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/04 17:36:41 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/05 13:48:57 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,21 @@ typedef struct s_shell
 	char	**env;
 }				t_shell;
 
-//PARSE.C
+// PARSE.C
+
 int	parsing(char *line);
 
-//INIT.C
+// INIT.C
+
 void init_shell(char **ev);
 void	init_env(char **ev);
 t_shell	*shell(void);
 
-//PIPE.C
+// PIPE.C
+
+// Commands.c
+
+void	ignore_shell_signal(void);
 
 
 #endif
