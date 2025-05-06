@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 17:16:22 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/01 17:33:52 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/05/06 17:53:39 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 
 int			ft_tolower(int c);
 int			ft_toupper(int c);
+int			ft_isspace(char c);
 int			ft_isalpha(int c);
 int			ft_isascii(int c);
 int			ft_isdigit(int c);
@@ -58,6 +59,7 @@ void		ft_putstr_fd(char *s, int fd);
 void		ft_putendl_fd(char *s, int fd);
 void		ft_putnbr_fd(int n, int fd);
 void		ft_free_split(char **mal);
+char		*ft_write_word(const char *str, char c);
 
 //BONUS
 

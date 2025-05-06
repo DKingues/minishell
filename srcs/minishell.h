@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/05 13:48:57 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/06 18:05:12 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,24 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+typedef enum	s_token_type
+{
+	COMMAND,
+	ARG,
+	PIPE,		// |
+	READ,		// <
+	HERE_DOC, 	// <<
+	TRUNCATE,	// >
+	APPEND,		// >>
+}	t_token_type;
+
+typedef struct s_token
+{
+	t_token_type	type;
+	char 			*value;
+	struct	t_token			*next;
+}	t_token;
+
 typedef struct s_shell
 {
 	int		exit;
@@ -47,6 +65,11 @@ t_shell	*shell(void);
 // PIPE.C
 
 // Commands.c
+
+// Token.c
+
+t_token tokenizer(char *input);
+t_token	*token(void);
 
 void	ignore_shell_signal(void);
 
