@@ -1,20 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 18:13:01 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/07 12:36:58 by dicosta-         ###   ########.fr       */
+/*   Created: 2025/05/07 12:31:00 by dicosta-          #+#    #+#             */
+/*   Updated: 2025/05/07 12:48:29 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isspace(char c)
+int	ft_strcmp(char *str1, char *str2)
 {
-	if (c == ' ' || (c >= 9 && c <= 13))
-		return (1);
+	int	i;
+
+	i = 0;
+	while (str1[i])
+	{
+		if (str1[i] < str2[i])
+			return (-1);
+		if (str1[i] > str2[i])
+			return (1);
+		i++;
+	}
 	return (0);
 }

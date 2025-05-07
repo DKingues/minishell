@@ -6,16 +6,16 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:26:54 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/06 18:37:45 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/07 13:03:54 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minishell.h"
 
-t_token *tokenizer(char *input)
+t_token *assign_token(char *input)
 {
 	t_token	*token;
-	int command;
+	int 	command;
 
 	command = 0;
 	while (*input)
@@ -23,41 +23,20 @@ t_token *tokenizer(char *input)
 		while(ft_isspace(*input))
 			input++;
 		if (*input == '|')
-		{
-			token->value = '|';
-			token->type = PIPE;
-			command = 0;
-		}
-		else if (*input == '<' && *input + 1 == '<')
-		{
-			token->value = '<<';
-			token->type = HERE_DOC;
-			*input++;
-		}
+			set_token(token, "|", PIPE, &command, &input);
+		else if (*input == '<' && *(input + 1) == '<')
+			set_token(token, "<<", HERE_DOC, &command, &input);
 		else if (*input == '<')
-		{
-			token->value = '<';
-			token->type = READ;
-		} 
+			set_token(token, "<", READ, &command, &input);
 		else if (*input == '>' && *input + 1 == '>')
-		{
-			token->value = '>>';
-			token->type = APPEND;
-			*input++;
-		}
+			set_token(token, ">>", APPEND, &command, &input);
 		else if (*input == '>')
-		{
-			token->value = '>';
-			token->type = TRUNCATE;
-		} 
+			set_token(token, ">", TRUNCATE, &command, &input);
 		else
 		{
 			token->value = ft_get_word(*input);
-			if (command == 0 && (token->value == 'cd' ||token->value == 'echo' ||token->value == 'ls' ||token->value == 'pwd'))
-			{
+			if (command == 0 && is_command(*input, &command))
 				token->type = COMMAND;
-				command = 1;
-			}
 			else
 				token->type = ARG;
 		}
@@ -65,6 +44,28 @@ t_token *tokenizer(char *input)
 		token = token->next;
 	}
 	return (token);
+}
+
+int		is_command(char *value, int *command)
+{
+	if (ft_strcmp(value, "echo") || ft_strcmp(value, "cd") || ft_strcmp(value, "pwd") \
+	|| ft_strcmp(value, "export") || ft_strcmp(value, "unset") || ft_strcmp(value, "env") \
+	|| ft_strcmp(value, "exit"))
+	{
+		*command = 1;
+		return (1);
+	}
+	return (0);
+}
+
+void	set_token(t_token *token, char *value, int type, int *command, char **input)
+{
+	token->value = ft_strdup(value);
+	token->type = type;
+	if (ft_strcmp(value, "|"));
+		*command = 0;
+	if (ft_strcmp(value, "<<") || ft_strcmp(value, ">>"))
+		*input++;
 }
 
 char	*ft_get_word(const char *str)

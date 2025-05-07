@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/06 18:05:12 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/07 13:00:20 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,12 @@ t_shell	*shell(void);
 
 // PIPE.C
 
-// Commands.c
+// Signals.c
 
 // Token.c
 
-t_token tokenizer(char *input);
-t_token	*token(void);
+int		is_command(char *value);
+t_token *assign_token(char *input);
 
 void	ignore_shell_signal(void);
 
