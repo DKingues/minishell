@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/07 13:00:20 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/02 12:13:44 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct s_token
 {
 	t_token_type	type;
 	char 			*value;
-	struct	t_token			*next;
+	struct	s_token	*next;
 }	t_token;
 
 typedef struct s_shell
@@ -58,7 +58,7 @@ int	parsing(char *line);
 
 // INIT.C
 
-void init_shell(char **ev);
+void	init_shell(char **ev);
 void	init_env(char **ev);
 t_shell	*shell(void);
 
@@ -66,12 +66,15 @@ t_shell	*shell(void);
 
 // Signals.c
 
+void	ignore_shell_signal(void);
+
 // Token.c
 
-int		is_command(char *value);
 t_token *assign_token(char *input);
+int		is_command(char *value, int *command);
+void	set_token(t_token *token, char *value, int type, int *command, int *i);
+char	*ft_get_word(const char *str, int *i);
 
-void	ignore_shell_signal(void);
 
 
 #endif

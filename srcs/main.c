@@ -12,6 +12,13 @@
 
 #include "minishell.h"
 
+int parser(char *line)
+{
+	assign_token(line);
+	return (TRUE);
+}
+
+
 int	main(int ac, char **av, char **ev)
 {
 	(void)av;
@@ -24,7 +31,8 @@ int	main(int ac, char **av, char **ev)
 	while(1)
 	{
 		line = readline("minishell>");
-		parsing(line);
+		if (parser(line) == false)
+			ft_printf("Error: Unknown Command\n");
 	}
 	return (0);
 }

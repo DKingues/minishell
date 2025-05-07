@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 // Ignores signals acordingly "CTRL-C", "CTRL-Z", "CTRL-\"
 
 void	ignore_shell_signal(void)
 {
-	signal(SIGINT, SIG_IGN);
+	//signal(SIGINT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 }

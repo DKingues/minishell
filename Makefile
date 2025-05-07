@@ -26,7 +26,7 @@ LIBFT = includes/libft/libft.a
 
 SRCS = main.c
 
-LEXER = init.c
+LEXER = init.c token.c
 
 PARSER = parse.c
 
