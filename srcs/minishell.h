@@ -71,9 +71,10 @@ void	ignore_shell_signal(void);
 // Token.c
 
 t_token *assign_token(char *input);
-int		is_command(char *value, int *command);
+int		is_command(char *value, int *cmd);
 void	set_token(t_token *token, char *value, int type, int *command, int *i);
 char	*ft_get_word(const char *str, int *i);
+int		special_token(t_token *token, char *input, int *cmd, int *i);
 
 
 

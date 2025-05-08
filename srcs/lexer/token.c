@@ -27,17 +27,7 @@ t_token *assign_token(char *input)
 	{
 		while(ft_isspace(input[i]))
 			i++;
-		if (input[i] == '|')
-			set_token(token, "|", PIPE, &cmd, &i);
-		else if (input[i] == '<' && input[i + 1] == '<')
-			set_token(token, "<<", HERE_DOC, &cmd, &i);
-		else if (input[i] == '<')
-			set_token(token, "<", READ, &cmd, &i);
-		else if (input[i] == '>' && input[i + 1] == '>')
-			set_token(token, ">>", APPEND, &cmd, &i);
-		else if (input[i] == '>')
-			set_token(token, ">", TRUNCATE, &cmd, &i);
-		else
+		if (!(special_token(token, input, &cmd, &i)))
 		{
 			token->value = ft_get_word(&input[i], &i);
 			if (cmd == 0 && is_command(token->value, &cmd))
@@ -46,6 +36,7 @@ t_token *assign_token(char *input)
 				token->type = ARG;
 		}
 		i++;
+		token = token->next;
 		ft_printf("TYPE: [%d]\t VALUE: [%s]\n", token->type, token->value);
 	}
 	return (token);
@@ -53,9 +44,9 @@ t_token *assign_token(char *input)
 
 int		is_command(char *value, int *cmd)
 {
-	if (ft_strcmp(value, "echo") || ft_strcmp(value, "cd") || ft_strcmp(value, "pwd") \
-	|| ft_strcmp(value, "export") || ft_strcmp(value, "unset") || ft_strcmp(value, "env") \
-	|| ft_strcmp(value, "exit"))
+	if (!(ft_strcmp(value, "echo")) || !(ft_strcmp(value, "cd")) || !(ft_strcmp(value, "pwd")) \
+	|| !(ft_strcmp(value, "export")) || !(ft_strcmp(value, "unset")) || !(ft_strcmp(value, "env")) \
+	|| !(ft_strcmp(value, "exit")))
 	{
 		*cmd = 1;
 		return (1);
@@ -67,9 +58,9 @@ void	set_token(t_token *token, char *value, int type, int *cmd, int *i)
 {
 	token->value = ft_strdup(value);
 	token->type = type;
-	if (ft_strcmp(value, "|"))
+	if (!(ft_strcmp(value, "|")))
 		*cmd = 0;
-	if (ft_strcmp(value, "<<") || ft_strcmp(value, ">>"))
+	if (!(ft_strcmp(value, "<<"))|| !(ft_strcmp(value, ">>")))
 		*i += 1;
 }
 
@@ -91,6 +82,23 @@ char	*ft_get_word(const char *str, int *i)
 		mal[k] = str[k];
 		k++;
 	}
-	*i += k;
+	*i += k - 1;
 	return (mal);
+}
+
+int	special_token(t_token *token, char *input, int *cmd, int *i)
+{
+	if (input[*i] == '|')
+		set_token(token, "|", PIPE, cmd, i);
+	else if (input[*i] == '<' && input[*i + 1] == '<')
+		set_token(token, "<<", HERE_DOC, cmd, i);
+	else if (input[*i] == '<')
+		set_token(token, "<", READ, cmd, i);
+	else if (input[*i] == '>' && input[*i + 1] == '>')
+		set_token(token, ">>", APPEND, cmd, i);
+	else if (input[*i] == '>')
+		set_token(token, ">", TRUNCATE, cmd, i);
+	else
+		return (0);
+	return (1);
 }
