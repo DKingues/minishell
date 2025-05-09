@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+         #
+#    By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/05/07 11:19:54 by dicosta-         ###   ########.fr        #
+#    Updated: 2025/05/09 14:14:44 by scorpot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ LEXER = init.c token.c
 
 PARSER = parse.c
 
-EXECUTER = pipe.c
+EXECUTER = commands.c commands2.c cmd_utils.c cmd_utils2.c cmd_utils3.c cmd_utils4.c cmd_utils5.c
 
 SIGNALS = signals.c
 

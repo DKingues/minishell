@@ -6,7 +6,7 @@
 /*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/02 12:13:44 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/09 14:20:55 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <curses.h>				// tgetent, tgetflag, tgetnum, tgetstr ...
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <limits.h>
 
 typedef enum	s_token_type
 {
@@ -50,6 +51,7 @@ typedef struct s_shell
 {
 	int		exit;
 	char	**env;
+	char	**exp;
 }				t_shell;
 
 // PARSE.C
@@ -60,9 +62,51 @@ int	parsing(char *line);
 
 void	init_shell(char **ev);
 void	init_env(char **ev);
+void	init_exp(char **ev);
 t_shell	*shell(void);
 
-// PIPE.C
+// COMMANDS.C
+void	echo_cmd(int flag, char *msg);
+void	pwd_cmd(void);
+void	exp_cmd(int flag, char *msg);
+void	unset_cmd(char *msg);
+void	env_cmd(void);
+
+// COMMANDS2.C
+int	exit_cmd(char *msg, int mult_args);
+void	cd_cmd(char *path);
+
+// CMD_UTILS.C
+char	**exp_set(char *msg);
+char	**env_set(char *msg);
+char	**exp_redef(int var2, char *msg);
+char	**env_redef(int var2, char *msg);
+size_t	exp_len(const char *s);
+
+// CMD_UTILS2.C
+void	exp_organize(void);
+void	second_organize(int	var, int var2);
+void	switch_str(int var);
+char **re_write_exp(char *msg);
+char **re_write_env(char *msg);
+
+// CMD_UTILS3.C
+char	*set_blank(char *msg);
+char **quoting_set(void);
+char	*exp_strdup(const char *s1);
+int	error_syntax(char *array);
+int	long_check(char *str);
+
+// CMD_UTILS4.C
+void	set_old_path(void);
+void old_path_exp(void);
+void set_new_path(void);
+void new_path_exp(void);
+void	mv_home(void);
+
+// CMD_UTILS5.C
+void	mv_old(void);
+void	mv_abs(char *path);
 
 // Signals.c
 

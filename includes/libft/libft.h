@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 17:16:22 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/07 12:47:35 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:22:01 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 void	ft_free_split(char **mal);
 char	*ft_write_word(const char *str, char c);
+char	*ft_strcpy(char *dest, char *src);
 
 //BONUS
 

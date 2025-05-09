@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+         #
+#    By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/01 17:48:36 by dicosta-          #+#    #+#              #
-#    Updated: 2025/05/07 12:35:16 by dicosta-         ###   ########.fr        #
+#    Updated: 2025/05/09 14:22:51 by scorpot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRC = ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c\
 					ft_calloc.c ft_atoi.c ft_bzero.c ft_substr.c ft_strjoin.c\
 						ft_strtrim.c ft_putchar_fd.c ft_putendl_fd.c ft_putstr_fd.c\
 							ft_putnbr_fd.c ft_itoa.c ft_strmapi.c ft_split.c ft_striteri.c\
-								ft_printf.c ft_printf_utils.c ft_isspace.c ft_strcmp.c\
+								ft_printf.c ft_printf_utils.c ft_isspace.c ft_strcmp.c ft_strcpy.c\
 
 SRC_BONUS = ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c \
 		ft_lstdelone.c	ft_lstclear.c	ft_lstiter.c ft_lstmap.c \
