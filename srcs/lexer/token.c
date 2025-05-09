@@ -36,7 +36,6 @@ t_token *assign_token(char *input)
 				token->type = ARG;
 		}
 		i++;
-		token = token->next;
 		ft_printf("TYPE: [%d]\t VALUE: [%s]\n", token->type, token->value);
 	}
 	return (token);
