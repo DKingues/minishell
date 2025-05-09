@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils5.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:03:49 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/05/08 18:26:21 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:39:49 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	mv_abs(char *path)
 		return ;
 	abs_path = ft_strdup(shell()->env[var] + 5);
 	abs_path = ft_strjoin(abs_path, path + 1);
-	printf("%s\n", abs_path);
 	if(!access(abs_path, 0))
 	{
 		chdir(abs_path);

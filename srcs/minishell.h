@@ -6,7 +6,7 @@
 /*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/09 14:20:55 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/09 16:53:40 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int	parsing(char *line);
 void	init_shell(char **ev);
 void	init_env(char **ev);
 void	init_exp(char **ev);
+void	lvl_upd(void);
+void	exp_lvl(void);
 t_shell	*shell(void);
 
 // COMMANDS.C
