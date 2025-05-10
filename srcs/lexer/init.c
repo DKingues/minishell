@@ -6,7 +6,7 @@
 /*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:08:01 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/05/09 16:56:07 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/10 10:55:08 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,58 +74,29 @@ void	init_exp(char **ev)
 void	lvl_upd(void)
 {
 	int	var;
+	int	lvl;
+	char *temp;
 
 	var = 0;
 	while(shell()->env[var])
 	{
 		if(!ft_strncmp(shell()->env[var], "SHLVL=", 6))
 		{
-			if (shell()->env[var][6] == '-')
-			{
-				free(shell()->env[var]);
-				shell()->env[var] = ft_strdup("SHLVL=0");
-			}
+			if (shell()->env[var][6] == '-' || ft_atoui(shell()->env[var] + 6) >= INT_MAX)
+				lvl = -1;
 			else
-			{
-				var = ft_atoi(shell()->env[var] + 6);
-				var++;
-				free(shell()->env[var]);
-				shell()->env[var] = ft_strdup("SHLVL=");
-				shell()->env[var] = ft_strjoin(shell()->env[var], ft_itoa(var));
-			}
+				lvl = ft_atoi(shell()->env[var] + 6);
+			temp = ft_itoa(lvl + 1);
+			free(shell()->env[var]);
+			shell()->env[var] = ft_strdup("SHLVL=");
+			shell()->env[var] = ft_strjoin(shell()->env[var], temp);
+			free(temp);
 			break ;
 		}
 		var++;
 	}
 }
 
-void	exp_lvl(void)
-{
-	int	var;
-
-	var = 0;
-	while(shell()->exp[var])
-	{
-		if(!ft_strncmp(shell()->exp[var], "SHLVL=", 6))
-		{
-			if (shell()->exp[var][6] == '-')
-			{
-				free(shell()->exp[var]);
-				shell()->exp[var] = ft_strdup("SHLVL=0");
-			}
-			else
-			{
-				var = ft_atoi(shell()->exp[var] + 6);
-				var++;
-				free(shell()->exp[var]);
-				shell()->exp[var] = ft_strdup("SHLVL=");
-				shell()->exp[var] = ft_strjoin(shell()->exp[var], ft_itoa(var));
-			}
-			break ;	
-		}
-		var++;
-	}
-}
 
 t_shell	*shell(void)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 17:18:32 by dicosta-          #+#    #+#             */
-/*   Updated: 2024/11/20 19:29:27 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/10 10:51:37 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ char	*ft_itoa(int n)
 	}
 	return (str);
 }
+
 //int	main(void)
 //{	
 //	printf("Expected -653| Current : %s\n", ft_itoa(-653));

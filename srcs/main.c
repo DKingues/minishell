@@ -6,7 +6,7 @@
 /*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/09 16:55:05 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/10 10:54:26 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,17 @@ int	main(int ac, char **av, char **ev)
 	(void)av;
 	char *line;
 	
-	ignore_shell_signal();
+	//ignore_shell_signal();
 	if (ac != 1)
 		return (ft_printf("No arguments are needed\n"), 1);
 	init_shell(ev);
 	while(1)
 	{
 		line = readline("minishell>");
-		if (parser(line) == false)
-			ft_printf("Error: Unknown Command\n");
+		/* if (parser(line) == false)
+			ft_printf("Error: Unknown Command\n"); */
+		exp_cmd(0, NULL);
+		(void)line;
 	}
 	return (0);
 }
