@@ -6,7 +6,7 @@
 /*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 14:47:46 by scorpot           #+#    #+#             */
-/*   Updated: 2025/05/10 22:48:49 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/10 23:13:03 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*expand_arg(char *arg)
 				return(arg);
 			}
 			else if (arg[len] && ft_isalnum(arg[len + 1]))
-				return(arg);
+				return(NULL);
 			else
 				return(shell()->env[var] + len + 1);
 		}
