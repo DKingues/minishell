@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+         #
+#    By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/05/09 14:14:44 by scorpot          ###   ########.fr        #
+#    Updated: 2025/05/10 18:52:28 by dicosta-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ LIBFT = includes/libft/libft.a
 
 SRCS = main.c
 
-LEXER = init.c token.c
+LEXER = init.c token.c custom_split.c custom_split_aux.c token_aux.c
 
 PARSER = parse.c
 

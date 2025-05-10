@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/09 14:20:55 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/10 18:33:13 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_shell
 	char	**env;
 	char	**exp;
 }				t_shell;
+
 
 // PARSE.C
 
@@ -112,6 +113,16 @@ void	mv_abs(char *path);
 
 void	ignore_shell_signal(void);
 
+// qtd_split.c
+
+int ft_buffed_split(char *str);
+int	ft_count_words(char *str);
+
+// qtd_split_aux.c
+
+int quote_counter(char *str);
+int skip_quotes(char *str, char quote_type);
+
 // Token.c
 
 t_token *assign_token(char *input);
@@ -119,7 +130,5 @@ int		is_command(char *value, int *cmd);
 void	set_token(t_token *token, char *value, int type, int *command, int *i);
 char	*ft_get_word(const char *str, int *i);
 int		special_token(t_token *token, char *input, int *cmd, int *i);
-
-
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/05 13:40:50 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/10 18:54:41 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,9 @@ void	print_banner() {
 
 int parser(char *line)
 {
-	assign_token(line);
+	ft_buffed_split(line);
 	return (TRUE);
 }
-
 
 int	main(int ac, char **av, char **ev)
 {
