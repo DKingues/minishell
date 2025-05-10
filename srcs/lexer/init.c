@@ -6,7 +6,7 @@
 /*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:08:01 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/05/10 10:55:08 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/10 12:34:27 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,31 @@ void	lvl_upd(void)
 	}
 }
 
+void	exp_lvl(void)
+{
+	int	var;
+	int	lvl;
+	char *temp;
+
+	var = 0;
+	while(shell()->exp[var])
+	{
+		if(!ft_strncmp(shell()->exp[var], "SHLVL=", 6))
+		{
+			if (shell()->exp[var][6] == '-' || ft_atoui(shell()->exp[var] + 6) >= INT_MAX)
+				lvl = -1;
+			else
+				lvl = ft_atoi(shell()->exp[var] + 6);
+			temp = ft_itoa(lvl + 1);
+			free(shell()->exp[var]);
+			shell()->exp[var] = ft_strdup("SHLVL=");
+			shell()->exp[var] = ft_strjoin(shell()->exp[var], temp);
+			free(temp);
+			break ;
+		}
+		var++;
+	}
+}
 
 t_shell	*shell(void)
 {

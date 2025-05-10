@@ -6,7 +6,7 @@
 /*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/09 16:53:40 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/10 15:02:59 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ void	set_token(t_token *token, char *value, int type, int *command, int *i);
 char	*ft_get_word(const char *str, int *i);
 int		special_token(t_token *token, char *input, int *cmd, int *i);
 
-
+//EXPAND.C
+char	*expand_arg(char *arg);
 
 #endif

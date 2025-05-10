@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:40:54 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/05/07 16:57:21 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/05/10 22:56:37 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	exp_organize(void)
 		if(shell()->exp[var][0] > shell()->exp[var + 1][0])
 		{
 			switch_str(var);
-			var = 0;
+			var = -1;
 		}
 		var++;
 	}

@@ -6,7 +6,7 @@
 #    By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/05/09 14:14:44 by scorpot          ###   ########.fr        #
+#    Updated: 2025/05/10 15:08:41 by scorpot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,9 +16,9 @@ NAME = minishell
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
-EXTRAFLAGS = -lreadline -lncurses -g
+EXTRAFLAGS = -lreadline -lncurses
 
 # Sources and objects
 
@@ -32,6 +32,8 @@ PARSER = parse.c
 
 EXECUTER = commands.c commands2.c cmd_utils.c cmd_utils2.c cmd_utils3.c cmd_utils4.c cmd_utils5.c
 
+EXPANDER = expand.c
+
 SIGNALS = signals.c
 
 SRCS_DIR = srcs
@@ -41,6 +43,8 @@ LEXER_DIR = lexer
 PARSER_DIR = parser
 
 EXECUTER_DIR = execute
+
+EXPANDER_DIR = expander
 
 SIGNALS_DIR = signals
 
@@ -54,7 +58,9 @@ PARSER_OBJS = $(addprefix $(OBJS_DIR)/, $(PARSER:.c=.o))
 
 EXECUTER_OBJS = $(addprefix $(OBJS_DIR)/, $(EXECUTER:.c=.o))
 
-SIGNALS_OBJ = $(addprefix $(OBJS_DIR)/, $(SIGNALS:.c=.o))
+SIGNALS_OBJS = $(addprefix $(OBJS_DIR)/, $(SIGNALS:.c=.o))
+
+EXPANDER_OBJS = $(addprefix $(OBJS_DIR)/, $(EXPANDER:.c=.o))
 
 # Colors
 
@@ -86,8 +92,8 @@ CLEAN_DONE = @echo "$(COLOR_GREEN)Clean complete!\n"
 
 all: $(NAME)
 	
-$(NAME): $(OBJS) $(EXECUTER_OBJS) $(LEXER_OBJS) $(PARSER_OBJS) $(SIGNALS_OBJ) $(LIBFT)
-	@$(CC) $(CFLAGS) $(OBJS) $(EXECUTER_OBJS) $(LEXER_OBJS) $(PARSER_OBJS) $(SIGNALS_OBJ) $(LIBFT) $(EXTRAFLAGS) -o $(NAME)
+$(NAME): $(OBJS) $(EXPANDER_OBJS) $(EXECUTER_OBJS) $(LEXER_OBJS) $(PARSER_OBJS) $(SIGNALS_OBJS) $(LIBFT)
+	@$(CC) $(CFLAGS) $(OBJS) $(EXPANDER_OBJS) $(EXECUTER_OBJS) $(LEXER_OBJS) $(PARSER_OBJS) $(SIGNALS_OBJS) $(LIBFT) $(EXTRAFLAGS) -o $(NAME)
 	@$(MINISHELL_OK)
 	
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJS_DIR)
@@ -98,13 +104,16 @@ $(OBJS_DIR)/%.o: $(SRCS_DIR)/$(EXECUTER_DIR)/%.c | $(OBJS_DIR)
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/$(LEXER_DIR)/%.c | $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
-	
+
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/$(PARSER_DIR)/%.c | $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/$(SIGNALS_DIR)/%.c | $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
-	
+
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/$(EXPANDER_DIR)/%.c | $(OBJS_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
+
 $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
 
