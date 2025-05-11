@@ -6,7 +6,7 @@
 /*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 14:47:46 by scorpot           #+#    #+#             */
-/*   Updated: 2025/05/10 23:13:03 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/11 16:01:47 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*expand_arg(char *arg)
 	char *temp;
 
 	var = 0;
+	if (arg[1] == '?' && arg[2] == '\0')
+		return(ft_itoa(shell()->exit));
 	while(shell()->env[var])
 	{
 		len = exp_len(shell()->env[var]);
@@ -31,7 +33,7 @@ char	*expand_arg(char *arg)
 				return(arg);
 			}
 			else if (arg[len] && ft_isalnum(arg[len + 1]))
-				return(NULL);
+				var = var;
 			else
 				return(shell()->env[var] + len + 1);
 		}
