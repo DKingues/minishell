@@ -6,7 +6,7 @@
 /*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:03:49 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/05/09 16:39:49 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/11 22:16:05 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,34 @@ void	mv_abs(char *path)
 		chdir(abs_path);
 		set_old_path();
 		set_new_path();
+	}
+}
+
+void	redir_input(char *info, char *path)
+{
+	int	fd;
+	
+	if(info[0] == '<')
+	{
+		if(info[1] == '<')
+			here_doc();
+		else
+		{
+			fd = open(path, O_RDONLY);
+			dup2(fd, 0);
+		}
+	}
+	else
+	{
+		if (info[1] == '>')
+		{
+			fd = open(path, O_RDONLY | O_CREAT | O_APPEND, 0644);
+			dup2(fd, 1);
+		}
+		else
+		{
+			fd = open(path, O_RDONLY | O_CREAT | O_TRUNC, 0644);
+			dup2(fd, 1);
+		}
 	}
 }
