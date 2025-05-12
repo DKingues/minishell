@@ -6,7 +6,7 @@
 #    By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/05/10 18:52:28 by dicosta-         ###   ########.fr        #
+#    Updated: 2025/05/12 14:45:39 by dicosta-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ LIBFT = includes/libft/libft.a
 
 SRCS = main.c
 
-LEXER = init.c token.c custom_split.c custom_split_aux.c token_aux.c
+LEXER = init.c token.c custom_split.c custom_split_aux.c token_aux.c format_line.c
 
 PARSER = parse.c
 

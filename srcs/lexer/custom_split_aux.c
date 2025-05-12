@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   qtd_split_aux.c                                    :+:      :+:    :+:   */
+/*   custom_split_aux.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:12:44 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/10 18:50:47 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/12 14:49:12 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int skip_quotes(char *str, char quote_type)
+int skip_quotes(char *line, char quote_type)
 {
     int i;
 
     i = 0;
-    while (str[i] && str[i] != quote_type)
+    while (line[i] && line[i] != quote_type)
         i++;
     return (i);
 }
 
-int quote_counter(char *str)
+int count_quotes(char *line)
 {
     int i;
     int counter;
@@ -30,15 +30,15 @@ int quote_counter(char *str)
 
     i = 0;
     counter = 0;
-    while (str[i])
+    while (line[i])
     {
-        if (str[i] == '\"' || str[i] == '\'' )
+        if (line[i] == '\"' || line[i] == '\'' )
         {
-            temp = str[i];
+            temp = line[i];
             i++;
             counter++;
-            i += skip_quotes(&str[i], temp);
-            if (str[i] == temp)
+            i += skip_quotes(&line[i], temp);
+            if (line[i] == temp)
             {
                 counter++;
                 i++;
@@ -48,4 +48,78 @@ int quote_counter(char *str)
             i++;
     }
     return (counter);
+}
+
+int	count_tokens(char *line)
+{
+	int i;
+	int counter;
+	char temp;
+
+	i = 0;
+	counter = 0;
+	while (line[i])
+	{
+		if (line[i] == '\"' || line[i] == '\'')
+		{
+			temp = line[i];
+			i++;
+			while (line[i] && line[i] != temp)
+				i++;
+			if (line[i] == temp)
+				i++;
+		}
+		if (ft_isspace(line[i]) || line[i + 1] == '\0')
+			counter++;
+		i++;
+	}
+	return (counter);
+}
+
+/*char    *format_line(char *line)
+{
+    int i;
+    int j;
+    char    quote_type;
+    
+    i = 0;
+    while (line[i])
+    {
+        j = 0;
+        if (line[i] == '\"' || line[i] == '\'')
+        {
+            quote_type = line[i++];
+            i += skip_quotes(&line[i], quote_type);
+        }
+        while (TOKEN_LIST[j])
+        {
+            if (line[i] == TOKEN_LIST[j])
+                return (1);
+            j++;
+        }
+        i++;
+    }
+    return (line)
+}*/
+
+size_t  token_len(char *line)
+{
+    size_t i;
+    char temp;
+    
+    i = 0;
+    while (line[i])
+    {
+        if (line[i] == '\"' || line[i] == '\'')
+		{
+			temp = line[i++];
+			while (line[i] != temp && line[i] != '\0')
+				i++;
+            return(i);
+		}
+        while (!ft_isspace(line[i]))
+            i++;
+        return(i);
+    }
+    return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/10 18:33:13 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/12 15:10:17 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <limits.h>
+
+# define TOKEN_LIST "&|;<>,"
+# define SPACE_LIST " \t\n\v\f\r"
 
 typedef enum	s_token_type
 {
@@ -113,16 +116,25 @@ void	mv_abs(char *path);
 
 void	ignore_shell_signal(void);
 
-// qtd_split.c
+// custom_split.c
 
-int ft_buffed_split(char *str);
-int	ft_count_words(char *str);
+char	**split_tokens(char *line);
+char	*allocate_token(char *line, char *token);
+char	*fill_token(char *line, char *token);
 
-// qtd_split_aux.c
+// custom_split_aux.c
 
-int quote_counter(char *str);
-int skip_quotes(char *str, char quote_type);
+int skip_quotes(char *line, char quote_type);
+int count_quotes(char *line);
+int	count_tokens(char *line);
+size_t	token_len(char *line);
 
+// format_line.c
+
+void	quote_copy(char* line, char *new_line, int *i, int *j);
+char	*remove_extra_spaces(char *line, int i, int j);
+char    *format_line(char *line);
+int		count_special(char *line);
 // Token.c
 
 t_token *assign_token(char *input);
