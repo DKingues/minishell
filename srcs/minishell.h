@@ -6,7 +6,7 @@
 /*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/10 15:02:59 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/12 11:22:33 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void	mv_home(void);
 // CMD_UTILS5.C
 void	mv_old(void);
 void	mv_abs(char *path);
+void	redir_input(char *info, char *path);
 
 // Signals.c
 
