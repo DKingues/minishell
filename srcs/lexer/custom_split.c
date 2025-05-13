@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:51:07 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/12 14:48:28 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:03:47 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,27 +46,12 @@ char	*fill_token(char *line, char *token)
 
 char **split_tokens(char *line)
 {
-	int		i;
-	int		j;
-	char	**tokens;
+	char **tokens;
 
-	i = 0;
-	j = 0;
 	if (count_quotes(line) % 2 != 0)
-		return(ft_putendl_fd("Error: Unmatched quotes", 2), NULL);
-	tokens = ft_calloc(sizeof(char*), count_tokens(line) + 1);
-	if(!tokens)
-		return (ft_free_split(tokens), NULL);
-	while (i < count_tokens(line))
-	{
-		while (ft_isspace(line[j]))
-		j++;
-		tokens[i] = fill_token(&line[j], tokens[i]);
-		if(!tokens[i])
-			return(ft_free_split(tokens), NULL);
-		ft_printf("[%s]\n\n", tokens[i]);
-		i++;
-	}
+		ft_putendl_fd("Error: Invalid quotes\n", 2);
+	tokens = malloc(sizeof(char*) * count_tokens(line) + 1);
+	
 	
 	return(tokens);
 }
