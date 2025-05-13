@@ -6,7 +6,7 @@
 /*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 11:11:32 by scorpot           #+#    #+#             */
-/*   Updated: 2025/05/12 11:28:45 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/13 10:30:41 by scorpot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,11 @@ void	first_process(char **args, int *fd)
 		error();
 	path = find_path(cmd1[0]);
 	if (args[1]) //1 = write redir flag | check type redir
-		redir_input(args[1]); //1 = write redir flag
+		redir_input(args[1], args[1]); //1 = write redir flag
 	else
 		dup2(fd[1], 1);
 	if (args[0]) //0 = read redir flag | check type redir
-		redir_input(args[0]); //0 = read redir flag
+		redir_input(args[0], args[0]); //0 = read redir flag
 	close_fds();
 	if (execve(path, cmd1, shell()->env) == -1)
 		execve_error(path, cmd1);
@@ -73,7 +73,7 @@ char	*find_path(char *cmd)
 		var++;
 	if (!shell()->env[var + 1])
 		return (cmd);
-	path = ft_split(shell()->env[var] + 5, ':', 0, 0);
+	path = ft_split(shell()->env[var] + 5, ':');
 	var = 0;
 	while (path[var] != NULL)
 	{
@@ -88,3 +88,24 @@ char	*find_path(char *cmd)
 	return (ft_free(path), cmd);
 }
 
+int	*parent(int count, char **args, int *pids)
+{
+	int	var;
+	int	pid1;
+
+	var = 0;
+	while (var < count - 2)
+	{
+		pids[var + 1] = pimping(args[var], pids);
+		var++;
+	}
+	pids[var] = fork();
+	if (pids[var] < 0)
+		error();
+	if (pids[var] == 0)
+	{
+		free(pids);
+		last_process(args, count);
+	}
+	return (pids[var]);
+}
