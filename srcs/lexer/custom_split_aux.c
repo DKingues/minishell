@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:12:44 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/13 18:02:55 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/14 19:41:25 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,18 +108,14 @@ size_t  token_len(char *line)
     char temp;
     
     i = 0;
-    while (line[i])
-    {
-        if (line[i] == '\"' || line[i] == '\'')
-		{
-			temp = line[i++];
-			while (line[i] != temp && line[i] != '\0')
-				i++;
-            return(i);
-		}
-        while (!ft_isspace(line[i]))
-            i++;
+    if (line[i] == '\"' || line[i] == '\'')
+	{
+		temp = line[i++];
+		while (line[i] != temp && line[i] != '\0')
+			i++;
         return(i);
-    }
-    return (i);
+	}
+    while (!ft_isspace(line[i]))
+        i++;
+    return(i);
 }
