@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 14:47:46 by scorpot           #+#    #+#             */
-/*   Updated: 2025/05/11 16:01:47 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/14 16:20:09 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*expand_arg(char *arg)
 				return(arg);
 			}
 			else if (arg[len] && ft_isalnum(arg[len + 1]))
-				var = var;
+				len++;
 			else
 				return(shell()->env[var] + len + 1);
 		}

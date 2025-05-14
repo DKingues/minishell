@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils5.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:03:49 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/05/11 22:16:05 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/05/14 16:21:07 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	mv_abs(char *path)
 	}
 }
 
-void	redir_input(char *info, char *path)
+/* void	redir_input(char *info, char *path)
 {
 	int	fd;
 	
@@ -81,4 +81,4 @@ void	redir_input(char *info, char *path)
 			dup2(fd, 1);
 		}
 	}
-}
+} */
