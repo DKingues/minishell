@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:51:07 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/14 19:41:03 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:53:42 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ char	*fill_token(char *line, char *token)
 {
 	int i;
 	int j;
-	char temp;
 	
 	i = 0;
 	j = 0;
@@ -25,8 +24,10 @@ char	*fill_token(char *line, char *token)
 		return (NULL);
 	if (line[i] == '\"' || line[i] == '\'')
 	{
-		temp = line[i++];
-		while (line[i] && line[i] != temp)
+		token[j++] = line[i++];
+		while (line[i] && line[i] != token[0])
+			token[j++] = line[i++];
+		if (line[i] == token[0])
 			token[j++] = line[i++];
 		return (token);
 	}
@@ -48,10 +49,16 @@ char **split_tokens(char *line)
 	tokens = ft_calloc(sizeof(char*), count_tokens(line) + 1);
 	while (i < count_tokens(line))
 	{
+		while (ft_isspace(line[j]))
+			j++;
 		tokens[i] = fill_token(&line[j], tokens[i]);
 		if (!tokens[i])
 			return (ft_free_split(tokens), NULL);
-		j += ft_strlen(tokens[i]);
+		j += token_len(tokens[i]);
+		if (tokens[i][0] == '\"' || tokens[i][0] == '\'')
+			tokens[i] = remove_quotes(tokens[i]);
+		if(!tokens[i])
+			return (ft_free_split(tokens), NULL);
 		i++;
 	}
 	return(tokens);

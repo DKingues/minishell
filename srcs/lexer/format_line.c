@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:49:28 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/12 16:07:23 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:10:27 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ char	*create_spaces(char *line, int i, int j)
 			quote_copy(line, new_line, &i, &j);
 		else if (is_token(line[i]) && (line[i + 1] != ' ' && line[i + 1] != '\0'))
 		{
-			if ((line[i] == '>' && line[i + 1] == '>') || (line[i] == '>' && line[i + 1] == '>'))
+			if ((line[i] == '>' && line[i + 1] == '>') || (line[i] == '<' && line[i + 1] == '<'))
 				new_line[j++] = line[i++];
 			new_line[j++] = line[i++];
 			new_line[j++] = ' ';

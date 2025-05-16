@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:12:44 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/14 19:41:25 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/15 11:05:13 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,31 +76,25 @@ int	count_tokens(char *line)
 	return (counter);
 }
 
-/*char    *format_line(char *line)
+char    *remove_quotes(char *line)
 {
-    int i;
-    int j;
-    char    quote_type;
-    
+    int     i;
+    int     j;
+    char    *new_line;
+
     i = 0;
+    j = 0;
+    new_line = ft_calloc(sizeof(char), token_len(line) - 1);
+    if (!new_line)
+        return (NULL);
     while (line[i])
     {
-        j = 0;
         if (line[i] == '\"' || line[i] == '\'')
-        {
-            quote_type = line[i++];
-            i += skip_quotes(&line[i], quote_type);
-        }
-        while (TOKEN_LIST[j])
-        {
-            if (line[i] == TOKEN_LIST[j])
-                return (1);
-            j++;
-        }
-        i++;
+            i++;
+        new_line[j++] = line[i++];
     }
-    return (line)
-}*/
+    return (new_line);
+}
 
 size_t  token_len(char *line)
 {
@@ -111,11 +105,13 @@ size_t  token_len(char *line)
     if (line[i] == '\"' || line[i] == '\'')
 	{
 		temp = line[i++];
-		while (line[i] != temp && line[i] != '\0')
+		while (line[i] && line[i] != temp)
+			i++;
+        if (line[i] == temp)
 			i++;
         return(i);
 	}
-    while (!ft_isspace(line[i]))
+    while (line[i] && !ft_isspace(line[i]))
         i++;
     return(i);
 }

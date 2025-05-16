@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/12 15:10:17 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:11:00 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 typedef enum	s_token_type
 {
 	COMMAND,
+	FLAG,
 	ARG,
 	PIPE,		// |
 	READ,		// <
@@ -119,7 +120,6 @@ void	ignore_shell_signal(void);
 // custom_split.c
 
 char	**split_tokens(char *line);
-char	*allocate_token(char *line, char *token);
 char	*fill_token(char *line, char *token);
 
 // custom_split_aux.c
@@ -128,6 +128,7 @@ int skip_quotes(char *line, char quote_type);
 int count_quotes(char *line);
 int	count_tokens(char *line);
 size_t	token_len(char *line);
+char    *remove_quotes(char *line);
 
 // format_line.c
 
@@ -135,12 +136,15 @@ void	quote_copy(char* line, char *new_line, int *i, int *j);
 char	*remove_extra_spaces(char *line, int i, int j);
 char    *format_line(char *line);
 int		count_special(char *line);
-// Token.c
 
-t_token *assign_token(char *input);
-int		is_command(char *value, int *cmd);
-void	set_token(t_token *token, char *value, int type, int *command, int *i);
-char	*ft_get_word(const char *str, int *i);
-int		special_token(t_token *token, char *input, int *cmd, int *i);
+// token.c
 
+t_token *assign_token(char *line);
+int	get_token_type(char *input);
+
+// token_aux.c 
+
+t_token	*append_node(t_token *tokens, char *token_value, int token_type);
+t_token	*get_last_node(t_token *tokens);
+int		is_command(char *value);
 #endif

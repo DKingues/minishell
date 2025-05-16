@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/13 17:53:14 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:24:10 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,23 @@ void	print_banner() {
 
 int parser(char *line)
 {
+	char **splitted;
+	int	i = 0;
+	
+	line = format_line(line);
+	splitted = split_tokens(line);
 	ft_printf("%d\n", count_tokens(line));
+	while (splitted[i])
+		ft_printf("%s\n", splitted[i++]);
+	t_token *token;
+	token = assign_token(line);
+	if (!token)
+		ft_printf("DAMN\n");
+	while (token)
+	{
+		ft_printf("TOKEN VALUE:[%s]\nTOKEN TYPE: [%d]\n\n", token->value, token->type);
+		token = token->next;
+	}
 	return (TRUE);
 }
 
