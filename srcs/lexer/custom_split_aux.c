@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:12:44 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/15 11:05:13 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:33:31 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ int count_quotes(char *line)
 
 int	count_tokens(char *line)
 {
-	int i;
-	int counter;
-	char quote_type;
+	int		i;
+	int		counter;
+	char	quote_type;
 
 	i = 0;
 	counter = 0;
@@ -78,8 +78,8 @@ int	count_tokens(char *line)
 
 char    *remove_quotes(char *line)
 {
-    int     i;
-    int     j;
+    size_t	i;
+    size_t	j;
     char    *new_line;
 
     i = 0;
@@ -87,12 +87,14 @@ char    *remove_quotes(char *line)
     new_line = ft_calloc(sizeof(char), token_len(line) - 1);
     if (!new_line)
         return (NULL);
-    while (line[i])
+    while (j < token_len(line) - 1)
     {
         if (line[i] == '\"' || line[i] == '\'')
             i++;
-        new_line[j++] = line[i++];
+		else
+        	new_line[j++] = line[i++];
     }
+	free(line);
     return (new_line);
 }
 

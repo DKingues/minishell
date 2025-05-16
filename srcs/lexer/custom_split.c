@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:51:07 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/15 15:53:42 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:19:45 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,7 @@ char	*fill_token(char *line, char *token)
 		return (NULL);
 	if (line[i] == '\"' || line[i] == '\'')
 	{
-		token[j++] = line[i++];
-		while (line[i] && line[i] != token[0])
-			token[j++] = line[i++];
-		if (line[i] == token[0])
-			token[j++] = line[i++];
+		quote_copy(line, token, &i, &j);
 		return (token);
 	}
     while (line[i] && !ft_isspace(line[i]))
@@ -46,6 +42,7 @@ char **split_tokens(char *line)
 	j = 0;
 	if (count_quotes(line) % 2 != 0)
 		ft_putendl_fd("Error: Invalid quotes\n", 2);
+	line = format_line(line);
 	tokens = ft_calloc(sizeof(char*), count_tokens(line) + 1);
 	while (i < count_tokens(line))
 	{
@@ -55,8 +52,8 @@ char **split_tokens(char *line)
 		if (!tokens[i])
 			return (ft_free_split(tokens), NULL);
 		j += token_len(tokens[i]);
-		if (tokens[i][0] == '\"' || tokens[i][0] == '\'')
-			tokens[i] = remove_quotes(tokens[i]);
+		// if (tokens[i][0] == '\"' || tokens[i][0] == '\'')
+		//  	tokens[i] = remove_quotes(tokens[i]);
 		if(!tokens[i])
 			return (ft_free_split(tokens), NULL);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:49:28 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/15 17:10:27 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:38:22 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,13 @@ void	quote_copy(char* line, char *new_line, int *i, int *j)
 		new_line[(*j)++] = line[(*i)++];
 	if (line[*i] == quote_type)
 		new_line[(*j)++] = line[(*i)++];
+	if (!ft_isspace(line[*i]))
+	{
+		while (line[*i] && (line[*i] != '\"' && line[*i] != '\'') && !ft_isspace(line[*i]))
+			new_line[(*j)++] = line[(*i)++];
+		if (line[*i] == '\"' || line[*i] == '\'')
+			quote_copy(line, new_line, i, j);
+	}
 }
 
 int count_special(char *line)
