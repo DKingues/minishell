@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/15 16:11:00 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:14:25 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ int skip_quotes(char *line, char quote_type);
 int count_quotes(char *line);
 int	count_tokens(char *line);
 size_t	token_len(char *line);
+void	token_len_aux(char *line , int *i);
 char    *remove_quotes(char *line);
 
 // format_line.c

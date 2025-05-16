@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:12:44 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/16 16:33:31 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:15:29 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,32 +76,32 @@ int	count_tokens(char *line)
 	return (counter);
 }
 
-char    *remove_quotes(char *line)
-{
-    size_t	i;
-    size_t	j;
-    char    *new_line;
+// char    *remove_quotes(char *line)
+// {
+//     size_t	i;
+//     size_t	j;
+//     char    *new_line;
 
-    i = 0;
-    j = 0;
-    new_line = ft_calloc(sizeof(char), token_len(line) - 1);
-    if (!new_line)
-        return (NULL);
-    while (j < token_len(line) - 1)
-    {
-        if (line[i] == '\"' || line[i] == '\'')
-            i++;
-		else
-        	new_line[j++] = line[i++];
-    }
-	free(line);
-    return (new_line);
-}
+//     i = 0;
+//     j = 0;
+//     new_line = ft_calloc(sizeof(char), token_len(line) - 1);
+//     if (!new_line)
+//         return (NULL);
+//     while (j < token_len(line) - 1)
+//     {
+//         if (line[i] == '\"' || line[i] == '\'')
+//             i++;
+// 		else
+//         	new_line[j++] = line[i++];
+//     }
+// 	free(line);
+//     return (new_line);
+// }
 
 size_t  token_len(char *line)
 {
-    size_t i;
-    char temp;
+   	int		i;
+    char	temp;
     
     i = 0;
     if (line[i] == '\"' || line[i] == '\'')
@@ -111,9 +111,19 @@ size_t  token_len(char *line)
 			i++;
         if (line[i] == temp)
 			i++;
+		if (!ft_isspace(line[i]))
+			token_len_aux(&line[i], &i);
         return(i);
 	}
     while (line[i] && !ft_isspace(line[i]))
         i++;
     return(i);
+}
+
+void token_len_aux(char *line , int *i)
+{
+	while (line[*i] && (line[*i] != '\"' && line[*i] != '\'') && !ft_isspace(line[*i]))
+		(*i)++;
+	if (line[*i] == '\"' || line[*i] == '\'')
+		token_len_aux(line, i);	
 }

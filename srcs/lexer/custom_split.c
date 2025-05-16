@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:51:07 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/16 16:19:45 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:16:14 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,10 @@ char **split_tokens(char *line)
 		if (!tokens[i])
 			return (ft_free_split(tokens), NULL);
 		j += token_len(tokens[i]);
+		ft_printf("TOKEN_LEN [%d]\n", token_len(tokens[i]));
 		// if (tokens[i][0] == '\"' || tokens[i][0] == '\'')
 		//  	tokens[i] = remove_quotes(tokens[i]);
-		if(!tokens[i])
+		if(!tokens[i]ma)
 			return (ft_free_split(tokens), NULL);
 		i++;
 	}
