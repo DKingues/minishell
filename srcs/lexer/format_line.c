@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:49:28 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/16 16:38:22 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:25:18 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,12 +127,15 @@ char	*create_spaces(char *line, int i, int j)
 
 char    *format_line(char *line)
 {
-	int i;
-	int j;
-
+	int		i;
+	int		j;
+	char	*temp;
+	
 	i = 0;
 	j = 0;
-	line = remove_extra_spaces(line, i, j);
-	line = create_spaces(line, i, j);
-	return (line);
+	temp = remove_extra_spaces(line, i, j);
+	if (!temp)
+		return (NULL);
+	line = create_spaces(temp, i, j);
+	return (free(temp),line);
 }

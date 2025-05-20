@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:12:44 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/16 17:15:29 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/19 17:52:50 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,26 +104,19 @@ size_t  token_len(char *line)
     char	temp;
     
     i = 0;
-    if (line[i] == '\"' || line[i] == '\'')
-	{
-		temp = line[i++];
-		while (line[i] && line[i] != temp)
-			i++;
-        if (line[i] == temp)
-			i++;
-		if (!ft_isspace(line[i]))
-			token_len_aux(&line[i], &i);
-        return(i);
-	}
     while (line[i] && !ft_isspace(line[i]))
-        i++;
+    {
+        if (line[i] == '\"' || line[i] == '\'')
+        {
+            temp = line[i++];
+            while (line[i] && line[i] != temp)
+			    i++;
+            if (line[i] == temp)
+			    i++;
+        }
+        else 
+            i++;
+    }
     return(i);
 }
 
-void token_len_aux(char *line , int *i)
-{
-	while (line[*i] && (line[*i] != '\"' && line[*i] != '\'') && !ft_isspace(line[*i]))
-		(*i)++;
-	if (line[*i] == '\"' || line[*i] == '\'')
-		token_len_aux(line, i);	
-}

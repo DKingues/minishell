@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/16 17:14:25 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:47:39 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,28 @@ typedef struct s_token
 
 typedef struct s_shell
 {
-	int		exit;
-	char	**env;
-	char	**exp;
+	t_token		*tokens;
+	int			exit;
+	char		**env;
+	char		**exp;
 }				t_shell;
 
 
 // PARSE.C
 
 int	parsing(char *line);
+
+// syntax_check.c
+
+int	syntax_check(char *line);
+int	check_pipes(char* line);
+int	check_redirection(char *line);
+int check_consecutive(char *line);
+int	check_command(char *line);
+
+// syntax_aux.c
+
+int	skip_spaces(char *line);
 
 // INIT.C
 
@@ -115,7 +128,7 @@ void	mv_abs(char *path);
 
 // Signals.c
 
-void	ignore_shell_signal(void);
+void	ignore_signal(void);
 
 // custom_split.c
 
@@ -124,11 +137,10 @@ char	*fill_token(char *line, char *token);
 
 // custom_split_aux.c
 
-int skip_quotes(char *line, char quote_type);
-int count_quotes(char *line);
-int	count_tokens(char *line);
+int 	skip_quotes(char *line, char quote_type);
+int	 	count_quotes(char *line);
+int		count_tokens(char *line);
 size_t	token_len(char *line);
-void	token_len_aux(char *line , int *i);
 char    *remove_quotes(char *line);
 
 // format_line.c
@@ -137,11 +149,12 @@ void	quote_copy(char* line, char *new_line, int *i, int *j);
 char	*remove_extra_spaces(char *line, int i, int j);
 char    *format_line(char *line);
 int		count_special(char *line);
+int 	is_token(char c);
 
 // token.c
 
 t_token *assign_token(char *line);
-int	get_token_type(char *input);
+int		get_token_type(char *input);
 
 // token_aux.c 
 

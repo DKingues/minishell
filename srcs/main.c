@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/16 16:17:08 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:07:52 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,30 +28,27 @@ void	print_banner() {
 
 int parser(char *line)
 {
-	char **splitted;
-	int	i = 0;
+	/*if (SIGINT)
+		signal_receiver(SIGINT);
+	if (SIGQUIT)
+		signal_receiver(SIGQUIT);*/
+	if (syntax_check(line) == 0)
+		return (0);
 	t_token *token;
-	
-	line = format_line(line);
-	splitted = split_tokens(line);
-	ft_printf("%d\n", count_tokens(line));
-	while (splitted[i])
-		ft_printf("%s\n", splitted[i++]);
+
 	token = assign_token(line);
 	while (token)
 	{
-		ft_printf("TOKEN VALUE:[%s]\nTOKEN TYPE: [%d]\n\n", token->value, token->type);
+		ft_printf("VALUE:[%s]\tTYPE: [%d]\n", token->value, token->type);
 		token = token->next;
 	}
-	return (TRUE);
+	return (1);
 }
 
 int	main(int ac, char **av, char **ev)
 {
 	(void)av;
 	char *line;
-	
-	ignore_shell_signal();
 	if (ac != 1)
 		return (ft_printf("No arguments are needed\n"), 1);
 	print_banner();
@@ -59,8 +56,9 @@ int	main(int ac, char **av, char **ev)
 	while(1)
 	{
 		line = readline("minishell>");
-		if (parser(line) == false)
-			ft_printf("Error: Unknown Command\n");
+		if (parser(line) == 0)
+			ft_printf("");
+		free(line);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:51:07 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/16 17:16:14 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:25:58 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*fill_token(char *line, char *token)
 	
 	i = 0;
 	j = 0;
-	token = ft_calloc(sizeof(char), token_len(&line[i]) + 1);
+	token = ft_calloc(sizeof(char), token_len(line) + 1);
 	if (!token)
 		return (NULL);
 	if (line[i] == '\"' || line[i] == '\'')
@@ -40,24 +40,20 @@ char **split_tokens(char *line)
 	
 	i = 0;
 	j = 0;
-	if (count_quotes(line) % 2 != 0)
-		ft_putendl_fd("Error: Invalid quotes\n", 2);
 	line = format_line(line);
 	tokens = ft_calloc(sizeof(char*), count_tokens(line) + 1);
 	while (i < count_tokens(line))
 	{
-		while (ft_isspace(line[j]))
-			j++;
+		j += skip_spaces(&line[j]);
 		tokens[i] = fill_token(&line[j], tokens[i]);
 		if (!tokens[i])
 			return (ft_free_split(tokens), NULL);
 		j += token_len(tokens[i]);
-		ft_printf("TOKEN_LEN [%d]\n", token_len(tokens[i]));
 		// if (tokens[i][0] == '\"' || tokens[i][0] == '\'')
 		//  	tokens[i] = remove_quotes(tokens[i]);
-		if(!tokens[i]ma)
+		if(!tokens[i])
 			return (ft_free_split(tokens), NULL);
 		i++;
 	}
-	return(tokens);
+	return(free(line), tokens);
 }
