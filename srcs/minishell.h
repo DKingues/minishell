@@ -129,6 +129,8 @@ void	env_cmd(void);
 // COMMANDS2.C
 int	exit_cmd(char *msg, int mult_args);
 void	cd_cmd(char *path);
+void	single_exec(char *msg);
+char	*find_path(char *cmd);
 
 // CMD_UTILS.C
 char	**exp_set(char *msg);
@@ -161,5 +163,6 @@ void	mv_home(void);
 // CMD_UTILS5.C
 void	mv_old(void);
 void	mv_abs(char *path);
-
+char **hist_manage(char *line, int flag);
+void	redir_input(char *info, char *path);
 #endif

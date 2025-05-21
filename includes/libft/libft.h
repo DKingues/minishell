@@ -62,6 +62,8 @@ void	ft_putnbr_fd(int n, int fd);
 void	ft_free_split(char **mal);
 char	*ft_write_word(const char *str, char c);
 char	*ft_strcpy(char *dest, char *src);
+unsigned int	ft_atoui(const char *nptr);
+char	*ft_nfstrjoin(char const *s1, char const *s2);
 
 //BONUS
 
@@ -87,13 +89,13 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 # define UP_HEX "0123456789ABCDEF"
 # define DEC "0123456789"
 
-int		ft_printf(const char *s, ...);
+int		ft_printf(int fd, const char *s, ...);
 int		ft_putchar_ft(int c, int fd);
 int		ft_putstr_ft(char *s, int fd);
 int		ft_putunbr_base_ft(unsigned long bnb, int fd, \
 		char *base, unsigned int bs);
 int		ft_putperc_ft(int fd);
-int		ft_check_char(const char *s, va_list args);
+int		ft_check_char(const char *s, va_list args, int fd);
 int		ft_putnbr_base_ft(int n, int fd, char *base, int bs);
 int		ft_putptr_ft(void *n, int fd, char *base, unsigned int bs);
 

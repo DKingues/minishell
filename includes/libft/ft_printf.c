@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int	ft_printf(const char *s, ...)
+int	ft_printf(int fd, const char *s, ...)
 {
 	va_list	args;
 	int		var;
@@ -26,45 +26,45 @@ int	ft_printf(const char *s, ...)
 	while (s[var] != '\0')
 	{
 		if (s[var] != '%' && s[var] != '\0')
-			cnt += ft_putchar_ft(s[var], 1);
+			cnt += ft_putchar_ft(s[var], fd);
 		else if (s[var + 1] != '\0')
 		{
 			var++;
-			cnt += ft_check_char(&s[var], args);
+			cnt += ft_check_char(&s[var], args, fd);
 		}
 		else
-			cnt += ft_putchar_ft('%', 1);
+			cnt += ft_putchar_ft('%', fd);
 		var++;
 	}
 	va_end(args);
 	return (cnt);
 }
 
-int	ft_check_char(const char *s, va_list args)
+int	ft_check_char(const char *s, va_list args, int fd)
 {
 	int	cnt;
 
 	cnt = 0;
 	if (*s == 'c')
-		cnt += ft_putchar_ft(va_arg(args, int), 1);
+		cnt += ft_putchar_ft(va_arg(args, int), fd);
 	else if (*s == 's')
-		cnt += ft_putstr_ft(va_arg(args, char *), 1);
+		cnt += ft_putstr_ft(va_arg(args, char *), fd);
 	else if (*s == 'p')
-		cnt += ft_putptr_ft(va_arg(args, void *), 1, LC_HEX, 16);
+		cnt += ft_putptr_ft(va_arg(args, void *), fd, LC_HEX, 16);
 	else if (*s == 'd' || *s == 'i')
-		cnt += ft_putnbr_base_ft(va_arg(args, int), 1, DEC, 10);
+		cnt += ft_putnbr_base_ft(va_arg(args, int), fd, DEC, 10);
 	else if (*s == 'u')
-		cnt += ft_putunbr_base_ft(va_arg(args, unsigned), 1, DEC, 10);
+		cnt += ft_putunbr_base_ft(va_arg(args, unsigned), fd, DEC, 10);
 	else if (*s == 'x')
-		cnt += ft_putunbr_base_ft(va_arg(args, unsigned), 1, LC_HEX, 16);
+		cnt += ft_putunbr_base_ft(va_arg(args, unsigned), fd, LC_HEX, 16);
 	else if (*s == 'X')
-		cnt += ft_putunbr_base_ft(va_arg(args, unsigned), 1, UP_HEX, 16);
+		cnt += ft_putunbr_base_ft(va_arg(args, unsigned), fd, UP_HEX, 16);
 	else if (*s == '%')
 		cnt += ft_putchar_ft('%', 1);
 	else
 	{
-		cnt += ft_putchar_ft('%', 1);
-		cnt += ft_putchar_ft(*s, 1);
+		cnt += ft_putchar_ft('%', fd);
+		cnt += ft_putchar_ft(*s, fd);
 	}
 	return (cnt);
 }

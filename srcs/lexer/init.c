@@ -15,6 +15,7 @@
 void init_shell(char **ev)
 {
 	init_env(ev);
+	init_exp(ev);
 	shell()->exit = 0;
 }
 
@@ -34,6 +35,7 @@ void	init_env(char **ev)
 			shell()->env[var] = ft_strdup(ev[var]);
 			var++;
 		}
+		lvl_upd();
 	}
 	else
 	{
@@ -59,12 +61,65 @@ void	init_exp(char **ev)
 			var++;
 		}
 		exp_organize();
+		exp_lvl();
 		shell()->exp = quoting_set();
 	}
 	else
 	{
 		shell()->exp = ft_calloc(sizeof(char *), 1);
 		shell()->exp[0] = ft_calloc(sizeof(char), 1);
+	}
+}
+
+void	lvl_upd(void)
+{
+	int	var;
+	int	lvl;
+	char *temp;
+
+	var = 0;
+	while(shell()->env[var])
+	{
+		if(!ft_strncmp(shell()->env[var], "SHLVL=", 6))
+		{
+			if (shell()->env[var][6] == '-' || ft_atoui(shell()->env[var] + 6) >= INT_MAX)
+				lvl = -1;
+			else
+				lvl = ft_atoi(shell()->env[var] + 6);
+			temp = ft_itoa(lvl + 1);
+			free(shell()->env[var]);
+			shell()->env[var] = ft_strdup("SHLVL=");
+			shell()->env[var] = ft_strjoin(shell()->env[var], temp);
+			free(temp);
+			break ;
+		}
+		var++;
+	}
+}
+
+void	exp_lvl(void)
+{
+	int	var;
+	int	lvl;
+	char *temp;
+
+	var = 0;
+	while(shell()->exp[var])
+	{
+		if(!ft_strncmp(shell()->exp[var], "SHLVL=", 6))
+		{
+			if (shell()->exp[var][6] == '-' || ft_atoui(shell()->exp[var] + 6) >= INT_MAX)
+				lvl = -1;
+			else
+				lvl = ft_atoi(shell()->exp[var] + 6);
+			temp = ft_itoa(lvl + 1);
+			free(shell()->exp[var]);
+			shell()->exp[var] = ft_strdup("SHLVL=");
+			shell()->exp[var] = ft_strjoin(shell()->exp[var], temp);
+			free(temp);
+			break ;
+		}
+		var++;
 	}
 }
 
