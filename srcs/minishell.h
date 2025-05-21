@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/20 17:47:39 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:17:52 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ typedef struct s_token
 	t_token_type	type;
 	char 			*value;
 	struct	s_token	*next;
+	struct	s_token *prev;
 }	t_token;
 
 typedef struct s_shell
 {
-	t_token		*tokens;
 	int			exit;
 	char		**env;
 	char		**exp;
@@ -63,6 +63,42 @@ typedef struct s_shell
 // PARSE.C
 
 int	parsing(char *line);
+
+// Signals.c
+
+void	ignore_signal(void);
+
+// custom_split.c
+
+char	**split_tokens(char *line);
+char	*fill_token(char *line, char *token);
+
+// custom_split_aux.c
+
+int 	skip_quotes(char *line, char quote_type);
+int	 	count_quotes(char *line);
+int		count_tokens(char *line);
+size_t	token_len(char *line);
+char    *remove_quotes(char *line);
+
+// format_line.c
+
+void	quote_copy(char* line, char *new_line, int *i, int *j);
+char	*remove_extra_spaces(char *line, int i, int j);
+char    *format_line(char *line);
+int		count_special(char *line);
+int 	is_token(char c);
+
+// token.c
+
+t_token *assign_token(char *line);
+int		get_token_type(char *input);
+
+// token_aux.c 
+
+t_token	*append_node(t_token *tokens, char *token_value, int token_type);
+t_token	*get_last_node(t_token *tokens);
+int		is_command(char *value);
 
 // syntax_check.c
 
@@ -126,39 +162,4 @@ void	mv_home(void);
 void	mv_old(void);
 void	mv_abs(char *path);
 
-// Signals.c
-
-void	ignore_signal(void);
-
-// custom_split.c
-
-char	**split_tokens(char *line);
-char	*fill_token(char *line, char *token);
-
-// custom_split_aux.c
-
-int 	skip_quotes(char *line, char quote_type);
-int	 	count_quotes(char *line);
-int		count_tokens(char *line);
-size_t	token_len(char *line);
-char    *remove_quotes(char *line);
-
-// format_line.c
-
-void	quote_copy(char* line, char *new_line, int *i, int *j);
-char	*remove_extra_spaces(char *line, int i, int j);
-char    *format_line(char *line);
-int		count_special(char *line);
-int 	is_token(char c);
-
-// token.c
-
-t_token *assign_token(char *line);
-int		get_token_type(char *input);
-
-// token_aux.c 
-
-t_token	*append_node(t_token *tokens, char *token_value, int token_type);
-t_token	*get_last_node(t_token *tokens);
-int		is_command(char *value);
 #endif
