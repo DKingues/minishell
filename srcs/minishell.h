@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/21 16:17:52 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/21 17:04:44 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_shell
 	int			exit;
 	char		**env;
 	char		**exp;
+	char		**hist;
 }				t_shell;
 
 
@@ -117,6 +118,8 @@ int	skip_spaces(char *line);
 void	init_shell(char **ev);
 void	init_env(char **ev);
 void	init_exp(char **ev);
+void	lvl_upd(void);
+void	exp_lvl(void);
 t_shell	*shell(void);
 
 // COMMANDS.C
@@ -165,4 +168,7 @@ void	mv_old(void);
 void	mv_abs(char *path);
 char **hist_manage(char *line, int flag);
 void	redir_input(char *info, char *path);
+
+//EXPAND.C
+char	*expand_arg(char *arg);
 #endif
