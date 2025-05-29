@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:37:46 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/20 17:07:21 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:50:00 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 int	syntax_check(char *line)
 {
 	if (count_quotes(line) % 2 != 0)
-		return (ft_putendl_fd("Invalid: unclosed quotes.", 2), 0);
+		return (ft_printf(2, RED"Invalid:"NO_COLOR" unclosed quotes.\n"), 0);
 	/*else if (check_command(line) == 0)
 		return (ft_putendl_fd("Invalid: unknown command.", 2), 0);*/
 	else if (check_pipes(line) == 0)
 		return (0);
+	else if (check_consecutive(line) == 0)
+		return (ft_printf(2, RED"Invalid:"NO_COLOR" unexpected token.\n"), 0);
 	else if (check_redirection(line) == 0)
 		return (0);
-	else if (check_consecutive(line) == 0)
-		return (ft_putendl_fd("Invalid: unexpected token.", 2), 0);
 	/*else if (check_null(line) == 0)
 		return (ft_putendl_fd("Invalid: no command.", 2), 0);
 	else if (check_heredoc(line) == 0)
@@ -37,17 +37,17 @@ int	check_pipes(char* line)
 	i = 0;
 	i += skip_spaces(&line[i]);
 	if(line[i] == '|')
-		return (ft_putendl_fd("Invalid: no command before pipe.", 2), 0);
+		return (ft_printf(2, RED"Invalid:"NO_COLOR" no command before pipe.\n"), 0);
 	while (line[i])
 	{
 		if (line[i] == '|' && line[i + 1] == '|')
-			return (ft_putendl_fd("Invalid: unexpected token \'|\'", 2), 0);
+			return (ft_printf(2, RED"Invalid:"NO_COLOR" unexpected token \'|\'.\n"), 0);
 		else if (line[i] == '|')
 		{
 			i++;
 			i += skip_spaces(&line[i]);
 			if (line[i] == '\0')
-				return (ft_putendl_fd("Invalid: no command after pipe.", 2), 0);
+				return (ft_printf(2, RED"Invalid:"NO_COLOR" no command after pipe.\n"), 0);
 		}
 		i++;
 	}
@@ -63,17 +63,19 @@ int	check_redirection(char *line)
 	{
 		if (line[i] == '>')
 		{
-			i++;
+			while (line[i] == '>')
+				i++;
 			i += skip_spaces(&line[i]);
 			if (line[i] == '\0')
-				return (ft_putendl_fd("Invalid: no file after \'>\'.", 2), 0);
+				return (ft_printf(2, RED"Invalid:"NO_COLOR" no file after \'>\'.\n"), 0);
 		}
 		if (line[i] == '<')
 		{
-			i++;
+			while (line[i] == '<')
+				i++;
 			i += skip_spaces(&line[i]);
 			if (line[i] == '\0')
-				return (ft_putendl_fd("Invalid: no file after \'<\'.", 2), 0);
+				return (ft_printf(2, RED"Invalid:"NO_COLOR" no file after \'<\'.\n"), 0);
 		}
 		i++;
 	}

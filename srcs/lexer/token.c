@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 11:57:26 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/20 17:27:25 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:55:19 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ t_token *assign_token(char *line)
 	while (tokens[i])
 	{
 		token_type = get_token_type(tokens[i]);
-		token = append_node(token, tokens[i], token_type);
+		if (token_type == READ || token_type == HERE_DOC \
+		|| token_type == TRUNCATE || token_type == APPEND)
+			token = append_node(token, tokens[++i], token_type);
+		else
+			token = append_node(token, tokens[i], token_type);
 		if (token_type == COMMAND && command == 0)
 			command = 1;
 		if (token_type == PIPE && command == 1)
@@ -36,7 +40,32 @@ t_token *assign_token(char *line)
 	}
 	return (token);
 }
-
+/*t_token	*remove_redir(t_token *token)
+{
+	t_token	*temp;
+	t_token	*next;
+	
+	temp = token;
+	while (temp)
+	{
+		next = temp->next;
+		if (temp->type == READ || temp->type == HERE_DOC \
+		|| temp->type == TRUNCATE || temp->type == APPEND)
+		{
+			temp->next->type = temp->type;
+			if (temp->prev)
+			{
+				temp->next->prev = temp->prev;
+				temp->prev->next = temp->next;
+			}
+			else
+				temp->next->prev = NULL;
+			free(temp);
+		}
+		temp = next;
+	}
+	return (temp);
+}*/
 int	get_token_type(char *input)
 {
 	int	i;
@@ -63,4 +92,6 @@ int	get_token_type(char *input)
 	}
 	return (1);
 }
+
+
 

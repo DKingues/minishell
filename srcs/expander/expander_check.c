@@ -5,132 +5,108 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/21 17:17:53 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/22 21:06:15 by dicosta-         ###   ########.fr       */
+/*   Created: 2025/05/23 13:44:06 by dicosta-          #+#    #+#             */
+/*   Updated: 2025/05/23 20:07:10 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	expander_check(char *line)
+/*
+echo " ' $USER lives at $HOME"
+Count how many "$" are in command
+*/
+int		expand_check(char *line)
 {
 	int	i;
 
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '\'')
+		if (line[i] == '\'' && !in_double_quotes(line, i)) 
 		{
-			i++;	
-			i += skip_quotes(&line[i], '\'');
+			i++;
+			i += skip_quotes(&line[i], '\'');	
 		}
 		else if (line[i] == '$')
 			return (1);
 		i++;
 	}
-	return (0);
+	return(0);
 }
-
 char	*expand_caller(char *line)
 {
-	int		i;
-	int		j;
-	char	*expansion;
-	char 	*temp;
-	
+	int	i;
+	char *expansion;
+	char *expanded_line;
+
 	i = 0;
-	j = 0;
-	while (line[i])
+	expanded_line = ft_strdup(line);
+	while (expanded_line[i])
 	{
-		if (line[i] == '\'')
+		if (expanded_line[i] == '\'' && !in_double_quotes(expanded_line, i)) 
 		{
-			i++;	
-			i += skip_quotes(&line[i], '\'');
+			i++;
+			i += skip_quotes(&expanded_line[i], '\'');	
 		}
-		else if (line[i] == '$')
+		else if (expanded_line[i] == '$')
 		{
-			temp = ft_calloc(sizeof(char), expansion_len(&line[i]) + 1);
-			if (!temp)
-				return (NULL);
-			while (line[i] && !ft_isspace(line[i]))
-				temp[j++] = line[i++];
-			expansion = expand_arg(temp);
+			expansion = get_expansion(&expanded_line[i]); // expansion = dicosta- expanded_line = echo " ' -dicosta lives at $HOME"
+			expanded_line = remove_expasion(expanded_line);
+			if (expansion)
+				expanded_line = add_expansion(expanded_line, expansion, i);
 		}
 		i++;
-	}
-	if (expansion)
-		line = expanded_line(line, expansion);
-	return (line);
-}
-
-
-char	*expanded_line(char *line, char *expansion)
-{
-	int	i;
-	char *expanded_line;
-	
-	i = 0;
-	expanded_line = ft_calloc(sizeof(char), (ft_strlen(line) + ft_strlen(expansion)) + 1);
-	while (line[i])
-	{
-		if (line[i] == '\'')
-		{
-			i++;	
-			i += skip_quotes(&line[i], '\'');
-		}
-		else if (line[i] == '$')
-		{
-			line = remove_expasion(&line[i]);
-			return (i);
-		}	
 	}
 	return (free(line), expanded_line);
 }
 
-int expansion_len(char *line)
+char	*add_expansion(char *line, char *expansion, int i)
 {
-	int	i;
+	int 	j;
+	int		k;
+	int		l;
+	int 	full_len;
+	char	*expanded_line;
 
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == '\'')
-		{
-			i++;	
-			i += skip_quotes(&line[i], '\'');
-		}
-		else if (line[i] == '$')
-		{
-			while (line[i] && (!ft_isspace(line[i]) && line[i] != '='))
-				i++;
-			return (i);
-		}
-		i++;
-	}
-	return (0);
-}
-
-char *remove_expasion(char *line)
-{
-	int	i;
-	int	j;
-	char *new_line;
-
-	i = 0;
 	j = 0;
-	new_line = ft_calloc(sizeof(char), (ft_strlen(line) - expansion_len(line)) + 1);
-	while (line[i])
+	k = 0;
+	l = 0;
+	full_len = ft_strlen(line) + ft_strlen(expansion);
+	expanded_line = ft_calloc(sizeof(char), full_len + 1);
+	if (!expanded_line)
+		return (free(expanded_line), NULL);
+	while (j < full_len)
 	{
-		if (line[i] == '\'')
-			quote_copy(line, new_line, &i, &j);
-		else if (line[i] == '$')
+		if (j == i)
 		{
-			while (line[i] && !ft_isspace(line[i]))
-				i++;
-			i++;
+			while (expansion[k])
+				expanded_line[j++] = expansion[k++];
 		}
-		new_line[j++] = line[i++];
+		expanded_line[j++] = line[l++];
+	}
+	return (free(line), free(expansion), expanded_line);
+}
+
+char	*get_expansion(char *line)
+{
+	int	i;
+	int len;
+	char *arg;
+	char *expansion;
+	
+	i = 0;
+	len = arg_len(line);
+	arg = ft_calloc(sizeof(char), len + 1);
+	if (!arg)
+		return (free(arg), NULL);
+	while (i < len)
+	{
+		arg[i] = line[i];  //arg = $USER;
 		i++;
 	}
-	return (new_line);
+	expansion = expand_arg(arg); //expansion = dicosta-
+	return (expansion);
 }
+
+

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/21 17:03:41 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:07:45 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,12 @@ void	print_banner() {
 
 int parser(char *line)
 {
-	/*if (SIGINT)
-		signal_receiver(SIGINT);
-	if (SIGQUIT)
-		signal_receiver(SIGQUIT);*/
 	if (syntax_check(line) == 0)
 		return (0);
+	if (expand_check(line))
+		line = expand_caller(line);
 	t_token *token;
-
+	
 	token = assign_token(line);
 	while (token)
 	{
@@ -55,9 +53,16 @@ int	main(int ac, char **av, char **ev)
 	init_shell(ev);
 	while(1)
 	{
-		line = readline("minishell>");
+		line = readline("minishell ▸ ");
 		if (parser(line) == 0)
 			ft_printf(1, "");
+		if (!ft_strcmp("exit", line))
+		{
+			free(line);
+			ft_free_split(shell()->env);
+			ft_free_split(shell()->exp);
+			exit(0);
+		}
 		free(line);
 	}
 	return (0);

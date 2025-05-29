@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/21 17:04:44 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:47:10 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 # include <readline/history.h>
 # include <limits.h>
 
+# define NO_COLOR "\033[0m"
+# define RED "\033[1;31m"
 # define TOKEN_LIST "&|;<>,"
 # define SPACE_LIST " \t\n\v\f\r"
 
@@ -43,6 +45,14 @@ typedef enum	s_token_type
 	TRUNCATE,	// >
 	APPEND,		// >>
 }	t_token_type;
+
+typedef struct s_tree
+{
+	t_token_type	type;
+	char 			*value;
+	struct	s_token	*right;
+	struct	s_token *left;
+}	t_tree;
 
 typedef struct s_token
 {
@@ -94,6 +104,7 @@ int 	is_token(char c);
 
 t_token *assign_token(char *line);
 int		get_token_type(char *input);
+t_token	*remove_redir(t_token *token);
 
 // token_aux.c 
 
@@ -103,17 +114,34 @@ int		is_command(char *value);
 
 // syntax_check.c
 
-int	syntax_check(char *line);
-int	check_pipes(char* line);
-int	check_redirection(char *line);
-int check_consecutive(char *line);
-int	check_command(char *line);
+int		syntax_check(char *line);
+int		check_pipes(char* line);
+int		check_redirection(char *line);
+int 	check_consecutive(char *line);
+int		check_command(char *line);
 
 // syntax_aux.c
 
 int	skip_spaces(char *line);
 
-// INIT.C
+// expand.c
+
+char	*expand_arg(char *arg);
+
+// expader_check_aux.c
+
+int		expand_check(char *line);
+int 	in_double_quotes(char *line, int i);
+char 	*remove_expasion(char *line);
+int		arg_len(char *expansion_name);
+
+// expander_check.c
+
+char 	*expand_caller(char *line);
+char	*add_expansion(char *line, char *expansion, int i);
+char	*get_expansion(char *line);
+
+// init.c
 
 void	init_shell(char **ev);
 void	init_env(char **ev);
@@ -122,53 +150,58 @@ void	lvl_upd(void);
 void	exp_lvl(void);
 t_shell	*shell(void);
 
-// COMMANDS.C
+// commands.c
+
 void	echo_cmd(int flag, char *msg);
 void	pwd_cmd(void);
 void	exp_cmd(int flag, char *msg);
 void	unset_cmd(char *msg);
 void	env_cmd(void);
 
-// COMMANDS2.C
+// commands2.c
+
 int	exit_cmd(char *msg, int mult_args);
 void	cd_cmd(char *path);
 void	single_exec(char *msg);
 char	*find_path(char *cmd);
 
-// CMD_UTILS.C
+// cmd_utils.c
+
 char	**exp_set(char *msg);
 char	**env_set(char *msg);
 char	**exp_redef(int var2, char *msg);
 char	**env_redef(int var2, char *msg);
 size_t	exp_len(const char *s);
 
-// CMD_UTILS2.C
+// cmd_utils2.c
+
 void	exp_organize(void);
 void	second_organize(int	var, int var2);
 void	switch_str(int var);
 char **re_write_exp(char *msg);
 char **re_write_env(char *msg);
 
-// CMD_UTILS3.C
+// cmd_utils3.c
+
 char	*set_blank(char *msg);
 char **quoting_set(void);
 char	*exp_strdup(const char *s1);
 int	error_syntax(char *array);
 int	long_check(char *str);
 
-// CMD_UTILS4.C
+// cmd_utils4.c
+
 void	set_old_path(void);
 void old_path_exp(void);
 void set_new_path(void);
 void new_path_exp(void);
 void	mv_home(void);
 
-// CMD_UTILS5.C
+// cmd_utils5.c
+
 void	mv_old(void);
 void	mv_abs(char *path);
 char **hist_manage(char *line, int flag);
 void	redir_input(char *info, char *path);
 
-//EXPAND.C
-char	*expand_arg(char *arg);
 #endif

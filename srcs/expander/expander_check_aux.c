@@ -1,0 +1,76 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander_check_aux.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/23 16:08:26 by dicosta-          #+#    #+#             */
+/*   Updated: 2025/05/23 20:07:04 by dicosta-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../minishell.h"
+
+int in_double_quotes(char *line, int i)
+{
+	int j;
+	int	quote_end;
+	int	quote_start;
+	
+	j = i;
+	quote_end = 0;
+	quote_start = 0;
+	while (line[i] && line[i] != '\"')
+	{
+		i++;
+		if (line[i] == '\"')
+			quote_end = 1;
+	}
+	while (j >= 0 && line[j] != '\"')
+	{
+		j--;
+		if (line[j] == '\"')
+			quote_start = 1;
+	}
+	if (quote_start && quote_end)
+		return (1);
+	return (0);
+}
+
+int	arg_len(char *expansion_name)
+{
+	int	i;
+
+	i = 0;
+	while (expansion_name[i] && !ft_isspace(expansion_name[i]))
+		i++;
+	return (i);
+}
+// have to update function to see arg len and remove 5
+
+char *remove_expasion(char *line)
+{
+	int	i;
+	int	j;
+	char *new_line;
+
+	i = 0;
+	j = 0;
+	new_line = ft_calloc(sizeof(char), (ft_strlen(line) - 5) + 1);
+	if (!new_line)
+		return(free(new_line), NULL);
+	while (line[i])
+	{
+		if (line[i] == '\'')
+			quote_copy(line, new_line, &i, &j);
+		else if (line[i] == '$')
+		{
+			while (line[i] && !ft_isspace(line[i]))
+				i++;
+		}
+		new_line[j++] = line[i++];
+	}
+	return (free(line), new_line);
+}
+
