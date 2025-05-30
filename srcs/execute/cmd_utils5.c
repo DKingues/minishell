@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:03:49 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/05/14 16:21:07 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:01:55 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char **hist_manage(char *line, int flag)
 	{
 		temp[var] = ft_strdup(shell()->hist[var]);
 		if(!ft_strncmp(line, "history", 7))
-			ft_printf(1, "    %d  %s\n", var + 1, temp[var]);
+			ft_printf(1, "%d  %s\n", var + 1, temp[var]);
 		var++;
 	}
 	temp[var] = ft_strdup(line);
@@ -81,6 +81,9 @@ char **hist_manage(char *line, int flag)
 		ft_printf(1, "    %d  %s\n", var + 1, temp[var]);
 	return(ft_free_split(shell()->hist), temp);
 }
+
+
+
 
 /* void	redir_input(char *info, char *path)
 {

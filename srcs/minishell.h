@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/21 17:04:44 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:11:25 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,15 @@ typedef enum	s_token_type
 	TRUNCATE,	// >
 	APPEND,		// >>
 }	t_token_type;
+
+typedef struct s_tree
+{
+	t_token_type	type;
+	char 			*value;
+	struct	s_tree	*right;
+	struct	s_tree *left;
+}	t_tree;
+
 
 typedef struct s_token
 {
