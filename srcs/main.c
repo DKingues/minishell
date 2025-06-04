@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/23 20:07:45 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/04 18:07:23 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,41 @@ void	print_banner() {
 	ft_printf(1, "\033[1;92m                         rmota-ma & dicosta-       \033[0m\n\n");
 }
 
+void	print_tree(t_tree *tree)
+{
+	if (tree == NULL)
+	{
+		ft_printf(1, "NULL\n");
+		return ;
+	}
+	ft_printf(1, "Value: [%s]\t Type: [%d]\n", tree->value, tree->type);	
+	ft_printf(1, "LEFT: ");
+	print_tree(tree->left);
+	ft_printf(1, "RIGHT: ");
+	print_tree(tree->right);
+}
+
+void	free_list(t_token *token)
+{
+	t_token *temp;
+	
+	while (token)
+	{
+		temp = token;
+		token = token->next;
+		free(temp->value);
+		free(temp);
+	}
+}
+
+void	print_tokens(t_token *token)
+{
+	while (token)
+	{
+		ft_printf(1, "Value: [%s]\t Type: [%d]\n", token->value, token->type);	
+		token = token->next;
+	}
+}
 int parser(char *line)
 {
 	if (syntax_check(line) == 0)
@@ -33,13 +68,14 @@ int parser(char *line)
 	if (expand_check(line))
 		line = expand_caller(line);
 	t_token *token;
-	
+	t_tree	*tree;
+
+	tree = NULL;
 	token = assign_token(line);
-	while (token)
-	{
-		ft_printf(1, "VALUE:[%s]\tTYPE: [%d]\n", token->value, token->type);
-		token = token->next;
-	}
+	tree = tokens_to_tree(token, NULL, tree, 0);
+	print_tree(tree);
+	free_list(token);
+	tree_free(tree);
 	return (1);
 }
 

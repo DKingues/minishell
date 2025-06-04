@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 11:57:26 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/28 17:55:19 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/04 17:13:36 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,10 @@ t_token *assign_token(char *line)
 	char 	**tokens;
 	int		i;
 	int		token_type;
-	int		command;
 	
 	token = NULL;
 	tokens = split_tokens(line);
 	i = 0;
-	command = 0;
 	while (tokens[i])
 	{
 		token_type = get_token_type(tokens[i]);
@@ -32,10 +30,6 @@ t_token *assign_token(char *line)
 			token = append_node(token, tokens[++i], token_type);
 		else
 			token = append_node(token, tokens[i], token_type);
-		if (token_type == COMMAND && command == 0)
-			command = 1;
-		if (token_type == PIPE && command == 1)
-			command = 0;
 		i++;
 	}
 	return (token);
@@ -71,10 +65,6 @@ int	get_token_type(char *input)
 	int	i;
 
 	i = 0;
-	if (is_command(input))
-		return (COMMAND);
-	//if (is_flag(input))
-	//	return (FLAG);
 	while (input[i])
 	{
 		if (input[i] == '|')

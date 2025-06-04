@@ -5,21 +5,43 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/28 15:26:56 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/28 20:46:25 by dicosta-         ###   ########.fr       */
+/*   Created: 2025/06/03 14:08:44 by dicosta-          #+#    #+#             */
+/*   Updated: 2025/06/04 17:55:16 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// Direction 1 = Right
-// Direction -1 = Left
-// Direction 0 = Neutral;
-t_tree	*create_branch(t_tree *tree, char *value, int type, int direction)
+
+void set_right_node(t_tree *ast, t_token *token)
+{
+	while (ast)
+	{
+		if (ast->right == NULL)
+		{
+			ast->right = new_node(token->value, token->type);
+			return ;	
+		}
+		ast = ast->right;
+	}
+}
+
+void set_left_node(t_tree *ast, t_token *token)
+{
+	while (ast)
+	{
+		if (ast->left == NULL)
+		{
+			ast->left = new_node(token->value, token->type);
+			return ;	
+		}
+		ast = ast->left;
+	}
+	
+}
+t_tree	*new_node(char *value, int type)
 {
 	t_tree	*new;
-	t_tree	*right_node;
-	t_tree	*left_node;
 	
 	new = ft_calloc(sizeof(t_tree), 1);
 	if (!new)
@@ -28,81 +50,108 @@ t_tree	*create_branch(t_tree *tree, char *value, int type, int direction)
 	new->type = type;
 	new->right = NULL;
 	new->left = NULL;
-	if (!tree)
-		tree = new;
-	if (tree && direction == 1)
-	{
-		right_node = get_right_node(tree);
-		right_node->right = new;
-	}
-	if (tree && direction == -1)
-	{
-		left_node = get_left_node(tree);
-		left_node->left = new;
-	}
-	return (tree);
+	return (new);
 }
 
-t_tree	*get_right_node(t_tree *tree)
+t_tree	*phantom_node(void)
 {
-	t_tree	*temp;
+	t_tree	*new;
 	
-	if (!tree)
+	new = ft_calloc(sizeof(t_tree), 1);
+	if (!new)
 		return (NULL);
-	temp = tree;
-	while (temp->right)
-		temp = temp->right;
-	return (temp);
-}
-t_tree	*get_left_node(t_tree *tree)
-{
-	t_tree	*temp;
-	
-	if (!tree)
-		return (NULL);
-	temp = tree;
-	while (temp->left)
-		temp = temp->left;
-	return (temp);
+	new->value = NULL;
+	new->type = ARG;
+	new->right = NULL;
+	new->left = NULL;
+	return (new);
 }
 
-t_tree	*tree_organizer(t_token	*token)
+t_tree	*tokens_to_tree(t_token *token, t_token *target, t_tree *ast, int depth)
 {
-	t_tree	*tree;
 	t_token	*temp;
 	
-	tree = NULL;
+	if (token == NULL || token == target)
+		return (NULL);
+	temp = find_pipe(token, target);
+	if (temp)
+	{
+		ast = new_node(temp->value, temp->type);
+		ast->right = tokens_to_tree(temp->next, NULL, ast->right, depth + 1);
+		ast->left = tokens_to_tree(token, temp, ast->right, depth + 1);
+	}
+	else
+	{
+		ast = phantom_node();
+		while (!(token == NULL || token == target))
+		{
+			if (token->type != ARG)
+				set_left_node(ast, token);
+			else
+			{
+				if (ast->value == NULL)
+					ast->value = ft_strdup(token->value);
+				else	
+					set_right_node(ast, token);
+			}
+			token = token->next;
+		}
+	}
+	return (ast);
+}
+
+void	tree_free(t_tree *ast)
+{
+	if (!ast)
+		return ;
+	tree_free(ast->left);
+	tree_free(ast->right);
+	if (ast->value)
+		free(ast->value);
+	free(ast);
+}
+
+/*int	add_nodes_to_ast(t_token *token, t_tree **root, int in_pipe)
+{
+	t_token *curr_pipe;
+	t_tree	*ast_node;
 	
-	while (token)
+	curr_pipe = NULL;
+	ast_node = NULL;
+	if (in_pipe == 0)
+		curr_pipe = find_pipe(token);
+	if (curr_pipe && curr_pipe->type == PIPE)
+	{
+		ast_node = new_node(curr_pipe->value, curr_pipe->type);
+		
+	}
+}*/
+t_token *find_pipe(t_token *token, t_token *target)
+{
+	t_token	*temp;
+
+	temp = token;
+	while (temp)
+	{
+		if (temp == target)
+			return (NULL);
+		if (temp->type == PIPE)
+		return (temp);
+		temp = temp->next;
+	}
+	return (NULL);
+}
+
+int pipe_counter(t_token *token)
+{
+	int	pipes;
+
+	pipes = 0;
+	while (token->next)
 	{
 		if (token->type == PIPE)
-		{
-			tree = create_branch(tree, token->value, token->type, 0);
-			temp = get_nodes_before_pipe(token);
-			while (temp && temp->type != PIPE)
-			{
-				if (token->type == READ || token->type == HERE_DOC \
-				|| token->type == TRUNCATE || token->type == APPEND)
-					tree = create_branch(tree, token->value, token->type, -1);
-				temp = temp->next;
-			}
-		}
-		else if (token->type == READ || token->type == HERE_DOC \
-		|| token->type == TRUNCATE || token->type == APPEND)
-		{
-			
-		}
+			pipes++;
 		token = token->next;
 	}
+	return (pipes);
 }
-
-t_token		*get_nodes_before_pipe(t_token *token)
-{
-	while (token->prev != NULL && token->prev->type != PIPE)
-		token = token->prev;
-	return (token);
-}
-
-//PIPE
-//REDIR
-//ARG

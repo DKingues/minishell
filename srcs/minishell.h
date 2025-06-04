@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/28 17:47:10 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/04 18:02:45 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@
 
 typedef enum	s_token_type
 {
-	COMMAND,
-	FLAG,
 	ARG,
 	PIPE,		// |
 	READ,		// <
@@ -50,8 +48,8 @@ typedef struct s_tree
 {
 	t_token_type	type;
 	char 			*value;
-	struct	s_token	*right;
-	struct	s_token *left;
+	struct	s_tree	*right;
+	struct	s_tree *left;
 }	t_tree;
 
 typedef struct s_token
@@ -71,11 +69,20 @@ typedef struct s_shell
 }				t_shell;
 
 
-// PARSE.C
+// binary_tree.c
+
+t_tree	*tokens_to_tree(t_token *token, t_token *target, t_tree *ast, int depth);
+t_token *find_pipe(t_token *token, t_token *target);
+void	set_left_node(t_tree *ast, t_token *token);
+void 	set_right_node(t_tree *ast, t_token *token);
+t_tree	*new_node(char *value, int type);
+void	tree_free(t_tree *ast);
+
+// parse.C
 
 int	parsing(char *line);
 
-// Signals.c
+// signals.c
 
 void	ignore_signal(void);
 
@@ -128,15 +135,15 @@ int	skip_spaces(char *line);
 
 char	*expand_arg(char *arg);
 
-// expader_check_aux.c
+// expander_check_aux.c
 
-int		expand_check(char *line);
 int 	in_double_quotes(char *line, int i);
 char 	*remove_expasion(char *line);
 int		arg_len(char *expansion_name);
 
 // expander_check.c
 
+int		expand_check(char *line);
 char 	*expand_caller(char *line);
 char	*add_expansion(char *line, char *expansion, int i);
 char	*get_expansion(char *line);

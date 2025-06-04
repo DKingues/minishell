@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+         #
+#    By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/05/21 17:02:49 by rmota-ma         ###   ########.fr        #
+#    Updated: 2025/06/04 15:59:58 by dicosta-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,13 +28,13 @@ SRCS = main.c
 
 LEXER = init.c token.c custom_split.c custom_split_aux.c token_aux.c format_line.c
 
-PARSER = parse.c syntax_aux.c syntax_check.c
+PARSER = parse.c syntax_aux.c syntax_check.c binary_tree.c
 
 EXECUTER = commands.c commands2.c cmd_utils.c cmd_utils2.c cmd_utils3.c cmd_utils4.c cmd_utils5.c
 
 SIGNALS = signals.c
 
-EXPANDER = expand.c
+EXPANDER = expand.c expander_check.c expander_check_aux.c
 
 SRCS_DIR = srcs
 
