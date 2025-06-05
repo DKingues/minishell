@@ -3,14 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 11:57:26 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/04 17:13:36 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/05 20:53:01 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+t_token *type_redef(t_token *token)
+{
+	int	check;
+
+	check = 0;
+	while(1)
+	{
+		if (token->type == PIPE)
+			check = 0;
+		if (token->type == ARG && check == 0)
+		{
+			token->type = COMMAND;
+			check = 1;
+		}
+		if(!token->next)
+			break ;
+		token = token->next;
+	}
+	while(token->prev)
+		token = token->prev;
+	return(token);
+}
 
 t_token *assign_token(char *line)
 {
@@ -32,6 +55,7 @@ t_token *assign_token(char *line)
 			token = append_node(token, tokens[i], token_type);
 		i++;
 	}
+	token = type_redef(token);
 	return (token);
 }
 /*t_token	*remove_redir(t_token *token)

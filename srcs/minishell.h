@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/04 18:02:45 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/05 20:15:20 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 typedef enum	s_token_type
 {
 	ARG,
+	COMMAND,
 	PIPE,		// |
 	READ,		// <
 	HERE_DOC, 	// <<
@@ -63,14 +64,16 @@ typedef struct s_token
 typedef struct s_shell
 {
 	int			exit;
+	int			pipe_count;
 	char		**env;
 	char		**exp;
 	char		**hist;
+	t_tree		*tree;
 }				t_shell;
 
-
+void	tree_executer(void);
 // binary_tree.c
-
+int pipe_counter(t_token *token);
 t_tree	*tokens_to_tree(t_token *token, t_token *target, t_tree *ast, int depth);
 t_token *find_pipe(t_token *token, t_token *target);
 void	set_left_node(t_tree *ast, t_token *token);

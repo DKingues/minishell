@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   binary_tree.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:08:44 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/04 17:55:16 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/05 20:04:02 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,5 +153,6 @@ int pipe_counter(t_token *token)
 			pipes++;
 		token = token->next;
 	}
+	shell()->pipe_count = pipes;
 	return (pipes);
 }
