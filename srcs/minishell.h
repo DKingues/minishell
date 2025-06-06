@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/05 20:15:20 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/06 17:38:36 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int 	is_token(char c);
 // token.c
 
 t_token *assign_token(char *line);
-int		get_token_type(char *input);
+int	get_token_type(char *input);
 t_token	*remove_redir(t_token *token);
 
 // token_aux.c 
@@ -212,6 +212,13 @@ void	mv_home(void);
 void	mv_old(void);
 void	mv_abs(char *path);
 char **hist_manage(char *line, int flag);
-void	redir_input(char *info, char *path);
+int	redir_input(t_tree	*redir);
 
+
+//tree.c
+void	execute(t_tree	*cmd);
+char	**args_join(t_tree	*cmd);
+void	tree_executer(void);
+int	waitpids(int *pids, int var);
+void	close_fds(void);
 #endif

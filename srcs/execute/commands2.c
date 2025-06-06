@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:29:30 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/05/20 15:52:58 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/06 15:32:36 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,26 +43,6 @@ void	cd_cmd(char *path)
 		mv_abs(path);
 	else
 		printf("Error3");
-}
-
-void	single_exec(char *msg)
-{
-	int	pid;
-	char **args;
-
-	args = ft_split(msg, ' ');
-	msg = find_path(args[0]);
-	if(!msg)
-		perror("");
-	pid = fork();
-	if (pid == 0)
-	{
-		if(execve(msg, args, shell()->env) == -1)
-			perror("");
-	}
-	else
-		waitpid(pid, &shell()->exit, 0);
-	shell()->exit /= 256;
 }
 
 char	*find_path(char *cmd)

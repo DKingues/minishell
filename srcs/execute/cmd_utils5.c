@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:03:49 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/05/14 16:21:07 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/06 15:39:39 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,31 +82,3 @@ char **hist_manage(char *line, int flag)
 	return(ft_free_split(shell()->hist), temp);
 }
 
-/* void	redir_input(char *info, char *path)
-{
-	int	fd;
-	
-	if(info[0] == '<')
-	{
-		if(info[1] == '<')
-			here_doc();
-		else
-		{
-			fd = open(path, O_RDONLY);
-			dup2(fd, 0);
-		}
-	}
-	else
-	{
-		if (info[1] == '>')
-		{
-			fd = open(path, O_RDONLY | O_CREAT | O_APPEND, 0644);
-			dup2(fd, 1);
-		}
-		else
-		{
-			fd = open(path, O_RDONLY | O_CREAT | O_TRUNC, 0644);
-			dup2(fd, 1);
-		}
-	}
-} */

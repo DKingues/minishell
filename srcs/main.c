@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/05 20:54:06 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/06 15:29:46 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,16 @@ int parser(char *line)
 
 	tree = NULL;
 	token = assign_token(line);
+	/* printf("TOKEN\n");
+	print_tokens(token);
+	printf("\n\n"); */
 	if(token)
 	{
 		pipe_counter(token);
 		shell()->tree = tokens_to_tree(token, NULL, tree, 0);
 	}
-	// print_tree(tree);
+	/* printf("TREE\n");
+	print_tree(shell()->tree); */
 	free_list(token);
 	// tree_free(tree);
 	return (1);

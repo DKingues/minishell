@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:08:44 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/05 20:04:02 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/06 15:21:09 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_tree	*phantom_node(void)
 	if (!new)
 		return (NULL);
 	new->value = NULL;
-	new->type = ARG;
+	new->type = COMMAND;
 	new->right = NULL;
 	new->left = NULL;
 	return (new);
