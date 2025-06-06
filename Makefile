@@ -6,7 +6,7 @@
 #    By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/06/05 20:15:18 by rmota-ma         ###   ########.fr        #
+#    Updated: 2025/06/06 18:16:24 by rmota-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,9 +16,9 @@ NAME = minishell
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
-EXTRAFLAGS = -lreadline -lncurses -g
+EXTRAFLAGS = -lreadline -lncurses
 
 # Sources and objects
 

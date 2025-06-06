@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/06 15:29:46 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:51:56 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,10 @@ int	main(int ac, char **av, char **ev)
 		if (parser(line) == 0)
 			ft_printf(1, "");
 		if(shell()->tree)
+		{
 			tree_executer();
-		tree_free(shell()->tree);
+			tree_free(shell()->tree);
+		}
 		if (!ft_strcmp("exit", line))
 		{
 			free(line);

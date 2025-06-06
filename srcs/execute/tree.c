@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:41:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/06/06 17:42:38 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:53:25 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,19 +78,21 @@ int	redir_input(t_tree	*redir)
 		dup2(fd, 1);
 		return (0);
 	}
-	return(1);
+	else
+		return(1);
 }
 
 int	waitpids(int *pids, int var)
 {
 	int	code;
+	int	i;
 	
 	code = 0;
-	var--;
-	while(var >= 0)
+	i = 0;
+	while(i < var)
 	{
-		waitpid(pids[var], &code, 0);
-		var--;
+		waitpid(pids[i], &code, 0);
+		i++;
 	}
 	free(pids);
 	return (code / 256);
@@ -118,8 +120,12 @@ void	tree_executer(void)
 	
 	check = 0;
 	pids = ft_calloc(shell()->pipe_count + 2, sizeof(int));
+	if(!pids)
+		return ;
 	while(shell()->tree)
 	{
+		if(shell()->tree->type == ARG)
+			break ;
 		if(shell()->tree->type == PIPE)
 		{
 			if (pipe(fd) == -1)
@@ -130,29 +136,31 @@ void	tree_executer(void)
 		pids[var] = fork();
 		if(!pids[var])
 		{
-			if(check == 1)
+			if (check == 1)
 			{
 				dup2(fd[1], 1);
-				close(fd[0]);
-			}
-			while(temp)
-			{
-				if(temp->type == COMMAND)
-					execute(temp);
-				else if(temp->type == READ || temp->type == HERE_DOC || temp->type == TRUNCATE || temp->type == APPEND)
-					redir_input(temp);
-				temp = temp->left;
 			}
 			if(shell()->tree->type == READ || shell()->tree->type == HERE_DOC || shell()->tree->type == TRUNCATE || shell()->tree->type == APPEND)
 				redir_input(shell()->tree);
-			else if(shell()->tree->type == COMMAND && shell()->tree->value)
+			while(temp)
+			{
+				if(temp->type == READ || temp->type == HERE_DOC || temp->type == TRUNCATE || temp->type == APPEND)
+					redir_input(temp);
+				temp = temp->left;
+			}
+			if(shell()->tree->left->type == COMMAND && shell()->tree->left->value)
 				execute(shell()->tree);
+			if(shell()->tree->type == COMMAND && shell()->tree->value)
+				execute(shell()->tree);
+			exit(0);
 		}
-		else if (check == 1)
+		else
 		{
-			dup2(fd[0], 0);
-			close(fd[1]);
-			close (0);
+			if (check == 1)
+			{
+				close(fd[1]);
+				dup2(fd[0], 0);
+			}
 		}
 		var++;
 		check = 0;
