@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/06 17:38:36 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/06 20:04:56 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ char	*remove_extra_spaces(char *line, int i, int j);
 char    *format_line(char *line);
 int		count_special(char *line);
 int 	is_token(char c);
+int 	cnt_nospc(char *line);
 
 // token.c
 

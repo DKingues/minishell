@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:49:28 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/20 17:25:18 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/06 20:07:20 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ char	*create_spaces(char *line, int i, int j)
 {
 	char *new_line;
 
-	new_line = ft_calloc(sizeof(char), ft_strlen(line) + (count_quotes(line) + 1));
+	new_line = ft_calloc(sizeof(char), (ft_strlen(line) + cnt_nospc(line)) + 1);
 	if (!new_line)
 		return (free(new_line), NULL);
 	while(line[i])
@@ -114,7 +114,9 @@ char	*create_spaces(char *line, int i, int j)
 			quote_copy(line, new_line, &i, &j);
 		else if (is_token(line[i]) && (line[i + 1] != ' ' && line[i + 1] != '\0'))
 		{
-			if ((line[i] == '>' && line[i + 1] == '>') || (line[i] == '<' && line[i + 1] == '<'))
+			if (line[i - 1] != ' ')
+				new_line[j++] = ' ';
+			else if ((line[i] == '>' && line[i + 1] == '>') || (line[i] == '<' && line[i + 1] == '<'))
 				new_line[j++] = line[i++];
 			new_line[j++] = line[i++];
 			new_line[j++] = ' ';
@@ -138,4 +140,25 @@ char    *format_line(char *line)
 		return (NULL);
 	line = create_spaces(temp, i, j);
 	return (free(temp),line);
+}
+
+int cnt_nospc(char *line)
+{
+	int	i;
+	int	counter;
+	
+	i = 0;
+	counter = 0;
+	while (line[i])
+	{
+		if (is_token(line[i]))
+		{
+			if (line[i - 1] != ' ')
+				counter++;
+			if (line[i + 1 != ' '])
+				counter++;
+		}
+		i++;
+	}
+	return (counter);
 }

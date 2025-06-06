@@ -3,27 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/06 15:29:46 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/06 20:07:37 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 void	print_banner() {
-	ft_printf(1, "\033[1;95m __________________________________________________________________\n");
-	ft_printf(1, "|  \033[1;96m __  __ _____ _   _ _____  _____  _    _ ______ _      _        \033[1;35m|\n");
-	ft_printf(1, "|  \033[1;96m|  \\/  |_   _| \\ | |_   _|/ ____\\| |  | |  ____| |    | |       \033[1;35m|\n");
-	ft_printf(1, "|  \033[1;96m| \\  / | | | |  \\| | | | | |____ | |__| | |__  | |    | |       \033[1;35m|\n");
-	ft_printf(1, "|  \033[1;96m| |\\/| | | | |   ` | | |  \\____ \\|  __  |  __| | |    | |       \033[1;35m|\n");
-	ft_printf(1, "|  \033[1;96m| |  | |_| |_| |\\  |_| |_ _____| | |  | | |____| |____| |____   \033[1;35m|\n");
-	ft_printf(1, "|  \033[1;96m|_|  |_|_____|_| \\_|_____|\\_____/|_|  |_|______|______|______|  \033[1;35m|\n");
-	ft_printf(1, "\033[1;95m|__________________________________________________________________|\n\n");
-	ft_printf(1, "\033[1;95m                          M I N I S H E L L\n\n");
-	ft_printf(1, "\033[1;95m                                 b y       \n\n");
-	ft_printf(1, "\033[1;92m                         rmota-ma & dicosta-       \033[0m\n\n");
+	ft_printf(1, "\033[1;95m ____________________________________________________________\n");
+	ft_printf(1, "|  \033[1;96m _    _  _____  _____  _    _ ______ _      _    __   __  \033[1;35m|\n");
+	ft_printf(1, "|  \033[1;96m| |  | ||_   _|/ ____\\| |  | |  ____| |    | |   \\ \\ / /  \033[1;35m|\n");
+	ft_printf(1, "|  \033[1;96m| |  | |  | | | |____ | |__| | |__  | |    | |    \\ V /   \033[1;35m|\n");
+	ft_printf(1, "|  \033[1;96m| |/\\| |  | |  \\____ \\|  __  |  __| | |    | |     \\ /    \033[1;35m|\n");
+	ft_printf(1, "|  \033[1;96m|  /\\  |  | |  _____| | |  | | |____| |____| |____ | |    \033[1;35m|\n");
+	ft_printf(1, "|  \033[1;96m|_/  \\_|  |_|  \\_____/|_|  |_|______|______|______||_|    \033[1;35m|\n");
+	ft_printf(1, "\033[1;95m|____________________________________________________________|\n\n");
+	ft_printf(1, "\033[1;95m                       M I N I S H E L L\n\n");
+	ft_printf(1, "\033[1;95m                              b y       \n\n");
+	ft_printf(1, "\033[1;92m                      rmota-ma & dicosta-       \033[0m\n\n");
 }
 
 void	print_tree(t_tree *tree)
@@ -72,18 +72,18 @@ int parser(char *line)
 
 	tree = NULL;
 	token = assign_token(line);
-	/* printf("TOKEN\n");
+	printf("TOKEN\n");
 	print_tokens(token);
-	printf("\n\n"); */
+	printf("\n\n");
 	if(token)
 	{
 		pipe_counter(token);
 		shell()->tree = tokens_to_tree(token, NULL, tree, 0);
 	}
-	/* printf("TREE\n");
-	print_tree(shell()->tree); */
+	printf("TREE\n");
+	print_tree(shell()->tree);
 	free_list(token);
-	// tree_free(tree);
+	tree_free(tree);
 	return (1);
 }
 
@@ -100,16 +100,16 @@ int	main(int ac, char **av, char **ev)
 		line = readline("minishell ▸ ");
 		if (parser(line) == 0)
 			ft_printf(1, "");
-		if(shell()->tree)
-			tree_executer();
-		tree_free(shell()->tree);
-		if (!ft_strcmp("exit", line))
-		{
-			free(line);
-			ft_free_split(shell()->env);
-			ft_free_split(shell()->exp);
-			exit(0);
-		}
+		// if(shell()->tree)
+		// 	tree_executer();
+		// tree_free(shell()->tree);
+		// if (!ft_strcmp("exit", line))
+		// {
+		// 	free(line);
+		// 	ft_free_split(shell()->env);
+		// 	ft_free_split(shell()->exp);
+		// 	exit(0);
+		// }
 		free(line);
 	}
 	return (0);
