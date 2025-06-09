@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:49:28 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/06 20:07:20 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:27:13 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	quote_copy(char* line, char *new_line, int *i, int *j)
 		new_line[(*j)++] = line[(*i)++];
 	if (!ft_isspace(line[*i]))
 	{
-		while (line[*i] && (line[*i] != '\"' && line[*i] != '\'') && !ft_isspace(line[*i]))
+		while (line[*i] && (line[*i] != '\"' && line[*i] != '\'') && (!ft_isspace(line[*i]) \
+		&& !is_token(line[*i])))
 			new_line[(*j)++] = line[(*i)++];
 		if (line[*i] == '\"' || line[*i] == '\'')
 			quote_copy(line, new_line, i, j);
@@ -112,11 +113,11 @@ char	*create_spaces(char *line, int i, int j)
 	{
 		if (line[i] == '\"' || line[i] == '\'')
 			quote_copy(line, new_line, &i, &j);
-		else if (is_token(line[i]) && (line[i + 1] != ' ' && line[i + 1] != '\0'))
+		else if ((is_token(line[i]) && line[i + 1] != '\0'))
 		{
 			if (line[i - 1] != ' ')
 				new_line[j++] = ' ';
-			else if ((line[i] == '>' && line[i + 1] == '>') || (line[i] == '<' && line[i + 1] == '<'))
+			if ((line[i] == '>' && line[i + 1] == '>') || (line[i] == '<' && line[i + 1] == '<'))
 				new_line[j++] = line[i++];
 			new_line[j++] = line[i++];
 			new_line[j++] = ' ';

@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 20:02:59 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/04 17:43:24 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/09 12:01:08 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_token	*append_node(t_token *tokens, char *token_value, int token_type)
 	node = ft_calloc(sizeof(t_token), 1);
 	node->next = NULL;
 	node->prev = NULL;
-	node->value = token_value;
+	node->value = ft_strdup(token_value);
 	node->type = token_type;
 	if (!tokens)
 		tokens = node;

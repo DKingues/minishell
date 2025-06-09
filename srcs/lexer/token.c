@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 11:57:26 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/06 15:22:01 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:40:41 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ t_token *assign_token(char *line)
 	while (tokens[i])
 	{
 		token_type = get_token_type(tokens[i]);
-		if (token_type == READ || token_type == HERE_DOC \
-		|| token_type == TRUNCATE || token_type == APPEND)
+		if ((token_type == READ || token_type == HERE_DOC \
+		|| token_type == TRUNCATE || token_type == APPEND) && get_token_type(tokens[i + 1]) != PIPE)
 			token = append_node(token, tokens[++i], token_type);
 		else
 			token = append_node(token, tokens[i], token_type);
 		i++;
 	}
+	ft_free_split(tokens);
 	return (token);
 }
 /*t_token	*remove_redir(t_token *token)
