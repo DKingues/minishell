@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/06 20:04:56 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/13 14:03:36 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,11 @@ typedef struct s_shell
 	char		**hist;
 	t_tree		*tree;
 }				t_shell;
+
+typedef struct s_temp_sig_struct
+{
+	bool	root;
+} t_temp_sig_struct;
 
 void	tree_executer(void);
 // binary_tree.c
