@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 14:57:02 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/05/20 15:45:32 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/13 14:21:29 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	echo_cmd(int flag, char *msg)
 void	pwd_cmd(void)
 {
 	char path[1000];
-	printf("%s\n", getcwd(path, sizeof(path)));
+	ft_printf(1, "%s\n", getcwd(path, sizeof(path)));
 }
 
 void	exp_cmd(int flag, char *msg)
@@ -75,15 +75,17 @@ void	unset_cmd(char *msg)
 	}
 }
 
-void	env_cmd(void)
+void	env_cmd(t_tree *tree)
 {
 	int	var;
 
 	var = 0;
+	if(tree->right && tree->right->value && tree->right->type == ARG)
+		ft_printf(2,"env: \'%s\': No such file or directory", tree->right->value);
 	while(shell()->env[var])
 	{
 		if (shell()->env[var][0])
-			printf("%s\n", shell()->env[var]);
+			ft_printf(1, "%s\n", shell()->env[var]);
 		var++;
 	}
 }
