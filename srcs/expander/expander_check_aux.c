@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 16:08:26 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/23 20:07:04 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:45:46 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	arg_len(char *expansion_name)
 }
 // have to update function to see arg len and remove 5
 
-char *remove_expasion(char *line)
+char *remove_expansion(char *line)
 {
 	int	i;
 	int	j;
@@ -57,9 +57,9 @@ char *remove_expasion(char *line)
 
 	i = 0;
 	j = 0;
-	new_line = ft_calloc(sizeof(char), (ft_strlen(line) - 5) + 1);
+	new_line = ft_calloc(sizeof(char), (ft_strlen(line) - expansion_len(line)) + 1);
 	if (!new_line)
-		return(free(new_line), NULL);
+		return(NULL);
 	while (line[i])
 	{
 		if (line[i] == '\'')
@@ -69,7 +69,8 @@ char *remove_expasion(char *line)
 			while (line[i] && !ft_isspace(line[i]))
 				i++;
 		}
-		new_line[j++] = line[i++];
+		else
+			new_line[j++] = line[i++];
 	}
 	return (free(line), new_line);
 }

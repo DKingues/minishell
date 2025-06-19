@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 14:47:46 by scorpot           #+#    #+#             */
-/*   Updated: 2025/05/14 16:20:09 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:17:51 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*expand_arg(char *arg)
 
 	var = 0;
 	if (arg[1] == '?' && arg[2] == '\0')
-		return(ft_itoa(shell()->exit));
+		return(free(arg), ft_itoa(shell()->exit));
 	while(shell()->env[var])
 	{
 		len = exp_len(shell()->env[var]);
@@ -29,15 +29,18 @@ char	*expand_arg(char *arg)
 			if (arg[len] && !ft_isalnum(arg[len + 1]))
 			{
 				temp = ft_strdup(shell()->env[var] + len + 1);
-				arg = ft_strjoin(temp, arg + len + 1);
-				return(arg);
+				temp = ft_strjoin(temp, arg + len + 1);
+				return(free(arg), temp);
 			}
 			else if (arg[len] && ft_isalnum(arg[len + 1]))
 				len++;
 			else
-				return(shell()->env[var] + len + 1);
+			{
+				temp = ft_strdup(shell()->env[var] + len + 1);				
+				return(free(arg), temp);
+			}
 		}
 		var++;
 	}
-	return(NULL);
+	return(free(arg), NULL);
 }

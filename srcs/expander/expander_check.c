@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:44:06 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/23 20:07:10 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:10:16 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,30 @@ char	*expand_caller(char *line)
 		else if (expanded_line[i] == '$')
 		{
 			expansion = get_expansion(&expanded_line[i]); // expansion = dicosta- expanded_line = echo " ' -dicosta lives at $HOME"
-			expanded_line = remove_expasion(expanded_line);
+			expanded_line = remove_expansion(expanded_line);
 			if (expansion)
 				expanded_line = add_expansion(expanded_line, expansion, i);
 		}
 		i++;
 	}
-	return (free(line), expanded_line);
+	return (expanded_line);
+}
+
+int	expansion_len(char *line)
+{
+	int	i;
+	int	j;
+	
+	j = 0;
+	i = 0;
+	while (line[i] && line[i] != '$')
+		i++;
+	while (line[i] && (ft_isalnum(line[i])))
+	{
+		j++;
+		i++;
+	}
+	return (j);
 }
 
 char	*add_expansion(char *line, char *expansion, int i)
@@ -102,10 +119,10 @@ char	*get_expansion(char *line)
 		return (free(arg), NULL);
 	while (i < len)
 	{
-		arg[i] = line[i];  //arg = $USER;
+		arg[i] = line[i];
 		i++;
 	}
-	expansion = expand_arg(arg); //expansion = dicosta-
+	expansion = expand_arg(arg);
 	return (expansion);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/16 16:33:35 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:03:54 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,9 @@ typedef struct s_temp_sig_struct
 void	manage_here_doc(void);
 void    nptree_executer(void);
 void	tree_executer(void);
+
 // binary_tree.c
+
 int pipe_counter(t_token *token);
 t_tree	*tokens_to_tree(t_token *token, t_token *target, t_tree *ast, int depth);
 t_token *find_pipe(t_token *token, t_token *target);
@@ -151,8 +153,9 @@ char	*expand_arg(char *arg);
 // expander_check_aux.c
 
 int 	in_double_quotes(char *line, int i);
-char 	*remove_expasion(char *line);
+char 	*remove_expansion(char *line);
 int		arg_len(char *expansion_name);
+int		expansion_len(char *line);
 
 // expander_check.c
 

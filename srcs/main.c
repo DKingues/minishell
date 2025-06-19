@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/19 16:17:23 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:43:23 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,25 @@ void	print_tokens(t_token *token)
 }
 int parser(char *line)
 {
+	char *str;
+	str = NULL;
 	if (syntax_check(line) == 0)
 		return (0);
 	if (expand_check(line))
-		line = expand_caller(line);
+		str = expand_caller(line);
 	t_token *token;
 	t_tree	*tree;
 
 	tree = NULL;
-	token = assign_token(line);
+	if (str)
+	{
+		token = assign_token(str);
+		free(str);
+	}
+	else
+	{
+		token = assign_token(line);
+	}
 	/* printf("TOKEN\n");
 	print_tokens(token);
 	printf("\n\n"); */
