@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:41:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/06/13 16:30:35 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:14:15 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int	is_builtin(char *cmd)
 				|| !ft_strncmp(cmd, "unset", ft_strlen(cmd))
 					|| !ft_strncmp(cmd, "pwd", ft_strlen(cmd))
 						|| !ft_strncmp(cmd, "env", ft_strlen(cmd))
-							|| !ft_strncmp(cmd, "cd", ft_strlen(cmd)))
+							|| !ft_strncmp(cmd, "cd", ft_strlen(cmd))
+								|| !ft_strncmp(cmd, "history", ft_strlen(cmd)))
 		return (1);
 	return (0);
 }
@@ -56,10 +57,10 @@ void	builtin_exec(t_tree *tree)
 	flag = 0;
 	temp = tree;
 
-	if(!ft_strncmp(temp->value, "export", ft_strlen(temp->value)))
+	if(!ft_strncmp(temp->value, "export", ft_strlen(temp->value) + 1))
 	{
 		temp = temp->right;
-		if(!temp->value)
+		if(!temp || !temp->value)
 			exp_cmd(0, NULL);
 		while(temp)
 		{
@@ -67,29 +68,34 @@ void	builtin_exec(t_tree *tree)
 			temp = temp->right;	
 		}
 	}
-	else if(!ft_strncmp(temp->value, "echo", ft_strlen(temp->value)))
+	else if(!ft_strncmp(temp->value, "echo", ft_strlen(temp->value) + 1))
 	{
 		temp = temp->right;
-		while (temp->value[0] == '-')
+		if(temp && temp->value)
 		{
-			flag = 1;
+			while (temp->value[0] == '-')
+			{
+				flag = 1;
+				temp = temp->right;
+			}
+			str = temp->value;
 			temp = temp->right;
+			while(temp)
+			{
+				str = ft_strjoin(str, " ");
+				str = ft_strjoin(str, temp->value);
+				temp = temp->right;
+			}
+			echo_cmd(flag, str);
 		}
-		str = temp->value;
-		temp = temp->right;
-		while(temp)
-		{
-			str = ft_strjoin(str, " ");
-			str = ft_strjoin(str, temp->value);
-			temp = temp->right;
-		}
-		echo_cmd(flag, str);
 	}
-	else if(!ft_strncmp(temp->value, "exit", ft_strlen(temp->value)))
+	else if(!ft_strncmp(temp->value, "exit", ft_strlen(temp->value) + 1))
 	{
+		ft_free_split(shell()->env);
+		ft_free_split(shell()->exp);
 		exit(0);
 	}
-	else if(!ft_strncmp(temp->value, "unset", ft_strlen(temp->value)))
+	else if(!ft_strncmp(temp->value, "unset", ft_strlen(temp->value) + 1))
 	{
 		temp = temp->right;
 		while(temp)
@@ -98,22 +104,64 @@ void	builtin_exec(t_tree *tree)
 			temp = temp->right;
 		}
 	}
-	else if(!ft_strncmp(temp->value, "pwd", ft_strlen(temp->value)))
+	else if(!ft_strncmp(temp->value, "pwd", ft_strlen(temp->value) + 1))
 		pwd_cmd();
-	else if(!ft_strncmp(temp->value, "env", ft_strlen(temp->value)))
+	else if(!ft_strncmp(temp->value, "env", ft_strlen(temp->value) + 1))
 		env_cmd(temp);
-	else if(!ft_strncmp(temp->value, "cd", ft_strlen(temp->value)))
+	else if(!ft_strncmp(temp->value, "cd", ft_strlen(temp->value) + 1))
 	{
 		temp = temp->right;
-		if(temp->right->value)
+		if(temp->right && temp->right->value)
 		{
 			ft_printf(2, "cd: too many arguments");
-			exit(0);
+			return ;
 		}
 		cd_cmd(temp->value);
 	}
+	else if(!ft_strncmp(temp->value, "history", ft_strlen(temp->value) + 1))
+	{
+		temp = temp->right;
+		if(!temp || !temp->value)
+		{
+			while(shell()->hist[flag])
+			{
+				ft_printf(1, "    %d  %s\n", flag + 1, shell()->hist[flag]);
+				flag++;
+			}
+			return ;
+		}
+		else if (temp->value[0] == '-')
+			shell()->hist = hist_manage("ola", 1);
+		else
+		{
+			while(temp->value[flag])
+			{
+				if(!ft_isdigit(temp->value[flag]))
+				{
+					ft_printf(2, "bash: history: %s: numeric argument required\n", temp->value);
+					return ;
+				}
+				flag++;
+			}
+			flag = ft_atoi(temp->value);
+			int	var = 0;
+			while(shell()->hist[var])
+				var++;
+			while(flag > 0)
+			{
+				var--;
+				flag--;
+			}
+			if(var < 0)
+				var = 0;
+			while(shell()->hist[var])
+			{
+				ft_printf(1, "    %d  %s\n", var + 1, shell()->hist[var]);
+				var++;
+			}
+		}
+	}
 	close_fds();
-	exit(0);
 }
 
 void    execute(t_tree  *cmd)
@@ -122,7 +170,10 @@ void    execute(t_tree  *cmd)
 	char **args;
 
 	if (is_builtin(cmd->value))
+	{
 		builtin_exec(cmd);
+		return ;
+	}
 	path = find_path(cmd->value);
 	if(!path)
 		perror("EXEC1: ");
@@ -301,6 +352,13 @@ void    tree_executer(void)
 		}
 		else
 		{
+			temp = shell()->tree;
+			while(temp)
+			{
+				if(temp->type == HERE_DOC)
+					shell()->count++;
+				temp = temp->left;
+			}
 			if(check == 1)
 				dup2(fd[0], 0); //printf("DUPING FD[0]\n");
 		}
@@ -308,6 +366,8 @@ void    tree_executer(void)
 		var++;
 		shell()->tree = shell()->tree->right;
 	}
+	if(shell()->docs)
+		free(shell()->docs);
 	close_fds();
 	exit(waitpids(pids, var));
 }

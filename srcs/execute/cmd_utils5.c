@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils5.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:03:49 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/06/06 15:39:39 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/19 14:56:09 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,9 @@ char **hist_manage(char *line, int flag)
 	while(shell()->hist[var])
 	{
 		temp[var] = ft_strdup(shell()->hist[var]);
-		if(!ft_strncmp(line, "history", 7))
-			ft_printf(1, "    %d  %s\n", var + 1, temp[var]);
 		var++;
 	}
 	temp[var] = ft_strdup(line);
-	if(!ft_strncmp(line, "history", 7))
-		ft_printf(1, "    %d  %s\n", var + 1, temp[var]);
 	return(ft_free_split(shell()->hist), temp);
 }
 

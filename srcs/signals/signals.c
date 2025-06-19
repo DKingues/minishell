@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:42:01 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/13 15:10:25 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/16 15:12:13 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	choose_signal(t_temp_sig_struct level)
 	{
 		sa.sa_handler = SIG_DFL;
 		sa.sa_flags = 0;
-		if (sigemptyset(&sa.sa_mask) == -1);
+		if (sigemptyset(&sa.sa_mask) == -1)
 			return ;
 		sigaction(SIGINT, &sa, NULL);
 		sigaction(SIGQUIT, &sa, NULL);

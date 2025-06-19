@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/13 14:03:36 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/16 16:33:35 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ typedef struct s_token
 
 typedef struct s_shell
 {
+	int			count;
+	int			*docs;
 	int			exit;
 	int			pipe_count;
 	char		**env;
@@ -76,6 +78,8 @@ typedef struct s_temp_sig_struct
 	bool	root;
 } t_temp_sig_struct;
 
+void	manage_here_doc(void);
+void    nptree_executer(void);
 void	tree_executer(void);
 // binary_tree.c
 int pipe_counter(t_token *token);
@@ -172,7 +176,7 @@ void	echo_cmd(int flag, char *msg);
 void	pwd_cmd(void);
 void	exp_cmd(int flag, char *msg);
 void	unset_cmd(char *msg);
-void	env_cmd(void);
+void	env_cmd(t_tree *tree);
 
 // commands2.c
 
