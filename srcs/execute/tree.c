@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:41:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/06/19 16:14:15 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/20 18:52:48 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,12 +176,22 @@ void    execute(t_tree  *cmd)
 	}
 	path = find_path(cmd->value);
 	if(!path)
+	{
 		perror("EXEC1: ");
+		return ;
+	}
 	args = args_join(cmd);
+	if(shell()->hist)
+		ft_free_split(shell()->hist);
+	if(shell()->exp)
+		ft_free_split(shell()->exp);
+	if(shell()->docs)
+		free(shell()->docs);
 	close_fds();
 	if(execve(path, args, shell()->env) == -1)
 		perror("EXEC2: ");
-	exit(0);
+	ft_free_split(args);
+	free(path);
 }
 
 int redir_input(t_tree  *redir)
@@ -348,6 +358,9 @@ void    tree_executer(void)
 				execute(shell()->tree); //printf("SELF EXECUTING\n");
 			if(shell()->tree->left->type == COMMAND && shell()->tree->left->value)
 				execute(shell()->tree->left); //printf("LEFT EXECUTING\n");
+			if(shell()->env)
+				ft_free_split(shell()->env);
+			close_fds();
 			exit(0);
 		}
 		else
@@ -380,7 +393,7 @@ void    nptree_executer(void)
 
 	shell()->count = 0;
 	temp = shell()->tree->left;
-	if(shell()->tree->type == COMMAND && is_builtin(shell()->tree->value))
+	if(shell()->tree && shell()->tree->value && shell()->tree->type == COMMAND && is_builtin(shell()->tree->value))
 	{
 		while(temp)
 		{
@@ -405,6 +418,9 @@ void    nptree_executer(void)
 			}
 			if(shell()->tree->type == COMMAND && shell()->tree->value)
 				execute(shell()->tree); //printf("SELF EXECUTING\n");
+			if(shell()->env)
+				ft_free_split(shell()->env);
+			close_fds();
 			exit(0);
 		}
 		else
