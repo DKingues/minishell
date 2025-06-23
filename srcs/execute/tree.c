@@ -6,11 +6,32 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:41:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/06/19 16:14:15 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/23 17:49:15 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	flag_check(char *flags, char *valid)
+{
+	int	var;
+	int	var2;
+
+	var = 1;
+	while(flags[var])
+	{
+		var2 = 0;
+		while(valid[var2])
+		{
+			if(flags[var] != valid[var2])
+				return (1);
+			var2++;
+		}
+		var++;	
+	}
+	return (0);
+}
+
 char    **args_join(t_tree  *cmd)
 {
     int var;
@@ -37,14 +58,14 @@ char    **args_join(t_tree  *cmd)
 
 int	is_builtin(char *cmd)
 {
-	if(!ft_strncmp(cmd, "export", ft_strlen(cmd))
-		|| !ft_strncmp(cmd, "echo", ft_strlen(cmd))
-			|| !ft_strncmp(cmd, "exit", ft_strlen(cmd))
-				|| !ft_strncmp(cmd, "unset", ft_strlen(cmd))
-					|| !ft_strncmp(cmd, "pwd", ft_strlen(cmd))
-						|| !ft_strncmp(cmd, "env", ft_strlen(cmd))
-							|| !ft_strncmp(cmd, "cd", ft_strlen(cmd))
-								|| !ft_strncmp(cmd, "history", ft_strlen(cmd)))
+	if(!ft_strncmp(cmd, "export", ft_strlen(cmd) + 1)
+		|| !ft_strncmp(cmd, "echo", ft_strlen(cmd) + 1)
+			|| !ft_strncmp(cmd, "exit", ft_strlen(cmd) + 1)
+				|| !ft_strncmp(cmd, "unset", ft_strlen(cmd) + 1)
+					|| !ft_strncmp(cmd, "pwd", ft_strlen(cmd) + 1)
+						|| !ft_strncmp(cmd, "env", ft_strlen(cmd) + 1)
+							|| !ft_strncmp(cmd, "cd", ft_strlen(cmd) + 1)
+								|| !ft_strncmp(cmd, "history", ft_strlen(cmd) + 1))
 		return (1);
 	return (0);
 }
@@ -73,11 +94,14 @@ void	builtin_exec(t_tree *tree)
 		temp = temp->right;
 		if(temp && temp->value)
 		{
-			while (temp->value[0] == '-')
+			if (temp->value[0] == '-')
 			{
-				flag = 1;
-				temp = temp->right;
+				flag = !flag_check(temp->value, "n");
+				if(flag)
+					temp = temp->right;
 			}
+			if(!temp && flag)
+				return;
 			str = temp->value;
 			temp = temp->right;
 			while(temp)
@@ -88,6 +112,8 @@ void	builtin_exec(t_tree *tree)
 			}
 			echo_cmd(flag, str);
 		}
+		else
+			ft_printf(1, "\n");
 	}
 	else if(!ft_strncmp(temp->value, "exit", ft_strlen(temp->value) + 1))
 	{
@@ -111,12 +137,16 @@ void	builtin_exec(t_tree *tree)
 	else if(!ft_strncmp(temp->value, "cd", ft_strlen(temp->value) + 1))
 	{
 		temp = temp->right;
-		if(temp->right && temp->right->value)
+		if(temp && temp->value)
 		{
-			ft_printf(2, "cd: too many arguments");
+			if(temp->right && temp->right->value)
+				ft_printf(2, "cd: too many arguments");
+			else
+				cd_cmd(temp->value);
 			return ;
 		}
-		cd_cmd(temp->value);
+		else
+			cd_cmd(NULL);
 	}
 	else if(!ft_strncmp(temp->value, "history", ft_strlen(temp->value) + 1))
 	{
@@ -131,7 +161,7 @@ void	builtin_exec(t_tree *tree)
 			return ;
 		}
 		else if (temp->value[0] == '-')
-			shell()->hist = hist_manage("ola", 1);
+			shell()->hist = hist_manage("", !flag_check(temp->value, "c"));
 		else
 		{
 			while(temp->value[flag])
@@ -176,12 +206,22 @@ void    execute(t_tree  *cmd)
 	}
 	path = find_path(cmd->value);
 	if(!path)
+	{
 		perror("EXEC1: ");
+		return ;
+	}
 	args = args_join(cmd);
+	if(shell()->hist)
+		ft_free_split(shell()->hist);
+	if(shell()->exp)
+		ft_free_split(shell()->exp);
+	if(shell()->docs)
+		free(shell()->docs);
 	close_fds();
 	if(execve(path, args, shell()->env) == -1)
 		perror("EXEC2: ");
-	exit(0);
+	ft_free_split(args);
+	free(path);
 }
 
 int redir_input(t_tree  *redir)
@@ -256,7 +296,7 @@ void	here_doc(char *eof, int fd)
 		{
 			free(line);
 			close_fds();
-			exit(0);
+			return ;
 		}
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
@@ -270,7 +310,6 @@ void	manage_here_doc(void)
 	t_tree	*temp;
 	int	count;
 	int fd[2];
-	int	pid;
 
 	count = 0;
 	tree = shell()->tree;
@@ -297,11 +336,7 @@ void	manage_here_doc(void)
 			{
 				if(pipe(fd) == -1)
 					exit(0);
-				pid = fork();
-				if(!pid)
-					here_doc(temp->value, fd[1]);
-				else
-					waitpid(pid, NULL, 0);
+				here_doc(temp->value, fd[1]);
 				close(fd[1]);
 				shell()->docs[count] = fd[0];
 				count++;
@@ -348,6 +383,9 @@ void    tree_executer(void)
 				execute(shell()->tree); //printf("SELF EXECUTING\n");
 			if(shell()->tree->left->type == COMMAND && shell()->tree->left->value)
 				execute(shell()->tree->left); //printf("LEFT EXECUTING\n");
+			if(shell()->env)
+				ft_free_split(shell()->env);
+			close_fds();
 			exit(0);
 		}
 		else
@@ -375,12 +413,11 @@ void    tree_executer(void)
 void    nptree_executer(void)
 {
 	int var = 0;
-	int	pid;
 	t_tree *temp;
 
 	shell()->count = 0;
 	temp = shell()->tree->left;
-	if(shell()->tree->type == COMMAND && is_builtin(shell()->tree->value))
+	if(shell()->tree && shell()->tree->value && shell()->tree->type == COMMAND && is_builtin(shell()->tree->value))
 	{
 		while(temp)
 		{
@@ -392,8 +429,8 @@ void    nptree_executer(void)
 	}
 	else
 	{	
-		pid = fork();
-		if(!pid)
+		shell()->pid = fork();
+		if(!shell()->pid)
 		{
 			if(shell()->tree->type == READ || shell()->tree->type == HERE_DOC || shell()->tree->type == TRUNCATE || shell()->tree->type == APPEND)
 				redir_input(shell()->tree); //printf("BF REDIRECTING\n");
@@ -405,10 +442,13 @@ void    nptree_executer(void)
 			}
 			if(shell()->tree->type == COMMAND && shell()->tree->value)
 				execute(shell()->tree); //printf("SELF EXECUTING\n");
+			if(shell()->env)
+				ft_free_split(shell()->env);
+			close_fds();
 			exit(0);
 		}
 		else
-			waitpid(pid, &var, 0);
+			waitpid(shell()->pid, &var, 0);
 		shell()->exit = var / 256;
 	}
 }
