@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:03:49 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/06/19 14:56:09 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/23 17:41:07 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,20 @@ void	mv_old(void)
 	var = 0;
 	var2 = 0;
 	while (shell()->env[var])
+	{
+		if (!ft_strncmp(shell()->env[var], "OLDPWD=", 7))
 		{
-			if (!ft_strncmp(shell()->env[var], "OLDPWD=", 7))
-			{
-				while(shell()->env[var][var2] != '=')
-					var2++;
-				chdir(shell()->env[var] + var2 + 1);
-				set_old_path();
-				set_new_path();
-				pwd_cmd();
-			}
-			var++;
+			while(shell()->env[var][var2] != '=')
+				var2++;
+			chdir(shell()->env[var] + var2 + 1);
+			set_old_path();
+			set_new_path();
+			pwd_cmd();
+			return ;
 		}
+		var++;
+	}
+	ft_printf(2, "bash: cd: OLDPWD not set\n");
 }
 
 void	mv_abs(char *path)
@@ -60,7 +62,7 @@ char **hist_manage(char *line, int flag)
 	int	var;
 	
 	var = 0;
-	if (!line[0] || line[0] == '\n')
+	if ((!line[0] || line[0] == '\n') && !flag)
 		return (shell()->hist);
 	if (flag)
 		return(ft_free_split(shell()->hist), rl_clear_history(), ft_calloc(sizeof(char *), 1));

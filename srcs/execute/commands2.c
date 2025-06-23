@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:29:30 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/06/06 15:32:36 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/23 16:03:41 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,18 @@ int	exit_cmd(char *msg, int mult_args)
 void	cd_cmd(char *path)
 {
 	
-	if (!access(path, 0))
+	if (path && !access(path, 0))
 	{
 		chdir(path);
 		set_old_path();
 		set_new_path();
 	}
+	else if (!path)
+		mv_home();
+	else if (path[0] == '~' && !path[1])
+		mv_home();
 	else if (path[0] == '-')
 		mv_old();
-	else if (!path[0] || (path[0] == '~' && !path[1]))
-		mv_home();
 	else if (path[0] == '~' && path[1])
 		mv_abs(path);
 	else
