@@ -6,13 +6,13 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:49:28 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/09 14:27:13 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/23 18:56:25 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	quote_copy(char* line, char *new_line, int *i, int *j)
+void	quote_copy(char* line, char *new_line, int *i, int *j) // echo "''"$PWD
 {
 	char quote_type;
 
@@ -20,6 +20,7 @@ void	quote_copy(char* line, char *new_line, int *i, int *j)
 	new_line[(*j)++] = line[(*i)++];
 	while (line[*i] && line[*i] != quote_type)
 		new_line[(*j)++] = line[(*i)++];
+	if (line[*i] == '\0' || line[*i])
 	if (line[*i] == quote_type)
 		new_line[(*j)++] = line[(*i)++];
 	if (!ft_isspace(line[*i]))
@@ -112,7 +113,10 @@ char	*create_spaces(char *line, int i, int j)
 	while(line[i])
 	{
 		if (line[i] == '\"' || line[i] == '\'')
+		{
+
 			quote_copy(line, new_line, &i, &j);
+		}
 		else if ((is_token(line[i]) && line[i + 1] != '\0'))
 		{
 			if (line[i - 1] != ' ')

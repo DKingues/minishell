@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/19 17:43:23 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/23 18:20:02 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,43 +63,31 @@ void	print_tokens(t_token *token)
 }
 int parser(char *line)
 {
-	char *str;
-	str = NULL;
 	if (syntax_check(line) == 0)
 		return (0);
-	if (expand_check(line))
-		str = expand_caller(line);
+	line = expand_caller(line);
 	t_token *token;
 	t_tree	*tree;
 
 	tree = NULL;
-	if (str)
-	{
-		token = assign_token(str);
-		free(str);
-	}
-	else
-	{
-		token = assign_token(line);
-	}
-	/* printf("TOKEN\n");
-	print_tokens(token);
-	printf("\n\n"); */
+	token = assign_token(line);
+	// printf("TOKEN\n");
+	// print_tokens(token);
+	// printf("\n\n");
 	if(token)
 	{
 		pipe_counter(token);
 		shell()->tree = tokens_to_tree(token, NULL, tree, 0);
 	}
-/* 	printf("TREE\n");
-	print_tree(shell()->tree); */
+	// printf("TREE\n");
+	// print_tree(shell()->tree);
 	free_list(token);
-	//tree_free(tree);
+	tree_free(tree);
 	return (1);
 }
 
 void	reset_input(char *line)
 {
-	//printf("%s\n", line);
 	if(shell()->tree)
 	{
 		tree_free(shell()->tree);
@@ -109,25 +97,24 @@ void	reset_input(char *line)
 		free(shell()->docs);
 	shell()->count = 0;
 	shell()->pipe_count = 0;
-	shell()->hist = hist_manage(line, 0);
+	(void)line;
+	//shell()->hist = hist_manage(line, 0);
 }
 
 int	main(int ac, char **av, char **ev)
 {
 	(void)av;
 	char *line;
-	//char *str;
 	int	pid;
 	
 	if (ac != 1)
 		return (ft_printf(1, "No arguments are needed\n"), 1);
-	//print_banner();
+	// print_banner();
 	init_shell(ev);
 	while(1)
 	{
 		line = readline("minishell ▸ ");
-		reset_input(line);
-		//str = ft_strdup(line);
+		//reset_input(line);
 		if (parser(line) == 0)
 			ft_printf(1, "");
 		if(shell()->tree)
@@ -145,7 +132,6 @@ int	main(int ac, char **av, char **ev)
 				nptree_executer();
 		}
 		free(line);
-		//free(str);
 	}
 	return (0);
 }

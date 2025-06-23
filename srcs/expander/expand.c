@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 14:47:46 by scorpot           #+#    #+#             */
-/*   Updated: 2025/06/19 17:17:51 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/20 23:11:54 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,5 @@ char	*expand_arg(char *arg)
 		}
 		var++;
 	}
-	return(free(arg), NULL);
+	return(free(arg), ft_strdup(""));
 }

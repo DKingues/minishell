@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 16:08:26 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/19 17:45:46 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/20 22:46:20 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,19 @@ char *remove_expansion(char *line)
 	int	i;
 	int	j;
 	char *new_line;
-
 	i = 0;
 	j = 0;
 	new_line = ft_calloc(sizeof(char), (ft_strlen(line) - expansion_len(line)) + 1);
 	if (!new_line)
 		return(NULL);
 	while (line[i])
-	{
-		if (line[i] == '\'')
+	{				
+		if (line[i] == '\'' && !in_double_quotes(&line[i], i))
+		{
 			quote_copy(line, new_line, &i, &j);
-		else if (line[i] == '$')
+			ft_printf(1, "IN\n");
+		}
+		if (line[i] == '$')
 		{
 			while (line[i] && !ft_isspace(line[i]))
 				i++;

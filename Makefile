@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+         #
+#    By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/06/16 15:58:01 by rmota-ma         ###   ########.fr        #
+#    Updated: 2025/06/23 17:11:39 by dicosta-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -137,5 +137,11 @@ fclean:
 	@$(MINISHELL_KO)
 
 re: fclean all
+
+r:
+	make re && clear && ./minishell
+
+rv:
+	make re && clear && valgrind ./minishell
 
 .PHONY: all clean fclean re
