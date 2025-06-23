@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/23 18:20:02 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/23 19:20:35 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ int parser(char *line)
 
 void	reset_input(char *line)
 {
+	//printf("%s\n", line);
+	shell()->pid = 0;
 	if(shell()->tree)
 	{
 		tree_free(shell()->tree);
@@ -97,15 +99,13 @@ void	reset_input(char *line)
 		free(shell()->docs);
 	shell()->count = 0;
 	shell()->pipe_count = 0;
-	(void)line;
-	//shell()->hist = hist_manage(line, 0);
+	shell()->hist = hist_manage(line, 0);
 }
 
 int	main(int ac, char **av, char **ev)
 {
 	(void)av;
 	char *line;
-	int	pid;
 	
 	if (ac != 1)
 		return (ft_printf(1, "No arguments are needed\n"), 1);
@@ -114,7 +114,7 @@ int	main(int ac, char **av, char **ev)
 	while(1)
 	{
 		line = readline("minishell ▸ ");
-		//reset_input(line);
+		reset_input(line);
 		if (parser(line) == 0)
 			ft_printf(1, "");
 		if(shell()->tree)
@@ -122,11 +122,11 @@ int	main(int ac, char **av, char **ev)
 			manage_here_doc();
 			if(shell()->tree->type == PIPE)
 			{
-				pid = fork();
-				if(!pid)
+				shell()->pid = fork();
+				if(!shell()->pid)
 					tree_executer();
 				else
-					waitpid(pid, NULL, 0);
+					waitpid(shell()->pid, NULL, 0);
 			}
 			else
 				nptree_executer();
