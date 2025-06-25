@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/25 16:36:37 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:03:20 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "get_next_line.h"
 # include "../includes/libft/libft.h"
 # include <stdio.h>					// printf, perror
 # include <stdlib.h>				// malloc, free, exit, getenv
@@ -80,8 +81,8 @@ typedef struct s_temp_sig_struct
 }	t_temp_sig_struct;
 
 void	manage_here_doc(void);
-void    nptree_executer(void);
-void	tree_executer(void);
+void    nptree_executer(char **line);
+void	tree_executer(char **line);
 int		flag_check(char *flags, char *valid);
 
 // binary_tree.c
@@ -185,7 +186,7 @@ void	env_cmd(t_tree *tree);
 
 // commands2.c
 
-int		exit_cmd(char *msg, int mult_args);
+void		exit_cmd(t_tree *tree);
 void	cd_cmd(char *path);
 void	single_exec(char *msg);
 char	*find_path(char *cmd);
@@ -232,7 +233,6 @@ int		redir_input(t_tree	*redir);
 // tree.c
 void	execute(t_tree	*cmd);
 char	**args_join(t_tree	*cmd);
-void	tree_executer(void);
 int		waitpids(int *pids, int var);
 void	close_fds(void);
 
