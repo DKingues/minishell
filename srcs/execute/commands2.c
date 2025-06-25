@@ -6,24 +6,41 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:29:30 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/06/23 16:03:41 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:44:20 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	exit_cmd(char *msg, int mult_args)
+void	exit_cmd(t_tree	*tree)
 {
 	int	code;
-	
-	code = error_syntax(msg);
-	if (mult_args)
-		return (1);
-	if (code == 0 || long_check(msg))
+
+	if(tree && tree->value && error_syntax(tree->value) && !long_check(tree->value))
+	{
+		code = ft_atoi(tree->value);
+		if(tree->right && tree->value)
+			ft_printf(2, "exit\nbash: exit: too many arguments\n");
+		else
+		{
+			tree_free(shell()->tree);
+			ft_printf(1, "exit\n");
+			exit(code);
+		}
+	}
+	else if (tree && tree->value)
+	{
 		code = 2;
+		ft_printf(2, "exit\nbash: exit: %s: numeric argument required\n", tree->value);
+		tree_free(shell()->tree);
+		exit(code);
+	}
 	else
-		code = ft_atoi(msg);
-	exit(code);
+	{
+		ft_printf(1, "exit\n");
+		tree_free(shell()->tree);
+		exit(shell()->exit);
+	}
 }
 
 void	cd_cmd(char *path)

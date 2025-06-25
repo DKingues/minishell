@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:08:01 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/06/19 16:15:10 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:10:31 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void init_shell(char **ev)
 {
 	init_env(ev);
 	init_exp(ev);
+	shell()->count = 0;
 	shell()->tree = NULL;
 	shell()->hist = ft_calloc(sizeof(char *), 1);
 	shell()->exit = 0;

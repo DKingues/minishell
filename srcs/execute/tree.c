@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:41:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/06/23 17:49:15 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/25 16:45:05 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	builtin_exec(t_tree *tree)
 			}
 			if(!temp && flag)
 				return;
-			str = temp->value;
+			str = ft_strdup(temp->value);
 			temp = temp->right;
 			while(temp)
 			{
@@ -111,15 +111,23 @@ void	builtin_exec(t_tree *tree)
 				temp = temp->right;
 			}
 			echo_cmd(flag, str);
+			if(str)
+				free(str);
 		}
 		else
 			ft_printf(1, "\n");
 	}
 	else if(!ft_strncmp(temp->value, "exit", ft_strlen(temp->value) + 1))
 	{
+		if(shell()->docs)
+			free(shell()->docs);
+		ft_free_split(shell()->hist);
 		ft_free_split(shell()->env);
 		ft_free_split(shell()->exp);
-		exit(0);
+		if(tree->right)
+			exit_cmd(tree->right);
+		else
+			exit_cmd(NULL);
 	}
 	else if(!ft_strncmp(temp->value, "unset", ft_strlen(temp->value) + 1))
 	{
@@ -324,6 +332,8 @@ void	manage_here_doc(void)
 		}
 		tree = tree->right;
 	}
+	if(!count)
+		return ;
 	shell()->docs = ft_calloc(count + 1, sizeof(int));
 	count = 0;
 	tree = shell()->tree;
@@ -347,7 +357,7 @@ void	manage_here_doc(void)
 	}
 }
 
-void    tree_executer(void)
+void    tree_executer(char **line)
 {
 	int fd[2];
 	int var = 0;
@@ -369,6 +379,8 @@ void    tree_executer(void)
 		pids[var] = fork();
 		if(!pids[var])
 		{
+			if(*line)
+				free(line);
 			if(check == 1)
 				dup2(fd[1], 1); //printf("DUPING FD[1]\n");
 			if(shell()->tree->type == READ || shell()->tree->type == HERE_DOC || shell()->tree->type == TRUNCATE || shell()->tree->type == APPEND)
@@ -410,7 +422,7 @@ void    tree_executer(void)
 	exit(waitpids(pids, var));
 }
 
-void    nptree_executer(void)
+void    nptree_executer(char **line)
 {
 	int var = 0;
 	t_tree *temp;
@@ -419,6 +431,8 @@ void    nptree_executer(void)
 	temp = shell()->tree->left;
 	if(shell()->tree && shell()->tree->value && shell()->tree->type == COMMAND && is_builtin(shell()->tree->value))
 	{
+		if(!ft_strncmp(shell()->tree->value, "exit", ft_strlen(shell()->tree->value) + 1) && *line)
+			free(*line);
 		while(temp)
 		{
 			if(temp->type == READ || temp->type == HERE_DOC || temp->type == TRUNCATE || temp->type == APPEND)
@@ -432,6 +446,8 @@ void    nptree_executer(void)
 		shell()->pid = fork();
 		if(!shell()->pid)
 		{
+			if(*line)
+				free(*line);
 			if(shell()->tree->type == READ || shell()->tree->type == HERE_DOC || shell()->tree->type == TRUNCATE || shell()->tree->type == APPEND)
 				redir_input(shell()->tree); //printf("BF REDIRECTING\n");
 			while(temp)
