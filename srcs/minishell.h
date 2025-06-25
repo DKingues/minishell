@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/23 19:19:41 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/25 16:36:37 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,20 +72,21 @@ typedef struct s_shell
 	char		**exp;
 	char		**hist;
 	t_tree		*tree;
-}				t_shell;
+}	t_shell;
 
 typedef struct s_temp_sig_struct
 {
 	bool	root;
-} t_temp_sig_struct;
+}	t_temp_sig_struct;
 
 void	manage_here_doc(void);
 void    nptree_executer(void);
 void	tree_executer(void);
 int		flag_check(char *flags, char *valid);
+
 // binary_tree.c
 
-int pipe_counter(t_token *token);
+int 	pipe_counter(t_token *token);
 t_tree	*tokens_to_tree(t_token *token, t_token *target, t_tree *ast, int depth);
 t_token *find_pipe(t_token *token, t_token *target);
 void	set_left_node(t_tree *ast, t_token *token);
@@ -112,7 +113,7 @@ int 	skip_quotes(char *line, char quote_type);
 int	 	count_quotes(char *line);
 int		count_tokens(char *line);
 size_t	token_len(char *line);
-char    *remove_quotes(char *line);
+char    *remove_quotes(char *line, int i, char *new_line);
 
 // format_line.c
 
@@ -126,7 +127,7 @@ int 	cnt_nospc(char *line);
 // token.c
 
 t_token *assign_token(char *line);
-int	get_token_type(char *input);
+int		get_token_type(char *input);
 t_token	*remove_redir(t_token *token);
 
 // token_aux.c 
@@ -145,7 +146,7 @@ int		check_command(char *line);
 
 // syntax_aux.c
 
-int	skip_spaces(char *line);
+int		skip_spaces(char *line);
 
 // expand.c
 
@@ -184,7 +185,7 @@ void	env_cmd(t_tree *tree);
 
 // commands2.c
 
-int	exit_cmd(char *msg, int mult_args);
+int		exit_cmd(char *msg, int mult_args);
 void	cd_cmd(char *path);
 void	single_exec(char *msg);
 char	*find_path(char *cmd);
@@ -202,37 +203,37 @@ size_t	exp_len(const char *s);
 void	exp_organize(void);
 void	second_organize(int	var, int var2);
 void	switch_str(int var);
-char **re_write_exp(char *msg);
-char **re_write_env(char *msg);
+char 	**re_write_exp(char *msg);
+char 	**re_write_env(char *msg);
 
 // cmd_utils3.c
 
 char	*set_blank(char *msg);
-char **quoting_set(void);
+char 	**quoting_set(void);
 char	*exp_strdup(const char *s1);
-int	error_syntax(char *array);
-int	long_check(char *str);
+int		error_syntax(char *array);
+int		long_check(char *str);
 
 // cmd_utils4.c
 
 void	set_old_path(void);
-void old_path_exp(void);
-void set_new_path(void);
-void new_path_exp(void);
+void 	old_path_exp(void);
+void 	set_new_path(void);
+void 	new_path_exp(void);
 void	mv_home(void);
 
 // cmd_utils5.c
 
 void	mv_old(void);
 void	mv_abs(char *path);
-char **hist_manage(char *line, int flag);
-int	redir_input(t_tree	*redir);
+char 	**hist_manage(char *line, int flag);
+int		redir_input(t_tree	*redir);
 
-
-//tree.c
+// tree.c
 void	execute(t_tree	*cmd);
 char	**args_join(t_tree	*cmd);
 void	tree_executer(void);
-int	waitpids(int *pids, int var);
+int		waitpids(int *pids, int var);
 void	close_fds(void);
+
 #endif

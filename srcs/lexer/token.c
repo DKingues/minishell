@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 11:57:26 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/23 17:51:29 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/25 15:21:12 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ t_token *assign_token(char *line)
 	i = 0;
 	while (tokens[i])
 	{
-		if (tokens[i][0] == '\"' || tokens[i][0] == '\'')
-			tokens[i] = remove_quotes(tokens[i]);
+		if (count_quotes(tokens[i]) >= 2)
+			tokens[i] = remove_quotes(tokens[i], 0, NULL);
 		token_type = get_token_type(tokens[i]);
 		if ((token_type == READ || token_type == HERE_DOC \
 		|| token_type == TRUNCATE || token_type == APPEND) && get_token_type(tokens[i + 1]) != PIPE)

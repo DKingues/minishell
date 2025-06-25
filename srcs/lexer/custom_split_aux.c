@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:12:44 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/23 18:13:38 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/25 16:23:23 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,60 @@ int	count_tokens(char *line)
 				i++;
 			counter++;
 		}
-		i++;
+		    i++;
 	}
 	return (counter);
 }
 
-char    *remove_quotes(char *line)
+/*char    *remove_quotes(char *line)
 {
     char *new_line;
+    size_t  i;
 
-    new_line = ft_substr(line, 1, ft_strlen(line) - 2);
+    i = 0;
+    new_line = ft_delcpy(line, line[i]);
     return (free(line), new_line);
+}*/
+
+
+/*char    *delete_quotes(char *line, int start, int end)
+{
+    char *new_line;
+    char *str_start;
+    char *str_end;
+    
+    
+}*/
+
+char    *remove_quotes(char *line, int i, char *new_line)
+{
+    char quote;
+    int start;
+    
+    quote = 0;
+    start = -1;
+    while (line[i])
+    {
+        if (quote == 0 && (line[i] == '\"' || line[i] == '\''))
+        {
+            quote = line[i];
+            start = i + 1;
+        }
+        else if (new_line == NULL && quote != 0 && quote == line[i])
+        {
+            new_line = ft_substr(line, start, (i - start));
+            break;
+        }
+        else if (quote != 0 && quote == line[i])
+        {
+            new_line = ft_strjoin(new_line, ft_substr(line, start, (i - start)));
+            break;
+        }
+        i++;
+    }
+    if (start != -1)
+        return(remove_quotes(line, ++i, new_line));
+    return (new_line);
 }
 
 size_t  token_len(char *line)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/23 19:20:35 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/25 16:30:17 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int parser(char *line)
 	// print_tree(shell()->tree);
 	free_list(token);
 	tree_free(tree);
+	free(line);
 	return (1);
 }
 
@@ -131,7 +132,6 @@ int	main(int ac, char **av, char **ev)
 			else
 				nptree_executer();
 		}
-		free(line);
 	}
 	return (0);
 }

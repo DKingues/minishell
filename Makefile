@@ -6,7 +6,7 @@
 #    By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/06/23 17:11:39 by dicosta-         ###   ########.fr        #
+#    Updated: 2025/06/25 12:02:33 by dicosta-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -139,9 +139,12 @@ fclean:
 re: fclean all
 
 r:
-	make re && clear && ./minishell
+	@make re && clear && ./minishell
 
 rv:
-	make re && clear && valgrind ./minishell
+	@make re && clear && valgrind --leak-check=full ./minishell
+
+gdb:
+	@make re && gdb ./minishell
 
 .PHONY: all clean fclean re

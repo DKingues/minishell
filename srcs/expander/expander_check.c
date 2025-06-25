@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:44:06 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/23 18:13:02 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/25 16:28:42 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,18 @@ int		expand_check(char *line)
 	return(0);
 }
 
-char		*expand(char *line, char *key, int start, int end)
+char	*expand(char *line, char *key, int start, int end)
 {
 	char *str_start;
 	char *str_end;
 	char *value;
 	char *new_line;
-
+	
 	value = expand_arg(key);
 	str_start = ft_substr(line, 0, start);
-	str_end = ft_substr(line, end, ft_strlen(line));
+	str_end = ft_substr(line, end, ft_strlen(line) - end);
 	new_line  = ft_strjoin(str_start, value);
 	free(value);
-	free(line);
 	line = ft_strjoin(new_line, str_end);
 	free(str_end);
 	return(expand_caller(line));
@@ -76,7 +75,7 @@ char	*expand_caller(char *line)
 			quote = 0;
 		if ((quote == 0 || quote == '\"') && start == -1 && line[i] == '$')
 			start = i;
-		else if ((quote == 0 || quote == '\"') && start != -1 && (!ft_isalnum(line[i]) || line[i + 1] == '\0') && ++i)
+		else if ((quote == 0 || quote == '\"') && start != -1 && (!ft_isalnum(line[i + 1]) || line[i + 1] == '\0') && ++i)
 			break;
 		i++;
 	}
