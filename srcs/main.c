@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/25 18:04:34 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:36:33 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int parser(char *line)
 	// printf("TREE\n");
 	// print_tree(shell()->tree);
 	free_list(token);
-	tree_free(tree);
+	//tree_free(tree);
 	free(line);
 	return (1);
 }
@@ -97,12 +97,10 @@ void	reset_input(char *line)
 		shell()->tree = NULL;
 	}
 	if(shell()->docs)
-	free(shell()->docs);
+		free(shell()->docs);
 	shell()->count = 0;
 	shell()->pipe_count = 0;
-	return ;
-	//shell()->hist = hist_manage(line, 0);
-	(void)line;
+	shell()->hist = hist_manage(line, 0);
 }
 
 int	main(int ac, char **av, char **ev)
@@ -116,8 +114,8 @@ int	main(int ac, char **av, char **ev)
 	init_shell(ev);
 	while(1)
 	{
-		line = get_next_line(0);
-		//line = readline("minishell ▸ ");
+		//line = get_next_line(0);
+		line = readline("minishell ▸ ");
 		reset_input(line);
 		if (parser(line) == 0)
 			ft_printf(1, "");
@@ -128,12 +126,12 @@ int	main(int ac, char **av, char **ev)
 			{
 				shell()->pid = fork();
 				if(!shell()->pid)
-					tree_executer(&line);
+					tree_executer();
 				else
 					waitpid(shell()->pid, NULL, 0);
 			}
 			else
-				nptree_executer(&line);
+				nptree_executer();
 		}
 	}
 	return (0);
