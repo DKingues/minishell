@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 14:47:46 by scorpot           #+#    #+#             */
-/*   Updated: 2025/06/20 23:11:54 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/25 20:30:36 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,13 @@ char	*expand_arg(char *arg)
 	char *temp;
 
 	var = 0;
-	if (arg[1] == '?' && arg[2] == '\0')
-		return(free(arg), ft_itoa(shell()->exit));
+	if (arg[1] == '?')
+	{
+		temp = ft_itoa(shell()->exit);
+		if (ft_strlen(arg) >= 2)
+			temp = ft_strjoin(temp, arg + 2);
+		return (free(arg), temp);
+	}
 	while(shell()->env[var])
 	{
 		len = exp_len(shell()->env[var]);
