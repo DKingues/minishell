@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:12:44 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/25 20:37:59 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/26 17:44:53 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,21 @@ int	count_tokens(char *line)
     
     
 }*/
+char    *delete_quotes(char *line, char *quoted, int start, int end)
+{
+    char *new_line;
+    char *str_start;
+    char *str_end;
+    char *temp;
 
+    str_start = ft_substr(line, 0, start); //echo hello
+    temp = ft_strjoin(str_start, quoted); //echo helloworld
+    str_end = ft_substr(line, end, ft_strlen(line));// asdasd
+    new_line = ft_strjoin(temp, str_end); //echo helloworld asdasd
+    free(str_end);
+    free(quoted);
+    return (free(line), remove_quotes(new_line, end - 2, NULL));
+}
 char    *remove_quotes(char *line, int i, char *new_line)
 {
     char quote;
@@ -108,23 +122,20 @@ char    *remove_quotes(char *line, int i, char *new_line)
         if (quote == 0 && (line[i] == '\"' || line[i] == '\''))
         {
             quote = line[i];
-            start = i + 1;
+            start = i;
         }
         else if (new_line == NULL && quote != 0 && quote == line[i])
         {
-            new_line = ft_substr(line, start, (i - start));
-            break;
-        }
-        else if (quote != 0 && quote == line[i])
-        {
-            new_line = ft_strjoin(new_line, ft_substr(line, start, (i - start)));
+            new_line = ft_substr(line, start + 1, (i - (start + 1)));
             break;
         }
         i++;
     }
+    if (new_line == NULL)
+        return (line);
     if (start != -1)
-        return(remove_quotes(line, ++i, new_line));
-    return (free(line), new_line);
+        return(delete_quotes(line, new_line, start, i + 1));
+    return (new_line);
 }
 
 size_t  token_len(char *line)
