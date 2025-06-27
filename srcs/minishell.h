@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/25 18:03:20 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/26 17:23:19 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,10 @@ typedef struct s_temp_sig_struct
 	bool	root;
 }	t_temp_sig_struct;
 
+void	singleton_free(int exit);
 void	manage_here_doc(void);
-void    nptree_executer(char **line);
-void	tree_executer(char **line);
+void    nptree_executer(void);
+void	tree_executer(void);
 int		flag_check(char *flags, char *valid);
 
 // binary_tree.c
