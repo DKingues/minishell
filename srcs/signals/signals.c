@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:42:01 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/27 16:20:42 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:28:56 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ void root_handler(int signal)
 
 }
 
-void	heredoc_handler(int signal)
+/* void	heredoc_handler(int signal)
 {
 	if ()
 	//free tudo e exit
 	exit(127 + SIGINT);
 	
-}
+} */
 
-void	choose_signal(int level)
+/* void	choose_signal(int level)
 {
 	struct sigaction sa;
 	
@@ -59,7 +59,7 @@ void	choose_signal(int level)
 	{
 		shell()
 	}
-}
+} */
 //root
 //child
 // heredoc

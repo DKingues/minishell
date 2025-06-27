@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/26 17:23:19 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:27:28 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "get_next_line.h"
 # include "../includes/libft/libft.h"
 # include <stdio.h>					// printf, perror
 # include <stdlib.h>				// malloc, free, exit, getenv

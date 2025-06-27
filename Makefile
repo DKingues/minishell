@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+         #
+#    By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/06/26 15:20:58 by rmota-ma         ###   ########.fr        #
+#    Updated: 2025/06/27 16:27:12 by dicosta-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ EXTRAFLAGS = -lreadline -lncurses
 
 LIBFT = includes/libft/libft.a
 
-SRCS = main.c get_next_line.c get_next_line_utils.c
+SRCS = main.c
 
 LEXER = init.c token.c custom_split.c custom_split_aux.c token_aux.c format_line.c
 
