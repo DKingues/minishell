@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:12:44 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/26 17:44:53 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/06/26 18:19:06 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,25 +76,6 @@ int	count_tokens(char *line)
 	return (counter);
 }
 
-/*char    *remove_quotes(char *line)
-{
-    char *new_line;
-    size_t  i;
-
-    i = 0;
-    new_line = ft_delcpy(line, line[i]);
-    return (free(line), new_line);
-}*/
-
-
-/*char    *delete_quotes(char *line, int start, int end)
-{
-    char *new_line;
-    char *str_start;
-    char *str_end;
-    
-    
-}*/
 char    *delete_quotes(char *line, char *quoted, int start, int end)
 {
     char *new_line;
@@ -104,7 +85,7 @@ char    *delete_quotes(char *line, char *quoted, int start, int end)
 
     str_start = ft_substr(line, 0, start); //echo hello
     temp = ft_strjoin(str_start, quoted); //echo helloworld
-    str_end = ft_substr(line, end, ft_strlen(line));// asdasd
+    str_end = ft_substr(line, end, ft_strlen(line)); // asdasd
     new_line = ft_strjoin(temp, str_end); //echo helloworld asdasd
     free(str_end);
     free(quoted);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:42:01 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/16 15:12:13 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:20:42 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,15 @@ void root_handler(int signal)
 
 }
 
-void	choose_signal(t_temp_sig_struct level)
+void	heredoc_handler(int signal)
+{
+	if ()
+	//free tudo e exit
+	exit(127 + SIGINT);
+	
+}
+
+void	choose_signal(int level)
 {
 	struct sigaction sa;
 	
@@ -35,7 +43,8 @@ void	choose_signal(t_temp_sig_struct level)
 		if (sigemptyset(&sa.sa_mask) == -1)
 			return ;
 		sigaction(SIGINT, &sa, NULL);
-		//ignore_sig(&sa, SIGQUIT);
+		sa.sa_handler = SIG_IGN;
+		sigaction(SIGQUIT, &sa, NULL);
 	}
 	else if (level.root == 0)
 	{
@@ -48,6 +57,10 @@ void	choose_signal(t_temp_sig_struct level)
 	}
 	else
 	{
-		
+		shell()
 	}
 }
+//root
+//child
+// heredoc
+// ign
