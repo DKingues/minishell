@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:41:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/06/26 18:20:30 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/27 11:59:47 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,16 +217,18 @@ void    execute(t_tree  *cmd)
 	close_fds();
 	if(execve(path, args, shell()->env) == -1)
 	{
-		while(shell()->env)
-		{
-			if(ft_strnstr(shell()->env[var], "PATH", 4))
-			{
-				ft_printf(2, "%s: command not found\n", path);
-				var = -2;
-			}
-		}
 		if(var != -2)
 			perror("EXEC2: ");
+		else
+		{
+			while(shell()->env)
+			{
+				if(ft_strnstr(shell()->env[var], "PATH", 4))
+				{
+					ft_printf(2, "%s: command not found\n", path);
+				}
+			}
+		}
 	}
 	ft_free_split(args);
 	free(path);
