@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:41:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/06/25 18:34:26 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/26 18:20:30 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	flag_check(char *flags, char *valid)
 	int	var2;
 
 	var = 1;
+	if(!flags[1])
+		return (1);
 	while(flags[var])
 	{
 		var2 = 0;
@@ -94,11 +96,12 @@ void	builtin_exec(t_tree *tree)
 		temp = temp->right;
 		if(temp && temp->value)
 		{
-			if (temp->value[0] == '-')
+			while (temp->value[0] == '-')
 			{
 				flag = !flag_check(temp->value, "n");
-				if(flag)
-					temp = temp->right;
+				if(!flag)
+					break ;
+				temp = temp->right;
 			}
 			if(!temp && flag)
 				return;
@@ -119,11 +122,6 @@ void	builtin_exec(t_tree *tree)
 	}
 	else if(!ft_strncmp(temp->value, "exit", ft_strlen(temp->value) + 1))
 	{
-		if(shell()->docs)
-			free(shell()->docs);
-		ft_free_split(shell()->hist);
-		ft_free_split(shell()->env);
-		ft_free_split(shell()->exp);
 		if(tree->right)
 			exit_cmd(tree->right);
 		else
@@ -204,6 +202,7 @@ void	builtin_exec(t_tree *tree)
 
 void    execute(t_tree  *cmd)
 {
+	int	var = 0;
 	char    *path;
 	char **args;
 
@@ -213,21 +212,22 @@ void    execute(t_tree  *cmd)
 		return ;
 	}
 	path = find_path(cmd->value);
-	if(!path)
-	{
-		perror("EXEC1: ");
-		return ;
-	}
 	args = args_join(cmd);
-	if(shell()->hist)
-		ft_free_split(shell()->hist);
-	if(shell()->exp)
-		ft_free_split(shell()->exp);
-	if(shell()->docs)
-		free(shell()->docs);
+	singleton_free(0);
 	close_fds();
 	if(execve(path, args, shell()->env) == -1)
-		perror("EXEC2: ");
+	{
+		while(shell()->env)
+		{
+			if(ft_strnstr(shell()->env[var], "PATH", 4))
+			{
+				ft_printf(2, "%s: command not found\n", path);
+				var = -2;
+			}
+		}
+		if(var != -2)
+			perror("EXEC2: ");
+	}
 	ft_free_split(args);
 	free(path);
 }
@@ -303,6 +303,7 @@ void	here_doc(char *eof, int fd)
 		if (!ft_strncmp(eof, line, len + 1))
 		{
 			free(line);
+			shell()->exit = 0;
 			close_fds();
 			return ;
 		}
@@ -414,8 +415,7 @@ void    tree_executer(void)
 		var++;
 		shell()->tree = shell()->tree->right;
 	}
-	if(shell()->docs)
-		free(shell()->docs);
+	singleton_free(1);
 	close_fds();
 	exit(waitpids(pids, var));
 }
@@ -435,6 +435,8 @@ void    nptree_executer(void)
 				redir_input(temp);
 			temp = temp->left;
 		}
+		if(temp && temp->value &&!ft_strncmp(temp->value, "exit", ft_strlen(temp->value) + 1))
+			ft_printf(1, "exit\n");
 		execute(shell()->tree);
 	}
 	else

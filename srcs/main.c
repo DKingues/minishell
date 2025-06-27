@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/25 18:36:33 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/26 18:13:53 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,11 @@ void	print_tokens(t_token *token)
 		token = token->next;
 	}
 }
+
 int parser(char *line)
 {
 	if (syntax_check(line) == 0)
-		return (0);
+		return (free(line), 0);
 	line = expand_caller(line);
 	t_token *token;
 	t_tree	*tree;
@@ -110,12 +111,16 @@ int	main(int ac, char **av, char **ev)
 	
 	if (ac != 1)
 		return (ft_printf(1, "No arguments are needed\n"), 1);
-	// print_banner();
+	print_banner();
 	init_shell(ev);
 	while(1)
 	{
-		//line = get_next_line(0);
 		line = readline("minishell ▸ ");
+		if(!line)
+		{
+			ft_printf(1, "exit\n");
+			exit_cmd(NULL);
+		}
 		reset_input(line);
 		if (parser(line) == 0)
 			ft_printf(1, "");
@@ -128,7 +133,7 @@ int	main(int ac, char **av, char **ev)
 				if(!shell()->pid)
 					tree_executer();
 				else
-					waitpid(shell()->pid, NULL, 0);
+					waitpid(shell()->pid, &shell()->exit, 0);
 			}
 			else
 				nptree_executer();

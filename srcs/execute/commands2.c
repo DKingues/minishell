@@ -6,39 +6,50 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:29:30 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/06/24 17:44:20 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/26 17:26:02 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+void	singleton_free(int exit)
+{
+	if(exit)
+	{
+		if(shell()->env)
+			ft_free_split(shell()->env);
+	}
+	if(shell()->hist)
+		ft_free_split(shell()->hist);
+	if(shell()->exp)
+		ft_free_split(shell()->exp);
+	if(shell()->docs)
+		free(shell()->docs);
+	if(shell()->tree)
+		tree_free(shell()->tree);
+}
+
 void	exit_cmd(t_tree	*tree)
 {
-	int	code;
-
 	if(tree && tree->value && error_syntax(tree->value) && !long_check(tree->value))
 	{
-		code = ft_atoi(tree->value);
 		if(tree->right && tree->value)
-			ft_printf(2, "exit\nbash: exit: too many arguments\n");
+			ft_printf(2, "minishell: exit: too many arguments\n");
 		else
 		{
-			tree_free(shell()->tree);
-			ft_printf(1, "exit\n");
-			exit(code);
+			singleton_free(1);
+			exit(ft_atoi(tree->value));
 		}
 	}
 	else if (tree && tree->value)
 	{
-		code = 2;
-		ft_printf(2, "exit\nbash: exit: %s: numeric argument required\n", tree->value);
-		tree_free(shell()->tree);
-		exit(code);
+		ft_printf(2, "minishell: exit: %s: numeric argument required\n", tree->value);
+		singleton_free(1);
+		exit(2);
 	}
 	else
 	{
-		ft_printf(1, "exit\n");
-		tree_free(shell()->tree);
+		singleton_free(1);
 		exit(shell()->exit);
 	}
 }
@@ -75,7 +86,7 @@ char	*find_path(char *cmd)
 	while (ft_strnstr(shell()->env[var], "PATH", 4) == 0 && shell()->env[var + 1])
 		var++;
 	if (!shell()->env[var + 1])
-		return (cmd);
+		return (ft_strdup(cmd));
 	path = ft_split(shell()->env[var] + 5, ':');
 	var = 0;
 	while (path[var] != NULL)
@@ -87,5 +98,5 @@ char	*find_path(char *cmd)
 		free(line);
 		var++;
 	}
-	return (ft_free_split(path), cmd);
+	return (ft_free_split(path), ft_strdup(cmd));
 }

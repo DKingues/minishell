@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:52:38 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/06/16 15:15:43 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/06/26 15:06:06 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,13 @@ int	error_syntax(char *array)
 	while (array[i] != '\0')
 	{
 		if ((array[i] >= '0' && array[i] <= '9') ||
-				(array[i] == '-' || array[i] == '+') || array[i] == ' ')
+				(array[i] == '-' || array[i] == '+') || ft_isspace(array[i]))
 		{
 			if ((array[i] == '-' || array[i] == '+') &&
 				((array[i + 1] < '0' || array[i + 1] > '9') ||
 					(i != '\0')))
 			{
-				if (array[i] != ' ')
+				if (!ft_isspace(array[i]))
 					return (0);
 			}
 		}

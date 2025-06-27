@@ -6,7 +6,7 @@
 #    By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/06/25 18:04:07 by rmota-ma         ###   ########.fr        #
+#    Updated: 2025/06/26 15:20:58 by rmota-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,15 +78,15 @@ COLOR_CYAN = \033[1;36m
 
 COMP_START = @echo "$(NO_COLOR)\nCompilation starting ...\n"
 
-MINISHELL_OK = @echo "$(NO_COLOR)Minishell status: $(COLOR_GREEN)[OK]\n"
+MINISHELL_OK = @echo "$(NO_COLOR)Minishell status: $(COLOR_GREEN)[OK]$(NO_COLOR)\n"
 
-MINISHELL_KO = @echo "$(NO_COLOR)Minishell status: $(COLOR_RED)[KO]\n"
+MINISHELL_KO = @echo "$(NO_COLOR)Minishell status: $(COLOR_RED)[KO]$(NO_COLOR)\n"
 
 CLEAN_RUN = @echo "$(NO_COLOR)\nCleaning objects ...\n"
 
 FCLEAN_RUN = @echo "$(NO_COLOR)\nCleaning objects and executables ...\n"
 
-CLEAN_DONE = @echo "$(COLOR_GREEN)Clean complete!\n"
+CLEAN_DONE = @echo "$(COLOR_GREEN)Clean complete!$(NO_COLOR)\n"
 
 # Rules
 
@@ -142,7 +142,7 @@ r:
 	@make re && clear && ./minishell
 
 rv:
-	@make re && clear && valgrind --leak-check=full ./minishell
+	@make re && clear && valgrind --leak-check=full --show-leak-kinds=all  --track-fds=yes --suppressions=readline.supp -s ./minishell
 
 gdb:
 	@make re && gdb ./minishell
