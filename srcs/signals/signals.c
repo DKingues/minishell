@@ -21,32 +21,37 @@ void root_handler(int signal)
     	rl_on_new_line();
     	rl_redisplay();
 	}
-
 }
 
-/* void	heredoc_handler(int signal)
+void	heredoc_handler(int signal)
 {
-	if ()
-	//free tudo e exit
-	exit(127 + SIGINT);
-	
-} */
+	if (signal == SIGINT)
+	{
+		ft_printf(1, "\n");
+		exit(130);	
+	}
+}
 
-/* void	choose_signal(int level)
+/*void	ignore_signal(struct sigaction *sa, int signal)
+{
+	sa->sa_handler = SIG_IGN;
+}*/
+
+void	choose_signal(t_sig_struct level)
 {
 	struct sigaction sa;
 	
-	if (level.root == 1)
+	if (level == ROOT)
 	{
 		sa.sa_handler = root_handler;
 		sa.sa_flags = 0;
 		if (sigemptyset(&sa.sa_mask) == -1)
 			return ;
 		sigaction(SIGINT, &sa, NULL);
-		sa.sa_handler = SIG_IGN;
+			sa.sa_handler = SIG_IGN;
 		sigaction(SIGQUIT, &sa, NULL);
 	}
-	else if (level.root == 0)
+	else if (level == CHLD)
 	{
 		sa.sa_handler = SIG_DFL;
 		sa.sa_flags = 0;
@@ -55,12 +60,13 @@ void root_handler(int signal)
 		sigaction(SIGINT, &sa, NULL);
 		sigaction(SIGQUIT, &sa, NULL);
 	}
-	else
+	else if (level == HDOC)
 	{
-		shell()
+		sa.sa_handler = heredoc_handler;
+		sa.sa_flags = 0;
+		if (sigemptyset(&sa.sa_mask) == -1)
+			return ;
+		sigaction(SIGINT, &sa, NULL);
+		//ignore_signal(&sa, SIGQUIT);
 	}
-} */
-//root
-//child
-// heredoc
-// ign
+}

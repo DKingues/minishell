@@ -74,10 +74,13 @@ typedef struct s_shell
 	t_tree		*tree;
 }	t_shell;
 
-typedef struct s_temp_sig_struct
+typedef enum s_sig_struct
 {
-	bool	root;
-}	t_temp_sig_struct;
+	ROOT,
+	CHLD,
+	HDOC,
+	IGNORE,
+}	t_sig_struct;
 
 void	singleton_free(int exit);
 void	manage_here_doc(void);
@@ -101,7 +104,9 @@ int	parsing(char *line);
 
 // signals.c
 
-void	ignore_signal(void);
+void 	root_handler(int signal);
+void	heredoc_handler(int signal);
+void	choose_signal(t_sig_struct level);
 
 // custom_split.c
 

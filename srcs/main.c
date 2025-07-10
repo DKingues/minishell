@@ -114,7 +114,10 @@ int	main(int ac, char **av, char **ev)
 	init_shell(ev);
 	while(1)
 	{
+		choose_signal(ROOT);
 		line = readline("minishell ▸ ");
+		if (!line)
+			exit (0);
 		reset_input(line);
 		if (parser(line) == 0)
 			ft_printf(1, "");
@@ -135,3 +138,4 @@ int	main(int ac, char **av, char **ev)
 	}
 	return (0);
 }
+
