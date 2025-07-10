@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_check.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:44:06 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/25 20:27:56 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/10 18:00:32 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*expand_caller(char *line)
 			quote = line[i];
 		else if (quote == line[i])
 			quote = 0;
-		if ((quote == 0 || quote == '\"') && (start == -1 && line[i] == '$') && ft_isalnum(line[i + 1]))
+		if ((quote == 0 || quote == '\"') && (start == -1 && line[i] == '$') && (ft_isalnum(line[i + 1]) || line[i+1] == '?'))
 			start = i;
 		else if ((quote == 0 || quote == '\"') && start != -1 && (!ft_isalnum(line[i + 1]) || line[i + 1] == '\0') && ++i)
 			break;

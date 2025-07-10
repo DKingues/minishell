@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/27 16:27:59 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/10 18:02:51 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,10 @@ int parser(char *line)
 void	reset_input(char *line)
 {
 	//printf("%s\n", line);
+	close_fds();
 	shell()->pid = 0;
+	shell()->in = dup(0);
+	shell()->out = dup(1);
 	if(shell()->tree)
 	{
 		tree_free(shell()->tree);
@@ -117,7 +120,10 @@ int	main(int ac, char **av, char **ev)
 		choose_signal(ROOT);
 		line = readline("minishell ▸ ");
 		if (!line)
-			exit (0);
+		{
+			ft_printf(1, "exit");
+			exit_cmd(NULL);
+		}
 		reset_input(line);
 		if (parser(line) == 0)
 			ft_printf(1, "");
@@ -131,6 +137,7 @@ int	main(int ac, char **av, char **ev)
 					tree_executer();
 				else
 					waitpid(shell()->pid, NULL, 0);
+				shell()->exit = shell()->exit / 256;
 			}
 			else
 				nptree_executer();
