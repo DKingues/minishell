@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 14:57:02 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/06/13 14:21:29 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/10 17:52:12 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,24 @@ void	pwd_cmd(void)
 	ft_printf(1, "%s\n", getcwd(path, sizeof(path)));
 }
 
+int	exp_checker(char *msg)
+{
+	int	var;
+	int	len;
+
+	var = 0;
+	len = exp_len(msg);
+	if(len == 0 || (!ft_isalpha(msg[0]) && msg[0] != '_'))
+		return (1);
+	while(var < len)
+	{
+		if(!ft_isalnum(msg[var]))
+			return (1);
+		var++;
+	}
+	return(0);
+}
+
 void	exp_cmd(int flag, char *msg)
 {
 	int	var;
@@ -35,12 +53,19 @@ void	exp_cmd(int flag, char *msg)
 	{
 		while(shell()->exp[var])
 		{
-			printf("declare -x %s\n", shell()->exp[var]);
+			if(shell()->exp[var] && shell()->exp[var][0])
+				printf("declare -x %s\n", shell()->exp[var]);
 			var++;
 		}
 	}
 	else
 	{
+		if(exp_checker(msg))
+		{
+			ft_printf(2, "minishell: export: `%s': not a valid identifier\n", msg);
+			shell()->exit = 1;
+			return ;
+		}
 		shell()->exp = exp_set(msg);
 		if (msg[exp_len(msg)] == '=')
 			shell()->env = env_set(msg);

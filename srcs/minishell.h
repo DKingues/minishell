@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/27 16:27:28 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/10 17:53:38 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ typedef struct s_token
 
 typedef struct s_shell
 {
+	int			in;
+	int			out;
 	int			pid;
 	int			count;
 	int			*docs;

@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:29:30 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/06/26 17:26:02 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/10 17:52:03 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	singleton_free(int exit)
 	{
 		if(shell()->env)
 			ft_free_split(shell()->env);
+		close_fds();
 	}
 	if(shell()->hist)
 		ft_free_split(shell()->hist);
@@ -31,14 +32,19 @@ void	singleton_free(int exit)
 
 void	exit_cmd(t_tree	*tree)
 {
+	int	code;
 	if(tree && tree->value && error_syntax(tree->value) && !long_check(tree->value))
 	{
 		if(tree->right && tree->value)
+		{
 			ft_printf(2, "minishell: exit: too many arguments\n");
+			shell()->exit = 1;
+		}
 		else
 		{
+			code = ft_atoi(tree->value);
 			singleton_free(1);
-			exit(ft_atoi(tree->value));
+			exit(code);
 		}
 	}
 	else if (tree && tree->value)
@@ -56,7 +62,6 @@ void	exit_cmd(t_tree	*tree)
 
 void	cd_cmd(char *path)
 {
-	
 	if (path && !access(path, 0))
 	{
 		chdir(path);
@@ -72,7 +77,10 @@ void	cd_cmd(char *path)
 	else if (path[0] == '~' && path[1])
 		mv_abs(path);
 	else
-		printf("Error3");
+	{
+		ft_printf(2, "minishell: cd: %s: No such file or directory\n", path);
+		shell()->exit = 1;
+	}
 }
 
 char	*find_path(char *cmd)

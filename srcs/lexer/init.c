@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:08:01 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/06/24 16:10:31 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/10 17:53:25 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void init_shell(char **ev)
 	shell()->hist = ft_calloc(sizeof(char *), 1);
 	shell()->exit = 0;
 	shell()->pipe_count = 0;
+	shell()->in = 0;
+	shell()->out = 0;
 }
 
 void	init_env(char **ev)

@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:41:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/06/27 11:59:47 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/10 17:52:28 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	builtin_exec(t_tree *tree)
 		temp = temp->right;
 		if(temp && temp->value)
 		{
-			while (temp->value[0] == '-')
+			while (temp && temp->value[0] == '-')
 			{
 				flag = !flag_check(temp->value, "n");
 				if(!flag)
@@ -146,7 +146,10 @@ void	builtin_exec(t_tree *tree)
 		if(temp && temp->value)
 		{
 			if(temp->right && temp->right->value)
-				ft_printf(2, "cd: too many arguments");
+			{
+				ft_printf(2, "minishell: cd: too many arguments\n");
+				shell()->exit = 1;
+			}
 			else
 				cd_cmd(temp->value);
 			return ;
@@ -197,6 +200,8 @@ void	builtin_exec(t_tree *tree)
 			}
 		}
 	}
+	dup2(shell()->in, 0);
+	dup2(shell()->out, 1);
 	close_fds();
 }
 
@@ -205,7 +210,8 @@ void    execute(t_tree  *cmd)
 	int	var = 0;
 	char    *path;
 	char **args;
-
+	char *temp;
+	
 	if (is_builtin(cmd->value))
 	{
 		builtin_exec(cmd);
@@ -217,18 +223,22 @@ void    execute(t_tree  *cmd)
 	close_fds();
 	if(execve(path, args, shell()->env) == -1)
 	{
-		if(var != -2)
-			perror("EXEC2: ");
+		while(shell()->env[var] && !ft_strnstr(shell()->env[var], "PATH", 4))
+			var++;
+		if(shell()->env[var] && ft_strnstr(shell()->env[var], "PATH", 4))
+		{
+			ft_printf(2, "%s: command not found\n", path);
+			shell()->exit = 127;
+		}
 		else
 		{
-			while(shell()->env)
-			{
-				if(ft_strnstr(shell()->env[var], "PATH", 4))
-				{
-					ft_printf(2, "%s: command not found\n", path);
-				}
-			}
+			temp = ft_nfstrjoin("minishell: ", path);
+			perror(temp);
+			free(temp);
+			shell()->exit = 127;
 		}
+		if(!access(path, F_OK) && access(path, X_OK))
+			shell()->exit = 126;
 	}
 	ft_free_split(args);
 	free(path);
@@ -272,12 +282,15 @@ int waitpids(int *pids, int var)
 
 	i = 0;
 	code = 0;
-	while(i < var)
+	while(i < var - 1)
 	{
-		waitpid(pids[i], &code, 0);
+		waitpid(pids[i], NULL, 0);
 		i++;
 	}
+	waitpid(pids[i], &code, 0);
 	free(pids);
+	if (code == 139)
+		code = 256;
 	return (code / 256);
 }
 
@@ -370,6 +383,7 @@ void    tree_executer(void)
 
 	pids = ft_calloc(shell()->pipe_count + 2, sizeof(int));
 	shell()->count = 0;
+	shell()->exit = 0;
 	while(shell()->tree)
 	{
 		if(shell()->tree->type == PIPE)
@@ -399,7 +413,7 @@ void    tree_executer(void)
 			if(shell()->env)
 				ft_free_split(shell()->env);
 			close_fds();
-			exit(0);
+			exit(shell()->exit / 256);
 		}
 		else
 		{
@@ -424,7 +438,6 @@ void    tree_executer(void)
 
 void    nptree_executer(void)
 {
-	int var = 0;
 	t_tree *temp;
 
 	shell()->count = 0;
@@ -437,12 +450,22 @@ void    nptree_executer(void)
 				redir_input(temp);
 			temp = temp->left;
 		}
-		if(temp && temp->value &&!ft_strncmp(temp->value, "exit", ft_strlen(temp->value) + 1))
+		if(shell()->tree && shell()->tree->value && !ft_strncmp(shell()->tree->value, "exit", ft_strlen(shell()->tree->value) + 1))
+		{	
+			dup2(shell()->in, 0);
+			dup2(shell()->out, 1);
 			ft_printf(1, "exit\n");
+		}
+		else
+			shell()->exit = 0;
 		execute(shell()->tree);
+		dup2(shell()->in, 0);
+		dup2(shell()->out, 1);
+		close_fds();
 	}
 	else
-	{	
+	{
+		shell()->exit = 0;
 		shell()->pid = fork();
 		if(!shell()->pid)
 		{
@@ -459,10 +482,10 @@ void    nptree_executer(void)
 			if(shell()->env)
 				ft_free_split(shell()->env);
 			close_fds();
-			exit(0);
+			exit(shell()->exit);
 		}
 		else
-			waitpid(shell()->pid, &var, 0);
-		shell()->exit = var / 256;
+			waitpid(shell()->pid, &shell()->exit, 0);
+		shell()->exit = shell()->exit / 256;
 	}
 }
