@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/11 16:42:10 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:14:00 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int parser(char *line)
 	if(token)
 	{
 		pipe_counter(token);
-		shell()->tree = tokens_to_tree(token, NULL, tree, 0);
+		shell()->tree = tokens_to_tree(token, NULL, shell()->tree, 0);
 	}
 	// printf("TREE\n");
 	// print_tree(shell()->tree);

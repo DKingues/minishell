@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/11 13:41:20 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:16:08 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_token
 
 typedef struct s_shell
 {
+	char **alias;
 	int			in;
 	int			out;
 	int			pid;
@@ -83,6 +84,20 @@ typedef enum s_sig_struct
 	HDOC,
 	IGNORE,
 }	t_sig_struct;
+
+# include <stdlib.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <stdio.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
+char	*get_next_line(int fd);
+int		ft_linelen_gnl(char *str);
+char	*ft_strjoin_gnl(char *s1, char *s2);
+void	ft_buffer_clean(char *str);
 
 void	free_list(t_token *token);
 void	singleton_free(int exit);
