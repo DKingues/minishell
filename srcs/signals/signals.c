@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:42:01 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/11 16:35:41 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/11 19:02:44 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	heredoc_handler(int signal)
 	if (signal == SIGINT)
 	{
 		ft_printf(1, "\n");
-		exit(130);	
+		exit(130);
 	}
 }
 
@@ -70,6 +70,8 @@ void	choose_signal(t_sig_struct level)
 	}
 	else if (level == IGNORE)
 	{
-		
+		sa.sa_handler = SIG_IGN;
+		sigaction(SIGINT, &sa, NULL);
+		sigaction(SIGQUIT, &sa, NULL);
 	}
 }

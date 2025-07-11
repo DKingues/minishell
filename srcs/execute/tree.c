@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:41:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/11 16:34:52 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/11 19:06:44 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,7 +290,6 @@ void    execute(t_tree  *cmd)
 	else
 		args = args_join(cmd);
 	var = 0;
-	printf("COMMAND = %s\n", path);
 	singleton_free(0);
 	close_fds();
 	if(execve(path, args, shell()->env) == -1)
@@ -414,9 +413,9 @@ void	here_doc(char *eof, int fd)
 		if (!ft_strncmp(eof, line, len + 1))
 		{
 			free(line);
-			shell()->exit = 0;
+			shell()->exit = 29;
 			close_fds();
-			return ;
+			exit(0);
 		}
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
@@ -424,7 +423,7 @@ void	here_doc(char *eof, int fd)
 	}
 }
 
-void	manage_here_doc(void)
+int	manage_here_doc(void)
 {
 	t_tree	*tree;
 	t_tree	*temp;
@@ -445,7 +444,7 @@ void	manage_here_doc(void)
 		tree = tree->right;
 	}
 	if(!count)
-		return ;
+		return (0) ;
 	shell()->docs = ft_calloc(count + 1, sizeof(int));
 	count = 0;
 	tree = shell()->tree;
@@ -458,8 +457,24 @@ void	manage_here_doc(void)
 			{
 				if(pipe(fd) == -1)
 					exit(0);
-				here_doc(temp->value, fd[1]);
-				close(fd[1]);
+				shell()->pid = fork();
+				if(!shell()->pid)
+				{
+					choose_signal(HDOC);
+					close(fd[0]);
+					here_doc(temp->value, fd[1]);
+				}
+				else
+				{
+					choose_signal(IGNORE);
+					close(fd[1]);
+					waitpid(shell()->pid, &shell()->exit, 0);
+					choose_signal(ROOT);
+				}
+				if(shell()->exit / 256 == 130)
+					return (1);
+				else if(shell()->exit / 256 == 139)
+					ft_printf(2, "minishell: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", temp->value);
 				shell()->docs[count] = fd[0];
 				count++;
 			}
@@ -467,6 +482,7 @@ void	manage_here_doc(void)
 		}
 		tree = tree->right;
 	}
+	return(0);
 }
 
 void    tree_executer(void)

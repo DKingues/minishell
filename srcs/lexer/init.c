@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:08:01 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/11 17:09:48 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:38:12 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ char *str_redef(char *str)
 	var = 0;
 	var2 = 1;
 	if((str[0] == '\'' && str[ft_strlen(str) - 2] != '\'') || (str[0] != '\'' && str[ft_strlen(str) - 2] == '\''))
-		return(str);
+		return(NULL);
 	if((str[0] == '\"' && str[ft_strlen(str) - 2] != '\"') || (str[0] != '\"' && str[ft_strlen(str) - 2] == '\"'))
-		return(str);
+		return(NULL);
 	if(str[0] != '\'' && str[0] != '\"')
 		except = 0;
 	while(str[var])
@@ -70,7 +70,8 @@ char *copy_no_nl(char *temp)
 		res[var] = temp[var];
 		var++;
 	}
-	free(temp);
+	if(temp)
+		free(temp);
 	return(res);
 }
 
@@ -100,6 +101,12 @@ void	set_alias(int len)
 		if(!ft_strncmp("alias ", line, 6))
 		{
 			temp = str_redef(line + exp_len(line) + 1);
+			if(!temp)
+			{
+				free(line);
+				line = get_next_line(fd);
+				continue ;
+			}
 			if(temp[ft_strlen(temp) - 1] == '\n')
 				temp = copy_no_nl(temp);
 			while(line[var] != '=')
