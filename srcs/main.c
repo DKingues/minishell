@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/11 17:14:00 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:41:39 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ int parser(char *line)
 	// printf("TREE\n");
 	// print_tree(shell()->tree);
 	free_list(token);
-	tree_free(shell()->tree);
 	free(line);
 	return (1);
 }
@@ -122,6 +121,8 @@ int	main(int ac, char **av, char **ev)
 			ft_printf(1, "exit");
 			exit_cmd(NULL);
 		}
+		if(!line[0])
+			continue ;
 		reset_input(line);
 		if (parser(line) == 0)
 			ft_printf(1, "");
@@ -132,10 +133,17 @@ int	main(int ac, char **av, char **ev)
 			{
 				shell()->pid = fork();
 				if(!shell()->pid)
+				{
+					choose_signal(CHLD);
 					tree_executer();
+				}
 				else
-					waitpid(shell()->pid, NULL, 0);
-				shell()->exit = shell()->exit / 256;
+				{
+					choose_signal(IGNORE);
+					waitpid(shell()->pid, &shell()->exit, 0);
+					choose_signal(ROOT);
+					shell()->exit = shell()->exit / 256;
+				}
 			}
 			else
 				nptree_executer();

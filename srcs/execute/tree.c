@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:41:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/11 16:34:52 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:44:04 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,7 +290,6 @@ void    execute(t_tree  *cmd)
 	else
 		args = args_join(cmd);
 	var = 0;
-	printf("COMMAND = %s\n", path);
 	singleton_free(0);
 	close_fds();
 	if(execve(path, args, shell()->env) == -1)
@@ -477,7 +476,6 @@ void    tree_executer(void)
 	int check = 0;
 	t_tree *temp;
 
-	choose_signal(CHLD);
 	pids = ft_calloc(shell()->pipe_count + 2, sizeof(int));
 	shell()->count = 0;
 	shell()->exit = 0;
@@ -583,7 +581,11 @@ void    nptree_executer(void)
 			exit(shell()->exit);
 		}
 		else
+		{
+			choose_signal(IGNORE);
 			waitpid(shell()->pid, &shell()->exit, 0);
+			choose_signal(ROOT);
+		}
 		shell()->exit = shell()->exit / 256;
 	}
 }
