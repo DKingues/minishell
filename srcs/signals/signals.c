@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:42:01 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/27 16:28:56 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:35:41 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	choose_signal(t_sig_struct level)
 		if (sigemptyset(&sa.sa_mask) == -1)
 			return ;
 		sigaction(SIGINT, &sa, NULL);
-			sa.sa_handler = SIG_IGN;
 		sigaction(SIGQUIT, &sa, NULL);
 	}
 	else if (level == CHLD)
@@ -68,5 +67,9 @@ void	choose_signal(t_sig_struct level)
 			return ;
 		sigaction(SIGINT, &sa, NULL);
 		//ignore_signal(&sa, SIGQUIT);
+	}
+	else if (level == IGNORE)
+	{
+		
 	}
 }

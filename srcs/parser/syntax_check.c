@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:37:46 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/11 12:04:35 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:12:54 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ int	check_pipes(char* line)
 	
 	i = 0;
 	i += skip_spaces(&line[i]);
-	if(line[i] == '|')
+	if(line && line[i] == '|')
 		return (ft_printf(2, RED"Invalid:"NO_COLOR" no command before pipe.\n"), 0); // echo "||"
-	while (line[i])
+	while (line && line[i])
 	{
 		if (line[i] == '\"' || line[i] == '\'')
 		{
@@ -67,7 +67,7 @@ int	check_redirection(char *line)
 	int	i;
 	
 	i = 0;
-	while (line[i])
+	while (line && line[i])
 	{
 		if (line[i] == '\"' || line[i] == '\'')
 		{
@@ -92,7 +92,8 @@ int	check_redirection(char *line)
 				if (line[i] == '\0')
 					return (ft_printf(2, RED"Invalid:"NO_COLOR" no file after \'<\'.\n"), 0);
 			}
-			i++;
+			else
+				i++;
 		}
 	}
 	return (1);
@@ -128,7 +129,8 @@ int check_consecutive(char *line)
 				else if ((temp != '>' && temp != '<') && consecutive > 0)
 					return (0);
 			}
-			i++;
+			else
+				i++;
 		}
 	}
 	return (1);

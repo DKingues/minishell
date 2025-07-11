@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/10 17:53:38 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/11 13:41:20 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef enum s_sig_struct
 	IGNORE,
 }	t_sig_struct;
 
+void	free_list(t_token *token);
 void	singleton_free(int exit);
 void	manage_here_doc(void);
 void    nptree_executer(void);
