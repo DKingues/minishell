@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:37:46 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/28 17:50:00 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/11 12:04:35 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,27 @@ int	check_pipes(char* line)
 	i = 0;
 	i += skip_spaces(&line[i]);
 	if(line[i] == '|')
-		return (ft_printf(2, RED"Invalid:"NO_COLOR" no command before pipe.\n"), 0);
+		return (ft_printf(2, RED"Invalid:"NO_COLOR" no command before pipe.\n"), 0); // echo "||"
 	while (line[i])
 	{
-		if (line[i] == '|' && line[i + 1] == '|')
-			return (ft_printf(2, RED"Invalid:"NO_COLOR" unexpected token \'|\'.\n"), 0);
-		else if (line[i] == '|')
+		if (line[i] == '\"' || line[i] == '\'')
 		{
 			i++;
-			i += skip_spaces(&line[i]);
-			if (line[i] == '\0')
-				return (ft_printf(2, RED"Invalid:"NO_COLOR" no command after pipe.\n"), 0);
+			i += skip_quotes(&line[i], line[i - 1]) + 1;
 		}
-		i++;
+		else
+		{
+			if (line[i] == '|' && line[i + 1] == '|')
+				return (ft_printf(2, RED"Invalid:"NO_COLOR" unexpected token \'|\'.\n"), 0);
+			else if (line[i] == '|')
+			{
+				i++;
+				i += skip_spaces(&line[i]);
+				if (line[i] == '\0')
+					return (ft_printf(2, RED"Invalid:"NO_COLOR" no command after pipe.\n"), 0);
+			}
+			i++;
+		}
 	}
 	return (1);
 }
@@ -61,23 +69,31 @@ int	check_redirection(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '>')
+		if (line[i] == '\"' || line[i] == '\'')
 		{
-			while (line[i] == '>')
-				i++;
-			i += skip_spaces(&line[i]);
-			if (line[i] == '\0')
-				return (ft_printf(2, RED"Invalid:"NO_COLOR" no file after \'>\'.\n"), 0);
+			i++;
+			i += skip_quotes(&line[i], line[i - 1]) + 1;
 		}
-		if (line[i] == '<')
-		{
-			while (line[i] == '<')
-				i++;
-			i += skip_spaces(&line[i]);
-			if (line[i] == '\0')
-				return (ft_printf(2, RED"Invalid:"NO_COLOR" no file after \'<\'.\n"), 0);
+		else
+		{	
+			if (line[i] == '>')
+			{
+				while (line[i] == '>')
+					i++;
+				i += skip_spaces(&line[i]);
+				if (line[i] == '\0')
+					return (ft_printf(2, RED"Invalid:"NO_COLOR" no file after \'>\'.\n"), 0);
+			}
+			if (line[i] == '<')
+			{
+				while (line[i] == '<')
+					i++;
+				i += skip_spaces(&line[i]);
+				if (line[i] == '\0')
+					return (ft_printf(2, RED"Invalid:"NO_COLOR" no file after \'<\'.\n"), 0);
+			}
+			i++;
 		}
-		i++;
 	}
 	return (1);
 }
@@ -91,21 +107,29 @@ int check_consecutive(char *line)
 	i = 0;
 	while (line[i])
 	{
-		consecutive = 0;
-		if (is_token(line[i]))
+		if (line[i] == '\"' || line[i] == '\'')
 		{
-			temp = line[i++];
-			while (line[i] == temp)
-			{
-				i++;
-				consecutive++;
-			}
-			if ((temp == '>' || temp == '<') && consecutive > 1)
-				return (0);
-			else if ((temp != '>' && temp != '<') && consecutive > 0)
-				return (0);
+			i++;
+			i += skip_quotes(&line[i], line[i - 1]) + 1;
 		}
-		i++;
+		else
+		{	
+			consecutive = 0;
+			if (is_token(line[i]))
+			{
+				temp = line[i++];
+				while (line[i] == temp)
+				{
+					i++;
+					consecutive++;
+				}
+				if ((temp == '>' || temp == '<') && consecutive > 1)
+					return (0);
+				else if ((temp != '>' && temp != '<') && consecutive > 0)
+					return (0);
+			}
+			i++;
+		}
 	}
 	return (1);
 }
