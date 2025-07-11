@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+         #
+#    By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/06/27 16:27:12 by dicosta-         ###   ########.fr        #
+#    Updated: 2025/07/11 15:21:30 by rmota-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ LIBFT = includes/libft/libft.a
 
 SRCS = main.c
 
-LEXER = init.c token.c custom_split.c custom_split_aux.c token_aux.c format_line.c
+LEXER = init.c token.c custom_split.c custom_split_aux.c token_aux.c format_line.c get_next_line_utils.c get_next_line.c
 
 PARSER = parse.c syntax_aux.c syntax_check.c binary_tree.c
 

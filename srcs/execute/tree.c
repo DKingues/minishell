@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:41:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/10 17:52:28 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:34:52 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,57 @@ void	builtin_exec(t_tree *tree)
 	close_fds();
 }
 
+char *search_alias(char *path)
+{
+	int	var;
+
+	var = 0;
+	while(shell()->alias[var])
+	{
+		if(!ft_strncmp(path, shell()->alias[var], exp_len(shell()->alias[var])))
+		{
+			free(path);
+			path = ft_strdup(shell()->alias[var] + exp_len(shell()->alias[var]) + 1);
+			return (path);
+		}
+		var++;
+	}
+	return (path);
+}
+
+char **split_redef(char **args, t_tree *cmd)
+{
+	int	var;
+	t_tree *temp2;
+	char **temp;
+
+	var = 0;
+	temp2 = cmd->right;
+	while(args[var])
+		var++;
+	while(temp2)
+	{
+		temp2 = temp2->right;
+		var++;
+	}
+	temp = ft_calloc(sizeof(char *), var + 1);
+	var = 0;
+	while(args[var])
+	{
+		temp[var] = ft_strdup(args[var]);
+		var++;
+	}
+	temp2 = cmd->right;
+	while(temp2)
+	{
+		temp[var] = ft_strdup(temp2->value);
+		var++;
+		temp2 = temp2->right;
+	}
+	ft_free_split(args);
+	return(temp);
+}
+
 void    execute(t_tree  *cmd)
 {
 	int	var = 0;
@@ -218,7 +269,28 @@ void    execute(t_tree  *cmd)
 		return ;
 	}
 	path = find_path(cmd->value);
-	args = args_join(cmd);
+	if(access(path, F_OK) && access(path, X_OK))
+	{
+		temp = ft_strdup(path);
+		path = search_alias(path);
+		if(!ft_strncmp(temp, path, ft_strlen(path)))
+		{
+			args = args_join(cmd);
+			free(temp);
+		}
+		else
+		{
+			args = ft_split(path, ' ');
+			args = split_redef(args, cmd);
+			free(temp);
+			free(path);
+			path = find_path(args[0]);
+		}
+	}
+	else
+		args = args_join(cmd);
+	var = 0;
+	printf("COMMAND = %s\n", path);
 	singleton_free(0);
 	close_fds();
 	if(execve(path, args, shell()->env) == -1)
@@ -247,10 +319,18 @@ void    execute(t_tree  *cmd)
 int redir_input(t_tree  *redir)
 {
 	int fd;
-
+	char *temp;
 	if(redir->type == READ)
 	{
 		fd = open(redir->value, O_RDONLY);
+		if(fd == -1)
+		{
+			temp = ft_nfstrjoin("minishell: ", redir->value);
+			perror(temp);
+			free(temp);
+			singleton_free(1);
+			exit(1);
+		}
 		dup2(fd, 0);
 		return (0);
 	}
@@ -263,12 +343,28 @@ int redir_input(t_tree  *redir)
 	else if (redir->type == TRUNCATE)
 	{
 		fd = open(redir->value, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		if(fd == -1)
+		{
+			temp = ft_nfstrjoin("minishell: ", redir->value);
+			perror(temp);
+			free(temp);
+			singleton_free(1);
+			exit(1);
+		}
 		dup2(fd, 1);
 		return (0);
 	}
 	else if (redir->type == APPEND)
 	{
 		fd = open(redir->value, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		if(fd == -1)
+		{
+			temp = ft_nfstrjoin("minishell: ", redir->value);
+			perror(temp);
+			free(temp);
+			singleton_free(1);
+			exit(1);
+		}
 		dup2(fd, 1);
 		return (0);
 	}
@@ -381,6 +477,7 @@ void    tree_executer(void)
 	int check = 0;
 	t_tree *temp;
 
+	choose_signal(CHLD);
 	pids = ft_calloc(shell()->pipe_count + 2, sizeof(int));
 	shell()->count = 0;
 	shell()->exit = 0;
@@ -469,6 +566,7 @@ void    nptree_executer(void)
 		shell()->pid = fork();
 		if(!shell()->pid)
 		{
+			choose_signal(CHLD);
 			if(shell()->tree->type == READ || shell()->tree->type == HERE_DOC || shell()->tree->type == TRUNCATE || shell()->tree->type == APPEND)
 				redir_input(shell()->tree); //printf("BF REDIRECTING\n");
 			while(temp)
