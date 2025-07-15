@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 11:57:26 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/11 16:11:15 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/15 15:49:44 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void dequote_tokens(t_token **token)
 {
+	if (!token || !*token)
+		return ;
 	while ((*token)->next)
 	{
 		if (count_quotes((*token)->value) % 2 == 0)

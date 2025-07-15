@@ -6,11 +6,18 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 16:44:28 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/14 18:06:00 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/15 15:43:54 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	parsing(char *line)
+{
+	if (syntax_check(line) == 0)
+		return (0);
+	return (1);
+}
 
 void	tree_free(t_tree *ast)
 {

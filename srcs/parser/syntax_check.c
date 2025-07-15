@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:37:46 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/11 16:12:54 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/15 16:06:08 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,23 @@ int	syntax_check(char *line)
 {
 	if (count_quotes(line) % 2 != 0)
 		return (ft_printf(2, RED"Invalid:"NO_COLOR" unclosed quotes.\n"), 0);
-	/*else if (check_command(line) == 0)
-		return (ft_putendl_fd("Invalid: unknown command.", 2), 0);*/
 	else if (check_pipes(line) == 0)
 		return (0);
 	else if (check_consecutive(line) == 0)
 		return (ft_printf(2, RED"Invalid:"NO_COLOR" unexpected token.\n"), 0);
 	else if (check_redirection(line) == 0)
 		return (0);
-	/*else if (check_null(line) == 0)
-		return (ft_putendl_fd("Invalid: no command.", 2), 0);
-	else if (check_heredoc(line) == 0)
-		return (ft_putendl_fd("Invalid: no EOF.", 2), 0);*/
 	return (1);
 }
-int	check_pipes(char* line)
+
+int	check_pipes(char *line)
 {
 	int		i;
-	
+
 	i = 0;
 	i += skip_spaces(&line[i]);
-	if(line && line[i] == '|')
-		return (ft_printf(2, RED"Invalid:"NO_COLOR" no command before pipe.\n"), 0); // echo "||"
+	if (line && line[i] == '|')
+		return (ft_printf(2, RED"Invalid:"NO_COLOR" no command before pipe.\n"), 0);
 	while (line && line[i])
 	{
 		if (line[i] == '\"' || line[i] == '\'')
@@ -65,7 +60,7 @@ int	check_pipes(char* line)
 int	check_redirection(char *line)
 {
 	int	i;
-	
+
 	i = 0;
 	while (line && line[i])
 	{
@@ -75,7 +70,7 @@ int	check_redirection(char *line)
 			i += skip_quotes(&line[i], line[i - 1]) + 1;
 		}
 		else
-		{	
+		{
 			if (line[i] == '>')
 			{
 				while (line[i] == '>')
@@ -99,7 +94,7 @@ int	check_redirection(char *line)
 	return (1);
 }
 
-int check_consecutive(char *line)
+int	check_consecutive(char *line)
 {
 	char	temp;
 	int		i;
@@ -114,7 +109,7 @@ int check_consecutive(char *line)
 			i += skip_quotes(&line[i], line[i - 1]) + 1;
 		}
 		else
-		{	
+		{
 			consecutive = 0;
 			if (is_token(line[i]))
 			{
@@ -134,6 +129,16 @@ int check_consecutive(char *line)
 		}
 	}
 	return (1);
+}
+
+int	skip_spaces(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (ft_isspace(line[i]))
+		i++;
+	return (i);
 }
 
 /*int	check_command(char *line)

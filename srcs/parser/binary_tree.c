@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:08:44 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/14 18:07:02 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/15 15:37:36 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	set_right_node(t_tree *ast, t_token *token)
 		if (ast->right == NULL)
 		{
 			ast->right = new_node(token->value, token->type);
-			return ;	
+			return ;
 		}
 		ast = ast->right;
 	}
@@ -32,15 +32,16 @@ void	set_left_node(t_tree *ast, t_token *token)
 		if (ast->left == NULL)
 		{
 			ast->left = new_node(token->value, token->type);
-			return ;	
+			return ;
 		}
 		ast = ast->left;
 	}
 }
+
 t_tree	*new_node(char *value, int type)
 {
 	t_tree	*new;
-	
+
 	new = ft_calloc(sizeof(t_tree), 1);
 	if (!new)
 		return (NULL);
@@ -54,7 +55,7 @@ t_tree	*new_node(char *value, int type)
 t_tree	*phantom_node(void)
 {
 	t_tree	*new;
-	
+
 	new = ft_calloc(sizeof(t_tree), 1);
 	if (!new)
 		return (NULL);
@@ -68,7 +69,7 @@ t_tree	*phantom_node(void)
 t_tree	*tokens_to_tree(t_token *token, t_token *target, t_tree *ast, int depth)
 {
 	t_token	*temp;
-	
+
 	if (token == NULL || token == target)
 		return (NULL);
 	temp = find_pipe(token, target);
@@ -89,7 +90,7 @@ t_tree	*tokens_to_tree(t_token *token, t_token *target, t_tree *ast, int depth)
 			{
 				if (ast->value == NULL)
 					ast->value = ft_strdup(token->value);
-				else	
+				else
 					set_right_node(ast, token);
 			}
 			token = token->next;
@@ -97,4 +98,3 @@ t_tree	*tokens_to_tree(t_token *token, t_token *target, t_tree *ast, int depth)
 	}
 	return (ast);
 }
-
