@@ -6,20 +6,20 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:42:01 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/11 17:52:34 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/14 18:02:02 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void root_handler(int signal)
+void	root_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
 		write(1, "\n", 1);
-    	rl_replace_line("", 0);
-    	rl_on_new_line();
-    	rl_redisplay();
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
 	}
 }
 
@@ -32,15 +32,28 @@ void	heredoc_handler(int signal)
 	}
 }
 
-/*void	ignore_signal(struct sigaction *sa, int signal)
+void	choose_signal2(t_sig_struct	level, struct sigaction *sa)
 {
-	sa->sa_handler = SIG_IGN;
-}*/
+	if (level == HDOC)
+	{
+		sa->sa_handler = heredoc_handler;
+		sa->sa_flags = 0;
+		if (sigemptyset(&sa->sa_mask) == -1)
+			return ;
+		sigaction(SIGINT, sa, NULL);
+	}
+	else if (level == IGNORE)
+	{
+		sa->sa_handler = SIG_IGN;
+		sigaction(SIGINT, sa, NULL);
+		sigaction(SIGQUIT, sa, NULL);
+	}
+}
 
 void	choose_signal(t_sig_struct level)
 {
-	struct sigaction sa;
-	
+	struct sigaction	sa;
+
 	if (level == ROOT)
 	{
 		sa.sa_handler = root_handler;
@@ -59,19 +72,6 @@ void	choose_signal(t_sig_struct level)
 		sigaction(SIGINT, &sa, NULL);
 		sigaction(SIGQUIT, &sa, NULL);
 	}
-	else if (level == HDOC)
-	{
-		sa.sa_handler = heredoc_handler;
-		sa.sa_flags = 0;
-		if (sigemptyset(&sa.sa_mask) == -1)
-			return ;
-		sigaction(SIGINT, &sa, NULL);
-		//ignore_signal(&sa, SIGQUIT);
-	}
-	else if (level == IGNORE)
-	{
-		sa.sa_handler = SIG_IGN;
-		sigaction(SIGINT, &sa, NULL);
-		sigaction(SIGQUIT, &sa, NULL);
-	}
+	else
+		choose_signal2(level, &sa);
 }

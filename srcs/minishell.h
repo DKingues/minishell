@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/11 17:47:30 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:52:30 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,27 +94,18 @@ typedef enum s_sig_struct
 #  define BUFFER_SIZE 42
 # endif
 
-char	*get_next_line(int fd);
-int		ft_linelen_gnl(char *str);
-char	*ft_strjoin_gnl(char *s1, char *s2);
-void	ft_buffer_clean(char *str);
-
-void	free_list(t_token *token);
-void	singleton_free(int exit);
-void	manage_here_doc(void);
-void    nptree_executer(void);
-void	tree_executer(void);
-int		flag_check(char *flags, char *valid);
-
 // binary_tree.c
 
-int 	pipe_counter(t_token *token);
 t_tree	*tokens_to_tree(t_token *token, t_token *target, t_tree *ast, int depth);
-t_token *find_pipe(t_token *token, t_token *target);
 void	set_left_node(t_tree *ast, t_token *token);
 void 	set_right_node(t_tree *ast, t_token *token);
 t_tree	*new_node(char *value, int type);
+
+// binary_tree_aux.c
+
 void	tree_free(t_tree *ast);
+t_token *find_pipe(t_token *token, t_token *target);
+int 	pipe_counter(t_token *token);
 
 // parse.C
 
@@ -258,5 +249,19 @@ void	execute(t_tree	*cmd);
 char	**args_join(t_tree	*cmd);
 int		waitpids(int *pids, int var);
 void	close_fds(void);
+
+// get_next_line
+
+char	*get_next_line(int fd);
+int		ft_linelen_gnl(char *str);
+char	*ft_strjoin_gnl(char *s1, char *s2);
+void	ft_buffer_clean(char *str);
+
+void	free_list(t_token *token);
+void	singleton_free(int exit);
+void	manage_here_doc(void);
+void    nptree_executer(void);
+void	tree_executer(void);
+int		flag_check(char *flags, char *valid);
 
 #endif

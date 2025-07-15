@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+         #
+#    By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/07/11 15:21:30 by rmota-ma         ###   ########.fr        #
+#    Updated: 2025/07/14 17:57:09 by dicosta-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRCS = main.c
 
 LEXER = init.c token.c custom_split.c custom_split_aux.c token_aux.c format_line.c get_next_line_utils.c get_next_line.c
 
-PARSER = parse.c syntax_aux.c syntax_check.c binary_tree.c
+PARSER = parse.c syntax_aux.c syntax_check.c binary_tree.c binary_tree_aux.c
 
 EXECUTER = commands.c commands2.c cmd_utils.c cmd_utils2.c cmd_utils3.c cmd_utils4.c cmd_utils5.c tree.c
 
@@ -147,4 +147,8 @@ rv:
 gdb:
 	@make re && gdb ./minishell
 
+music:
+	@paplay WTHELLY.ogg &
+	@make r
+	
 .PHONY: all clean fclean re
