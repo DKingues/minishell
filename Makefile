@@ -6,7 +6,7 @@
 #    By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/07/15 15:44:09 by dicosta-         ###   ########.fr        #
+#    Updated: 2025/07/15 17:30:26 by dicosta-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -142,7 +142,7 @@ r:
 	@make re && clear && ./minishell
 
 rv:
-	@make re && clear && valgrind --leak-check=full --show-leak-kinds=all  --track-fds=yes --suppressions=readline.supp -s ./minishell
+	@make re && clear && valgrind --leak-check=full --show-leak-kinds=all  --track-fds=yes --track-origins=yes  --suppressions=readline.supp -s ./minishell
 
 gdb:
 	@make re && gdb ./minishell

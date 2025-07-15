@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:41:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/15 16:13:35 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/15 19:11:59 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -276,11 +276,11 @@ void    execute(t_tree  *cmd)
 	if(cmd->value[0] == '~' && cmd->value[1] == '/')
 	{
 		temp = ft_strjoin(find_home(), cmd->value + 1);
-		free(cmd->value);
-		cmd->value = ft_strdup(temp);
+		path = find_path(temp);
 		free(temp);
 	}
-	path = find_path(cmd->value);
+	else
+		path = find_path(cmd->value);
 	if(access(path, F_OK) && access(path, X_OK))
 	{
 		temp = ft_strdup(path);
@@ -378,7 +378,7 @@ int redir_input(t_tree  *redir)
 	return(1);
 }
 
-int waitpids(int *pids, int var)
+int waitpids(int var)
 {
 	int code;
 	int	i;
@@ -388,10 +388,10 @@ int waitpids(int *pids, int var)
 	close(0);
 	while(i < var)
 	{
-		waitpid(pids[i], &code, 0);
+		waitpid(shell()->pids[i], &code, 0);
 		i++;
 	}
-	free(pids);
+	free(shell()->pids);
 	return (code / 256);
 }
 
@@ -422,6 +422,7 @@ void	here_doc(char *eof, int fd)
 				free(line);
 			else
 				ft_printf(2, "minishell: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", eof);
+			singleton_free(1);
 			close_fds();
 			exit(0);
 		}
@@ -496,47 +497,49 @@ void    tree_executer(void)
 {
 	int fd[2];
 	int var = 0;
-	int *pids;
 	int check = 0;
 	t_tree *temp;
+	t_tree *temp2;
 
-	pids = ft_calloc(shell()->pipe_count + 2, sizeof(int));
+	shell()->pids = ft_calloc(shell()->pipe_count + 2, sizeof(int));
 	shell()->count = 0;
 	choose_signal(CHLD);
-	while(shell()->tree)
+	temp2 = shell()->tree;
+	while(temp2)
 	{
-		if(shell()->tree->type == PIPE)
+		if(temp2->type == PIPE)
 		{   
 			if (pipe(fd) == -1)
 				return ;	
 			check = 1;
 		}
-		temp = shell()->tree->left;
-		pids[var] = fork();
-		if(!pids[var])
+		temp = temp2->left;
+		shell()->pids[var] = fork();
+		if(!shell()->pids[var])
 		{
+			free(shell()->pids);
 			if(check == 1)
 				dup2(fd[1], 1); //printf("DUPING FD[1]\n");
-			if(shell()->tree->type == READ || shell()->tree->type == HERE_DOC || shell()->tree->type == TRUNCATE || shell()->tree->type == APPEND)
-				redir_input(shell()->tree); //printf("BF REDIRECTING\n");
+			if(temp2->type == READ || temp2->type == HERE_DOC || temp2->type == TRUNCATE || temp2->type == APPEND)
+				redir_input(temp2); //printf("BF REDIRECTING\n");
 			while(temp)
 			{
 				if(temp->type == READ || temp->type == HERE_DOC || temp->type == TRUNCATE || temp->type == APPEND)
 					redir_input(temp); //printf("LOOP REDIRECTING\n");
 				temp = temp->left;
 			}
-			if(shell()->tree->type == COMMAND && shell()->tree->value)
-				execute(shell()->tree); //printf("SELF EXECUTING\n");
-			else if(shell()->tree->left && shell()->tree->left->value && shell()->tree->left->type == COMMAND)
-				execute(shell()->tree->left); //printf("LEFT EXECUTING\n");
+			if(temp2 && temp2->value && temp2->type == COMMAND)
+				execute(temp2); //printf("SELF EXECUTING\n");
+			else if(temp2->left && temp2->left->value && temp2->left->type == COMMAND)
+				execute(temp2->left); //printf("LEFT EXECUTING\n");
 			if(shell()->env)
-				ft_free_split(shell()->env);
+					ft_free_split(shell()->env);
 			close_fds();
 			exit(shell()->exit);
 		}
 		else
 		{
-			temp = shell()->tree;
+			temp = temp2;
 			while(temp)
 			{
 				if(temp->type == HERE_DOC)
@@ -547,23 +550,25 @@ void    tree_executer(void)
 				dup2(fd[0], 0); //printf("DUPING FD[0]\n");
 		}
 		check = 0;
-		if((shell()->tree->type == COMMAND && shell()->tree->value) || (shell()->tree->left && shell()->tree->left->value && shell()->tree->left->type == COMMAND))
+		if((temp2 && temp2->value && temp2->type == COMMAND) || (temp2->left && temp2->left->value && temp2->left->type == COMMAND))
 			var++;
-		shell()->tree = shell()->tree->right;
+		temp2 = temp2->right;
 	}
 	singleton_free(1);
 	close_fds();
-	int code = waitpids(pids, var);
+	int code = waitpids(var);
 	exit(code);
 }
 
 void    nptree_executer(void)
 {
 	t_tree *temp;
+	t_tree *temp2;
 
 	shell()->count = 0;
 	temp = shell()->tree->left;
-	if(shell()->tree && shell()->tree->value && shell()->tree->type == COMMAND && is_builtin(shell()->tree->value))
+	temp2 = shell()->tree;
+	if(temp2 && temp2->value && temp2->type == COMMAND && is_builtin(temp2->value))
 	{
 		while(temp)
 		{
@@ -571,7 +576,7 @@ void    nptree_executer(void)
 				redir_input(temp);
 			temp = temp->left;
 		}
-		if(shell()->tree && shell()->tree->value && !ft_strncmp(shell()->tree->value, "exit", ft_strlen(shell()->tree->value) + 1))
+		if(temp2 && temp2->value && !ft_strncmp(temp2->value, "exit", ft_strlen(temp2->value) + 1))
 		{	
 			dup2(shell()->in, 0);
 			dup2(shell()->out, 1);
@@ -579,35 +584,50 @@ void    nptree_executer(void)
 		}
 		else
 			shell()->exit = 0;
-		execute(shell()->tree);
+		execute(temp2);
 		dup2(shell()->in, 0);
 		dup2(shell()->out, 1);
 		close_fds();
 	}
 	else
 	{
-		shell()->exit = 0;
+		int	pid = 0;
 		shell()->pid = fork();
 		if(!shell()->pid)
 		{
-			choose_signal(CHLD);
-			if(shell()->tree->type == READ || shell()->tree->type == HERE_DOC || shell()->tree->type == TRUNCATE || shell()->tree->type == APPEND)
-				redir_input(shell()->tree); //printf("BF REDIRECTING\n");
-			while(temp)
+			choose_signal(HDOC);
+			shell()->exit = 0;
+			pid = fork();
+			if(!pid)
 			{
-				if(temp->type == READ || temp->type == HERE_DOC || temp->type == TRUNCATE || temp->type == APPEND)
-					redir_input(temp); //printf("LOOP REDIRECTING\n");
-				temp = temp->left;
+				if(temp2->type == READ || temp2->type == HERE_DOC || temp2->type == TRUNCATE || temp2->type == APPEND)
+					redir_input(temp2); //printf("BF REDIRECTING\n");
+				while(temp)
+				{
+					if(temp->type == READ || temp->type == HERE_DOC || temp->type == TRUNCATE || temp->type == APPEND)
+						redir_input(temp); //printf("LOOP REDIRECTING\n");
+					temp = temp->left;
+				}
+				if(temp2->type == COMMAND && temp2->value)
+					execute(temp2); //printf("SELF EXECUTING\n");
+				if(shell()->env)
+					ft_free_split(shell()->env);
+				close_fds();
+				exit(shell()->exit);
 			}
-			if(shell()->tree->type == COMMAND && shell()->tree->value)
-				execute(shell()->tree); //printf("SELF EXECUTING\n");
-			if(shell()->env)
-				ft_free_split(shell()->env);
-			close_fds();
-			exit(shell()->exit);
+			else
+			{
+				waitpid(shell()->pid, &shell()->exit, 0);
+			}
+			singleton_free(1);
+			exit(shell()->exit / 256);
 		}
 		else
+		{
+			choose_signal(IGNORE);
 			waitpid(shell()->pid, &shell()->exit, 0);
-		shell()->exit = shell()->exit / 256;
+			choose_signal(ROOT);
+			shell()->exit = shell()->exit / 256; 
+		}
 	}
 }

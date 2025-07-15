@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:29:30 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/10 17:52:03 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/15 18:56:46 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	singleton_free(int exit)
 		free(shell()->docs);
 	if(shell()->tree)
 		tree_free(shell()->tree);
+	if(shell()->alias)
+		ft_free_split(shell()->alias);
 }
 
 void	exit_cmd(t_tree	*tree)

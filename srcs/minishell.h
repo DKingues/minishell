@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/15 16:15:22 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/15 19:09:51 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_token
 
 typedef struct s_shell
 {
+	int	*pids;
 	char **alias;
 	int			in;
 	int			out;
@@ -247,7 +248,7 @@ int		redir_input(t_tree	*redir);
 // tree.c
 void	execute(t_tree	*cmd);
 char	**args_join(t_tree	*cmd);
-int		waitpids(int *pids, int var);
+int		waitpids(int var);
 void	close_fds(void);
 
 // get_next_line
