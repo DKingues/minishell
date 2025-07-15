@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/14 16:31:59 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/15 16:12:31 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	reset_input(char *line)
 		shell()->tree = NULL;
 	}
 	if(shell()->docs)
-	free(shell()->docs);
+		free(shell()->docs);
 	shell()->count = 0;
 	shell()->pipe_count = 0;
 	shell()->hist = hist_manage(line, 0);
@@ -131,13 +131,17 @@ int	main(int ac, char **av, char **ev)
 			exit_cmd(NULL);
 		}
 		if(!line[0])
+		{
+			free(line);
 			continue ;
+		}
 		reset_input(line);
 		if (parser(line) == 0)
 			ft_printf(1, "");
 		if(shell()->tree)
 		{
-			manage_here_doc();
+			if(manage_here_doc() == 1)
+				continue ;
 			if(shell()->tree->type == PIPE)
 			{
 				shell()->pid = fork();

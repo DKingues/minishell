@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:08:01 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/11 17:09:48 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/15 16:13:57 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,18 @@ char *str_redef(char *str)
 	var = 0;
 	var2 = 1;
 	if((str[0] == '\'' && str[ft_strlen(str) - 2] != '\'') || (str[0] != '\'' && str[ft_strlen(str) - 2] == '\''))
-		return(str);
+		return(NULL);
 	if((str[0] == '\"' && str[ft_strlen(str) - 2] != '\"') || (str[0] != '\"' && str[ft_strlen(str) - 2] == '\"'))
-		return(str);
+		return(NULL);
 	if(str[0] != '\'' && str[0] != '\"')
 		except = 0;
-	while(str[var])
+	while(str[var] && str[var]  != '\n')
 		var++;
 	if(except == 0)
 		var2 = 0;
-	res = ft_calloc(sizeof(char), var - 1);
+	res = ft_calloc(sizeof(char), var - except + 1);
 	var = 0;
-	while(str[var + except] != '\n')
+	while(str[var + except] != '\0' && str[var + except] != '\n')
 	{
 		res[var] = str[var + var2];
 		var++;
@@ -70,7 +70,8 @@ char *copy_no_nl(char *temp)
 		res[var] = temp[var];
 		var++;
 	}
-	free(temp);
+	if(temp)
+		free(temp);
 	return(res);
 }
 
@@ -100,6 +101,12 @@ void	set_alias(int len)
 		if(!ft_strncmp("alias ", line, 6))
 		{
 			temp = str_redef(line + exp_len(line) + 1);
+			if(!temp)
+			{
+				free(line);
+				line = get_next_line(fd);
+				continue ;
+			}
 			if(temp[ft_strlen(temp) - 1] == '\n')
 				temp = copy_no_nl(temp);
 			while(line[var] != '=')
@@ -114,10 +121,12 @@ void	set_alias(int len)
 			temp2[var] = '=';
 			shell()->alias[len] = ft_strjoin(temp2, temp);
 			len++;
+			free(temp);
 		}
 		free(line);
 		line = get_next_line(fd);
 	}
+	free(home);
 	free(line);
 	close(fd);
 }
@@ -145,6 +154,7 @@ void	init_alias(void)
 		free(line);
 		line = get_next_line(fd);
 	}
+	free(home);
 	free(line);
 	close(fd);
 	set_alias(var);

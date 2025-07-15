@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/14 16:52:30 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/15 16:15:22 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,9 +259,11 @@ void	ft_buffer_clean(char *str);
 
 void	free_list(t_token *token);
 void	singleton_free(int exit);
-void	manage_here_doc(void);
+int	manage_here_doc(void);
 void    nptree_executer(void);
 void	tree_executer(void);
 int		flag_check(char *flags, char *valid);
 
+
+char *find_home(void);
 #endif

@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 14:57:02 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/10 17:52:12 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/15 16:13:27 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	echo_cmd(int flag, char *msg)
 		ft_printf(1, "%s", msg);
 	if (!flag)
 		ft_printf(1, "\n");
+	//shell()->exit = 0;
 }
 
 void	pwd_cmd(void)

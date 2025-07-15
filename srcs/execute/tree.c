@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:41:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/11 17:44:04 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/15 16:13:35 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,13 @@ int	flag_check(char *flags, char *valid)
 char    **args_join(t_tree  *cmd)
 {
     int var;
+	char	*home;
     char    **res;
     t_tree  *temp;
     
     var = 0;
     temp = cmd;
+	home = find_home();
     while(temp)
     {
         var++;
@@ -51,11 +53,14 @@ char    **args_join(t_tree  *cmd)
     var = 0;
     while(cmd)
 	{
-		res[var] = ft_strdup(cmd->value);
+		if(cmd->value[0] == '~' && cmd->value[1] == '/')
+			res[var] = ft_nfstrjoin(home, cmd->value + 1);
+		else
+			res[var] = ft_strdup(cmd->value);
 		cmd = cmd->right;
 		var++;
 	}
-	return(res);
+	return(free(home), res);
 }
 
 int	is_builtin(char *cmd)
@@ -268,6 +273,13 @@ void    execute(t_tree  *cmd)
 		builtin_exec(cmd);
 		return ;
 	}
+	if(cmd->value[0] == '~' && cmd->value[1] == '/')
+	{
+		temp = ft_strjoin(find_home(), cmd->value + 1);
+		free(cmd->value);
+		cmd->value = ft_strdup(temp);
+		free(temp);
+	}
 	path = find_path(cmd->value);
 	if(access(path, F_OK) && access(path, X_OK))
 	{
@@ -298,18 +310,14 @@ void    execute(t_tree  *cmd)
 			var++;
 		if(shell()->env[var] && ft_strnstr(shell()->env[var], "PATH", 4))
 		{
-			ft_printf(2, "%s: command not found\n", path);
-			shell()->exit = 127;
+			ft_printf(2, "minishell: %s: command not found\n", path);
 		}
 		else
 		{
 			temp = ft_nfstrjoin("minishell: ", path);
 			perror(temp);
 			free(temp);
-			shell()->exit = 127;
 		}
-		if(!access(path, F_OK) && access(path, X_OK))
-			shell()->exit = 126;
 	}
 	ft_free_split(args);
 	free(path);
@@ -377,15 +385,13 @@ int waitpids(int *pids, int var)
 
 	i = 0;
 	code = 0;
-	while(i < var - 1)
+	close(0);
+	while(i < var)
 	{
-		waitpid(pids[i], NULL, 0);
+		waitpid(pids[i], &code, 0);
 		i++;
 	}
-	waitpid(pids[i], &code, 0);
 	free(pids);
-	if (code == 139)
-		code = 256;
 	return (code / 256);
 }
 
@@ -410,12 +416,14 @@ void	here_doc(char *eof, int fd)
 	while(1)
 	{
 		line = readline(">");
-		if (!ft_strncmp(eof, line, len + 1))
+		if (!line || !ft_strncmp(eof, line, len + 1))
 		{
-			free(line);
-			shell()->exit = 0;
+			if(line)
+				free(line);
+			else
+				ft_printf(2, "minishell: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", eof);
 			close_fds();
-			return ;
+			exit(0);
 		}
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
@@ -423,7 +431,7 @@ void	here_doc(char *eof, int fd)
 	}
 }
 
-void	manage_here_doc(void)
+int	manage_here_doc(void)
 {
 	t_tree	*tree;
 	t_tree	*temp;
@@ -444,7 +452,7 @@ void	manage_here_doc(void)
 		tree = tree->right;
 	}
 	if(!count)
-		return ;
+		return (0) ;
 	shell()->docs = ft_calloc(count + 1, sizeof(int));
 	count = 0;
 	tree = shell()->tree;
@@ -457,8 +465,23 @@ void	manage_here_doc(void)
 			{
 				if(pipe(fd) == -1)
 					exit(0);
-				here_doc(temp->value, fd[1]);
-				close(fd[1]);
+				shell()->pid = fork();
+				if(!shell()->pid)
+				{
+					choose_signal(HDOC);
+					close(fd[0]);
+					here_doc(temp->value, fd[1]);
+				}
+				else
+				{
+					choose_signal(IGNORE);
+					close(fd[1]);
+					waitpid(shell()->pid, &shell()->exit, 0);
+					choose_signal(ROOT);
+				}
+				shell()->exit = shell()->exit / 256;
+				if(shell()->exit == 130)
+					return (1);
 				shell()->docs[count] = fd[0];
 				count++;
 			}
@@ -466,6 +489,7 @@ void	manage_here_doc(void)
 		}
 		tree = tree->right;
 	}
+	return(0);
 }
 
 void    tree_executer(void)
@@ -478,7 +502,7 @@ void    tree_executer(void)
 
 	pids = ft_calloc(shell()->pipe_count + 2, sizeof(int));
 	shell()->count = 0;
-	shell()->exit = 0;
+	choose_signal(CHLD);
 	while(shell()->tree)
 	{
 		if(shell()->tree->type == PIPE)
@@ -503,12 +527,12 @@ void    tree_executer(void)
 			}
 			if(shell()->tree->type == COMMAND && shell()->tree->value)
 				execute(shell()->tree); //printf("SELF EXECUTING\n");
-			if(shell()->tree->left->type == COMMAND && shell()->tree->left->value)
+			else if(shell()->tree->left && shell()->tree->left->value && shell()->tree->left->type == COMMAND)
 				execute(shell()->tree->left); //printf("LEFT EXECUTING\n");
 			if(shell()->env)
 				ft_free_split(shell()->env);
 			close_fds();
-			exit(shell()->exit / 256);
+			exit(shell()->exit);
 		}
 		else
 		{
@@ -523,12 +547,14 @@ void    tree_executer(void)
 				dup2(fd[0], 0); //printf("DUPING FD[0]\n");
 		}
 		check = 0;
-		var++;
+		if((shell()->tree->type == COMMAND && shell()->tree->value) || (shell()->tree->left && shell()->tree->left->value && shell()->tree->left->type == COMMAND))
+			var++;
 		shell()->tree = shell()->tree->right;
 	}
 	singleton_free(1);
 	close_fds();
-	exit(waitpids(pids, var));
+	int code = waitpids(pids, var);
+	exit(code);
 }
 
 void    nptree_executer(void)
@@ -581,11 +607,7 @@ void    nptree_executer(void)
 			exit(shell()->exit);
 		}
 		else
-		{
-			choose_signal(IGNORE);
 			waitpid(shell()->pid, &shell()->exit, 0);
-			choose_signal(ROOT);
-		}
 		shell()->exit = shell()->exit / 256;
 	}
 }
