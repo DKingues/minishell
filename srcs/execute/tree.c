@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:41:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/15 19:11:59 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/15 19:22:12 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,6 +267,7 @@ void    execute(t_tree  *cmd)
 	char    *path;
 	char **args;
 	char *temp;
+	int	check = 0;
 	
 	if (is_builtin(cmd->value))
 	{
@@ -302,21 +303,45 @@ void    execute(t_tree  *cmd)
 	else
 		args = args_join(cmd);
 	var = 0;
+	while(path[var])
+	{
+		if(path[var] == '/')
+			check = 1;
+		var++;
+	}
 	singleton_free(0);
 	close_fds();
 	if(execve(path, args, shell()->env) == -1)
 	{
-		while(shell()->env[var] && !ft_strnstr(shell()->env[var], "PATH", 4))
-			var++;
-		if(shell()->env[var] && ft_strnstr(shell()->env[var], "PATH", 4))
+		if(!check)
 		{
 			ft_printf(2, "minishell: %s: command not found\n", path);
+			shell()->exit = 127;
 		}
 		else
 		{
-			temp = ft_nfstrjoin("minishell: ", path);
-			perror(temp);
-			free(temp);
+			if(!access(path, F_OK))
+			{
+				if(opendir(path))
+					ft_printf(2, "minishell: %s: Is a directory\n", path);
+				else
+				{
+					if(access(path, X_OK))
+						temp = ft_nfstrjoin("minishell: ", path);
+					else
+						temp = ft_nfstrjoin("minishell: ", path);
+					perror(temp);
+					free(temp);
+				}
+				shell()->exit = 126;
+			}
+			else
+			{
+				temp = ft_nfstrjoin("minishell: ", path);
+				perror(temp);
+				free(temp);
+				shell()->exit = 127;
+			}
 		}
 	}
 	ft_free_split(args);
