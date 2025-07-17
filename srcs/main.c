@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/17 18:25:03 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/17 18:43:57 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_shell	*shell(void)
+{
+	static t_shell	shell;
+
+	return (&shell);
+}
 
 void	print_banner() {
 	ft_printf(1, "\033[1;95m ________________________________");
@@ -119,6 +126,12 @@ int	main(int ac, char **av, char **ev)
 		return (ft_printf(1, "No arguments are needed\n"), 1);
 	//print_banner();
 	init_shell(ev);
+	ac = 0;
+	while(shell()->alias[ac])
+	{
+		ft_printf(2, "%s\n", shell()->alias[ac]);
+		ac++;
+	}
 	while(1)
 	{
 		choose_signal(ROOT);

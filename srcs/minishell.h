@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/17 18:24:25 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/17 18:49:05 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,8 +198,8 @@ char	*get_expansion(char *line);
 void	init_shell(char **ev);
 void	init_env(char **ev);
 void	init_exp(char **ev);
-void	lvl_upd(void);
-void	exp_lvl(void);
+void	lvl_upd(int var);
+void	exp_lvl(int var);
 t_shell	*shell(void);
 
 // init2.c
@@ -209,6 +209,7 @@ char	*str_redef(char *str, int var, int var2, int except);
 char	*copy_no_nl(char *temp);
 void	set_alias(int len, int fd);
 void	init_alias(void);
+void	init_alias2(int fd, char *line, int var, char *home);
 
 // commands.c
 

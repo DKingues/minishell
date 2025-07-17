@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:08:01 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/17 18:23:01 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/17 18:35:09 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,10 @@ void	init_shell(char **ev)
 	shell()->out = 0;
 }
 
-void	nullifier(void)
-{
-	
-}
-
 void	init_env(char **ev)
 {
 	int	var;
-	
+
 	var = 0;
 	if (ev[0])
 	{
@@ -47,7 +42,7 @@ void	init_env(char **ev)
 			shell()->env[var] = ft_strdup(ev[var]);
 			var++;
 		}
-		lvl_upd();
+		lvl_upd(0);
 	}
 	else
 	{
@@ -59,7 +54,7 @@ void	init_env(char **ev)
 void	init_exp(char **ev)
 {
 	int	var;
-	
+
 	var = 0;
 	if (ev[0])
 	{
@@ -73,7 +68,7 @@ void	init_exp(char **ev)
 			var++;
 		}
 		exp_organize();
-		exp_lvl();
+		exp_lvl(0);
 		shell()->exp = quoting_set();
 	}
 	else
@@ -83,13 +78,12 @@ void	init_exp(char **ev)
 	}
 }
 
-void	lvl_upd(void)
+void	lvl_upd(int var)
 {
-	int		var;
 	int		lvl;
 	char	*temp;
+	char	*temp3;
 
-	var = 0;
 	while (shell()->env[var])
 	{
 		if (!ft_strncmp(shell()->env[var], "SHLVL=", 6))
@@ -102,7 +96,7 @@ void	lvl_upd(void)
 			temp = ft_itoa(lvl + 1);
 			free(shell()->env[var]);
 			shell()->env[var] = ft_strdup("SHLVL=");
-			char *temp3 = ft_strjoin(shell()->env[var], temp);
+			temp3 = ft_strjoin(shell()->env[var], temp);
 			shell()->env[var] = ft_strdup(temp3);
 			free(temp3);
 			free(temp);
@@ -112,13 +106,12 @@ void	lvl_upd(void)
 	}
 }
 
-void	exp_lvl(void)
+void	exp_lvl(int var)
 {
-	int		var;
 	int		lvl;
 	char	*temp;
+	char	*temp3;
 
-	var = 0;
 	while (shell()->exp[var])
 	{
 		if (!ft_strncmp(shell()->exp[var], "SHLVL=", 6))
@@ -131,7 +124,7 @@ void	exp_lvl(void)
 			temp = ft_itoa(lvl + 1);
 			free(shell()->exp[var]);
 			shell()->exp[var] = ft_strdup("SHLVL=");
-			char *temp3 = ft_strjoin(shell()->exp[var], temp);
+			temp3 = ft_strjoin(shell()->exp[var], temp);
 			shell()->exp[var] = ft_strdup(temp3);
 			free(temp3);
 			free(temp);
@@ -139,11 +132,4 @@ void	exp_lvl(void)
 		}
 		var++;
 	}
-}
-
-t_shell	*shell(void)
-{
-	static t_shell	shell;
-
-	return (&shell);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 18:32:35 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/17 18:23:06 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/17 18:49:13 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	set_alias(int len, int fd)
 	char	*line;
 	char	*temp;
 	char	*temp2;
+	char	*temp3;
 	int		var;
 
 	shell()->alias = ft_calloc(sizeof(char *), len + 1);
@@ -106,7 +107,7 @@ void	set_alias(int len, int fd)
 				var++;
 			}
 			temp2[var] = '=';
-			char *temp3 = ft_strjoin(temp2, temp);
+			temp3 = ft_strjoin(temp2, temp);
 			shell()->alias[len] = ft_strdup(temp2);
 			free(temp3);
 			len++;
@@ -130,14 +131,20 @@ void	init_alias(void)
 	home = find_home();
 	home = ft_strjoin(home, "/.zshrc");
 	fd = open(home, O_RDONLY);
+	line = NULL;
 	if (fd == -1)
 	{
-		if(home)
+		if (home)
 			free(home);
 		shell()->alias = ft_calloc(1, sizeof(char *));
 		shell()->alias[0] = ft_strdup("");
 		return ;
 	}
+	init_alias2(fd, line, var, home);
+}
+
+void	init_alias2(int fd, char *line, int var, char *home)
+{
 	line = get_next_line(fd);
 	while (line)
 	{
