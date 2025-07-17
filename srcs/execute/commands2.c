@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:29:30 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/15 18:56:46 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/17 18:21:54 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,36 @@
 
 void	singleton_free(int exit)
 {
-	if(exit)
+	if (exit)
 	{
-		if(shell()->env)
+		if (shell()->env)
 			ft_free_split(shell()->env);
 		close_fds();
 	}
-	if(shell()->hist)
-		ft_free_split(shell()->hist);
-	if(shell()->exp)
-		ft_free_split(shell()->exp);
-	if(shell()->docs)
-		free(shell()->docs);
-	if(shell()->tree)
-		tree_free(shell()->tree);
-	if(shell()->alias)
+	if (shell()->alias)
 		ft_free_split(shell()->alias);
+	if (shell()->hist)
+		ft_free_split(shell()->hist);
+	if (shell()->exp)
+		ft_free_split(shell()->exp);
+	if (shell()->docs)
+		free(shell()->docs);
+	if (shell()->tree)
+		tree_free(shell()->tree);
 }
 
-void	exit_cmd(t_tree	*tree)
+void	exit_help(void)
 {
-	int	code;
-	if(tree && tree->value && error_syntax(tree->value) && !long_check(tree->value))
+	singleton_free(1);
+	exit(shell()->exit);
+}
+
+void	exit_cmd(t_tree	*tree, int code)
+{
+	if (tree && tree->value && error_syntax(tree->value)
+		&& !long_check(tree->value))
 	{
-		if(tree->right && tree->value)
+		if (tree->right && tree->value)
 		{
 			ft_printf(2, "minishell: exit: too many arguments\n");
 			shell()->exit = 1;
@@ -51,15 +57,13 @@ void	exit_cmd(t_tree	*tree)
 	}
 	else if (tree && tree->value)
 	{
-		ft_printf(2, "minishell: exit: %s: numeric argument required\n", tree->value);
+		ft_printf(2, "minishell: exit: %s: numeric argument required\n",
+			tree->value);
 		singleton_free(1);
 		exit(2);
 	}
 	else
-	{
-		singleton_free(1);
-		exit(shell()->exit);
-	}
+		exit_help();
 }
 
 void	cd_cmd(char *path)
@@ -93,7 +97,8 @@ char	*find_path(char *cmd)
 	int		var;
 
 	var = 0;
-	while (ft_strnstr(shell()->env[var], "PATH", 4) == 0 && shell()->env[var + 1])
+	while (ft_strnstr(shell()->env[var], "PATH", 4) == 0
+		&& shell()->env[var + 1])
 		var++;
 	if (!shell()->env[var + 1])
 		return (ft_strdup(cmd));

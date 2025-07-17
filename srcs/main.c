@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/17 16:27:24 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/17 18:25:03 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int	main(int ac, char **av, char **ev)
 		if (!line)
 		{
 			ft_printf(1, "exit");
-			exit_cmd(NULL);
+			exit_cmd(NULL, 0);
 		}
 		if(!line[0])
 		{

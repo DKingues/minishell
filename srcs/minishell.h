@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/17 17:21:43 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/17 18:24:25 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,22 +205,22 @@ t_shell	*shell(void);
 // init2.c
 
 char	*find_home(void);
-char	*str_redef(char *str);
+char	*str_redef(char *str, int var, int var2, int except);
 char	*copy_no_nl(char *temp);
-void	set_alias(int len);
+void	set_alias(int len, int fd);
 void	init_alias(void);
 
 // commands.c
 
 void	echo_cmd(int flag, char *msg);
 void	pwd_cmd(void);
-void	exp_cmd(int flag, char *msg);
+void	exp_cmd(int flag, char *msg, int var);
 void	unset_cmd(char *msg);
 void	env_cmd(t_tree *tree);
 
 // commands2.c
 
-void	exit_cmd(t_tree *tree);
+void	exit_cmd(t_tree *tree, int code);
 void	cd_cmd(char *path);
 void	single_exec(char *msg);
 char	*find_path(char *cmd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils5.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:03:49 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/11 15:40:10 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/17 18:21:42 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	mv_old(void)
 	{
 		if (!ft_strncmp(shell()->env[var], "OLDPWD=", 7))
 		{
-			while(shell()->env[var][var2] != '=')
+			while (shell()->env[var][var2] != '=')
 				var2++;
 			chdir(shell()->env[var] + var2 + 1);
 			set_old_path();
@@ -42,13 +42,13 @@ void	mv_abs(char *path)
 	int		var;
 
 	var = 0;
-	while(ft_strncmp(shell()->env[var], "HOME=", 5))
+	while (ft_strncmp(shell()->env[var], "HOME=", 5))
 		var++;
-	if(!shell()->env[var])
+	if (!shell()->env[var])
 		return ;
 	abs_path = ft_strdup(shell()->env[var] + 5);
 	abs_path = ft_strjoin(abs_path, path + 1);
-	if(!access(abs_path, 0))
+	if (!access(abs_path, 0))
 	{
 		chdir(abs_path);
 		set_old_path();
@@ -56,27 +56,27 @@ void	mv_abs(char *path)
 	}
 }
 
-char **hist_manage(char *line, int flag)
+char	**hist_manage(char *line, int flag)
 {
-	char **temp;
-	int	var;
-	
+	char	**temp;
+	int		var;
+
 	var = 0;
 	if (!line || ((!line[0] || line[0] == '\n') && !flag))
 		return (shell()->hist);
 	if (flag)
-		return(ft_free_split(shell()->hist), rl_clear_history(), ft_calloc(sizeof(char *), 1));
+		return (ft_free_split(shell()->hist), rl_clear_history(),
+			ft_calloc(sizeof(char *), 1));
 	add_history(line);
-	while(shell()->hist[var])
+	while (shell()->hist[var])
 		var++;
 	temp = ft_calloc(sizeof(char *), var + 2);
 	var = 0;
-	while(shell()->hist[var])
+	while (shell()->hist[var])
 	{
 		temp[var] = ft_strdup(shell()->hist[var]);
 		var++;
 	}
 	temp[var] = ft_strdup(line);
-	return(ft_free_split(shell()->hist), temp);
+	return (ft_free_split(shell()->hist), temp);
 }
-
