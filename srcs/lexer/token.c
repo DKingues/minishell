@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-void dequote_tokens(t_token **token)
+void	dequote_tokens(t_token **token)
 {
 	if (!token || !*token)
 		return ;
@@ -23,18 +23,18 @@ void dequote_tokens(t_token **token)
 		(*token) = (*token)->next;
 	}
 	if (count_quotes((*token)->value) % 2 == 0)
-			(*token)->value = remove_quotes((*token)->value, 0, NULL);
+		(*token)->value = remove_quotes((*token)->value, 0, NULL);
 	while ((*token)->prev)
 		(*token) = (*token)->prev;
 }
 
-t_token *assign_token(char *line)
+t_token	*assign_token(char *line)
 {
 	t_token	*token;
-	char 	**tokens;
+	char	**tokens;
 	int		i;
 	int		token_type;
-	
+
 	token = NULL;
 	tokens = split_tokens(line);
 	i = 0;
@@ -43,8 +43,9 @@ t_token *assign_token(char *line)
 		if (tokens[i][0] != 0)
 		{
 			token_type = get_token_type(tokens[i]);
-			if ((token_type == READ || token_type == HERE_DOC \
-				|| token_type == TRUNCATE || token_type == APPEND) && get_token_type(tokens[i + 1]) != PIPE)
+			if ((token_type == READ || token_type == HERE_DOC
+					|| token_type == TRUNCATE || token_type == APPEND)
+				&& get_token_type(tokens[i + 1]) != PIPE)
 				token = append_node(token, tokens[++i], token_type);
 			else
 				token = append_node(token, tokens[i], token_type);
@@ -55,6 +56,7 @@ t_token *assign_token(char *line)
 	ft_free_split(tokens);
 	return (token);
 }
+
 /*t_token	*remove_redir(t_token *token)
 {
 	t_token	*temp;
@@ -64,7 +66,7 @@ t_token *assign_token(char *line)
 	while (temp)
 	{
 		next = temp->next;
-		if (temp->type == READ || temp->type == HERE_DOC \
+		if (temp->type == READ || temp->type == HERE_DOC
 		|| temp->type == TRUNCATE || temp->type == APPEND)
 		{
 			temp->next->type = temp->type;
@@ -81,6 +83,7 @@ t_token *assign_token(char *line)
 	}
 	return (temp);
 }*/
+
 int	get_token_type(char *input)
 {
 	int	i;
@@ -89,9 +92,9 @@ int	get_token_type(char *input)
 	while (input[i])
 	{
 		if (input[i] == '|')
-			return(PIPE);
+			return (PIPE);
 		else if (input[i] == '<' && input[i + 1] == '<')
-			return(HERE_DOC);
+			return (HERE_DOC);
 		else if (input[i] == '<')
 			return (READ);
 		else if (input[i] == '>' && input[i + 1] == '>')
@@ -99,10 +102,7 @@ int	get_token_type(char *input)
 		else if (input[i] == '>')
 			return (TRUNCATE);
 		else
-			return(ARG);
+			return (ARG);
 	}
 	return (1);
 }
-
-
-

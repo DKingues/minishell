@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 14:47:46 by scorpot           #+#    #+#             */
-/*   Updated: 2025/06/25 20:30:36 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/16 19:23:52 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 char	*expand_arg(char *arg)
 {
-	int	var;
-	int	len;
-	char *temp;
+	int		var;
+	int		len;
+	char	*temp;
 
 	var = 0;
+	len = 0;
+	temp = NULL;
 	if (arg[1] == '?')
 	{
 		temp = ft_itoa(shell()->exit);
@@ -26,7 +28,12 @@ char	*expand_arg(char *arg)
 			temp = ft_strjoin(temp, arg + 2);
 		return (free(arg), temp);
 	}
-	while(shell()->env[var])
+	return (expand_arg_continue(arg, var, len, temp));
+}
+
+char	*expand_arg_continue(char *arg, int var, int len, char *temp)
+{
+	while (shell()->env[var])
 	{
 		len = exp_len(shell()->env[var]);
 		if (!ft_strncmp(shell()->env[var], arg + 1, len))
@@ -35,17 +42,17 @@ char	*expand_arg(char *arg)
 			{
 				temp = ft_strdup(shell()->env[var] + len + 1);
 				temp = ft_strjoin(temp, arg + len + 1);
-				return(free(arg), temp);
+				return (free(arg), temp);
 			}
 			else if (arg[len] && ft_isalnum(arg[len + 1]))
 				len++;
 			else
 			{
-				temp = ft_strdup(shell()->env[var] + len + 1);				
-				return(free(arg), temp);
+				temp = ft_strdup(shell()->env[var] + len + 1);
+				return (free(arg), temp);
 			}
 		}
 		var++;
 	}
-	return(free(arg), ft_strdup(""));
+	return (free(arg), ft_strdup(""));
 }

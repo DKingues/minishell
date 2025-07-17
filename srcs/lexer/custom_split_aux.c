@@ -12,42 +12,42 @@
 
 #include "../minishell.h"
 
-int skip_quotes(char *line, char quote_type)
+int	skip_quotes(char *line, char quote_type)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (line[i] && line[i] != quote_type)
-        i++;
-    return (i);
+	i = 0;
+	while (line[i] && line[i] != quote_type)
+		i++;
+	return (i);
 }
 
-int count_quotes(char *line)
+int	count_quotes(char *line)
 {
-    int i;
-    int counter;
-    char temp;
+	int		i;
+	int		counter;
+	char	temp;
 
-    i = 0;
-    counter = 0;
-    while (line[i])
-    {
-        if (line[i] == '\"' || line[i] == '\'' )
-        {
-            temp = line[i];
-            i++;
-            counter++;
-            i += skip_quotes(&line[i], temp);
-            if (line[i] == temp)
-            {
-                counter++;
-                i++;
-            }
-        }
-        else  
-            i++;
-    }
-    return (counter);
+	i = 0;
+	counter = 0;
+	while (line[i])
+	{
+		if (line[i] == '\"' || line[i] == '\'' )
+		{
+			temp = line[i];
+			i++;
+			counter++;
+			i += skip_quotes(&line[i], temp);
+			if (line[i] == temp)
+			{
+				counter++;
+				i++;
+			}
+		}
+		else
+			i++;
+	}
+	return (counter);
 }
 
 int	count_tokens(char *line)
@@ -71,73 +71,51 @@ int	count_tokens(char *line)
 				i++;
 			counter++;
 		}
-		    i++;
+		i++;
 	}
 	return (counter);
 }
 
-char    *delete_quotes(char *line, char *quoted, int start, int end)
+int	count_special(char *line)
 {
-    char *new_line;
-    char *str_start;
-    char *str_end;
-    char *temp;
+	int	i;
+	int	j;
+	int	counter;
 
-    str_start = ft_substr(line, 0, start); //echo hello
-    temp = ft_strjoin(str_start, quoted); //echo helloworld
-    str_end = ft_substr(line, end, ft_strlen(line)); // asdasd
-    new_line = ft_strjoin(temp, str_end); //echo helloworld asdasd
-    free(str_end);
-    free(quoted);
-    return (free(line), remove_quotes(new_line, end - 2, NULL));
-}
-char    *remove_quotes(char *line, int i, char *new_line)
-{
-    char quote;
-    int start;
-    
-    quote = 0;
-    start = -1;
-    while (line[i])
-    {
-        if (quote == 0 && (line[i] == '\"' || line[i] == '\''))
-        {
-            quote = line[i];
-            start = i;
-        }
-        else if (new_line == NULL && quote != 0 && quote == line[i])
-        {
-            new_line = ft_substr(line, start + 1, (i - (start + 1)));
-            break;
-        }
-        i++;
-    }
-    if (new_line == NULL)
-        return (line);
-    if (start != -1)
-        return(delete_quotes(line, new_line, start, i + 1));
-    return (new_line);
+	i = 0;
+	counter = 0;
+	while (line[i])
+	{
+		j = 0;
+		while (TOKEN_LIST[j])
+		{
+			if (TOKEN_LIST[j] == line[i])
+				counter++;
+			j++;
+		}
+		i++;
+	}
+	return (counter);
 }
 
-size_t  token_len(char *line)
+int	cnt_nospc(char *line)
 {
-   	int		i;
-    char	temp;
-    
-    i = 0;
-    while (line[i] && !ft_isspace(line[i]))
-    {
-        if (line[i] == '\"' || line[i] == '\'')
-        {
-            temp = line[i++];
-            while (line[i] && line[i] != temp)
-			    i++;
-            if (line[i] == temp)
-			    i++;
-        }
-        else 
-            i++;
-    }
-    return(i);
+	int	i;
+	int	counter;
+
+	i = 0;
+	counter = 0;
+	while (line[i])
+	{
+		if (is_token(line[i]))
+		{
+			if (line[i - 1] != ' ')
+				counter++;
+			if (line[i + 1 != ' '])
+				counter++;
+		}
+		i++;
+	}
+	return (counter);
 }
 

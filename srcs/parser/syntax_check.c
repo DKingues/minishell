@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:37:46 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/15 16:06:08 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/16 19:36:40 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	check_pipes(char *line)
 		else
 		{
 			if (line[i] == '|' && line[i + 1] == '|')
-				return (ft_printf(2, RED"Invalid:"NO_COLOR" unexpected token \'|\'.\n"), 0);
+				return (ft_printf(2, RED"Invalid:"NO_COLOR" unexpected token '|'.\n"), 0);
 			else if (line[i] == '|')
 			{
 				i++;
@@ -77,7 +77,7 @@ int	check_redirection(char *line)
 					i++;
 				i += skip_spaces(&line[i]);
 				if (line[i] == '\0')
-					return (ft_printf(2, RED"Invalid:"NO_COLOR" no file after \'>\'.\n"), 0);
+					return (ft_printf(2, RED"Invalid:"NO_COLOR" no file after '>'.\n"), 0);
 			}
 			if (line[i] == '<')
 			{
@@ -85,7 +85,7 @@ int	check_redirection(char *line)
 					i++;
 				i += skip_spaces(&line[i]);
 				if (line[i] == '\0')
-					return (ft_printf(2, RED"Invalid:"NO_COLOR" no file after \'<\'.\n"), 0);
+					return (ft_printf(2, RED"Invalid:"NO_COLOR" no file after '<'.\n"), 0);
 			}
 			else
 				i++;

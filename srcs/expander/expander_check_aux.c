@@ -6,18 +6,18 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 16:08:26 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/20 22:46:20 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/16 19:11:50 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int in_double_quotes(char *line, int i)
+int	in_double_quotes(char *line, int i)
 {
-	int j;
+	int	j;
 	int	quote_end;
 	int	quote_start;
-	
+
 	j = i;
 	quote_end = 0;
 	quote_start = 0;
@@ -47,20 +47,20 @@ int	arg_len(char *expansion_name)
 		i++;
 	return (i);
 }
-// have to update function to see arg len and remove 5
 
-char *remove_expansion(char *line)
+char	*remove_expansion(char *line)
 {
-	int	i;
-	int	j;
-	char *new_line;
+	int		i;
+	int		j;
+	char	*new_line;
+
 	i = 0;
 	j = 0;
-	new_line = ft_calloc(sizeof(char), (ft_strlen(line) - expansion_len(line)) + 1);
+	new_line = ft_calloc(sizeof(char), (ft_strlen(line) - expa_len(line)) + 1);
 	if (!new_line)
-		return(NULL);
+		return (NULL);
 	while (line[i])
-	{				
+	{
 		if (line[i] == '\'' && !in_double_quotes(&line[i], i))
 		{
 			quote_copy(line, new_line, &i, &j);
@@ -77,3 +77,19 @@ char *remove_expansion(char *line)
 	return (free(line), new_line);
 }
 
+int	expa_len(char *line)
+{
+	int	i;
+	int	j;
+
+	j = 0;
+	i = 0;
+	while (line[i] && line[i] != '$')
+		i++;
+	while (line[i] && ft_isalnum(line[i]))
+	{
+		j++;
+		i++;
+	}
+	return (j);
+}

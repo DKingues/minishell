@@ -12,55 +12,32 @@
 
 #include "../minishell.h"
 
-void	quote_copy(char* line, char *new_line, int *i, int *j) // echo "''"$PWD
+void	quote_copy(char *line, char *new_line, int *i, int *j) // echo "''"$PWD
 {
-	char quote_type;
+	char	quote_type;
 
 	quote_type = line[*i];
 	new_line[(*j)++] = line[(*i)++];
 	while (line[*i] && line[*i] != quote_type)
 		new_line[(*j)++] = line[(*i)++];
-	if (line[*i] == '\0' || line[*i])
 	if (line[*i] == quote_type)
 		new_line[(*j)++] = line[(*i)++];
 	if (!ft_isspace(line[*i]))
 	{
-		while (line[*i] && (line[*i] != '\"' && line[*i] != '\'') && (!ft_isspace(line[*i]) \
-		&& !is_token(line[*i])))
+		while (line[*i] && (line[*i] != '\"' && line[*i] != '\'')
+			&& (!ft_isspace(line[*i]) && !is_token(line[*i])))
 			new_line[(*j)++] = line[(*i)++];
 		if (line[*i] == '\"' || line[*i] == '\'')
 			quote_copy(line, new_line, i, j);
 	}
 }
 
-int count_special(char *line)
+int	is_token(char c)
 {
-	int i;
-	int j;
-	int counter;
-	
-	i = 0;
-	counter = 0;
-	while (line[i])
-	{
-		j = 0;
-		while (TOKEN_LIST[j])
-		{
-			if (TOKEN_LIST[j] == line[i])
-				counter++;
-			j++;
-		}
-		i++;
-	}
-	return (counter);
-}
-
-int is_token(char c)
-{
-	int i;
+	int	i;
 
 	i = 0;
-	while(TOKEN_LIST[i])
+	while (TOKEN_LIST[i])
 	{
 		if (TOKEN_LIST[i] == c)
 			return (1);
@@ -69,27 +46,22 @@ int is_token(char c)
 	return (0);
 }
 
-char	*remove_extra_spaces(char *line, int i, int j)
+char	*remove_extra_spaces(char *line, int i, int j, int space)
 {
-	int space;
-	char *new_line;
+	char	*new_line;
 
-	space = 1;
 	new_line = ft_calloc(sizeof(char), ft_strlen(line) + 1);
 	if (!new_line)
 		return (free(new_line), NULL);
 	while (line[i])
 	{
+		if ((line[i] && !ft_isspace(line[i]))
+			|| (line[i] == '\"' || line[i] == '\''))
+			space = 0;
 		if (line[i] == '\"' || line[i] == '\'')
-		{
 			quote_copy(line, new_line, &i, &j);
-			space = 0;
-		}
 		else if (line[i] && !ft_isspace(line[i]))
-		{
 			new_line[j++] = line[i++];
-			space = 0;
-		}
 		else
 		{
 			if (space == 0)
@@ -105,23 +77,21 @@ char	*remove_extra_spaces(char *line, int i, int j)
 
 char	*create_spaces(char *line, int i, int j)
 {
-	char *new_line;
+	char	*new_line;
 
 	new_line = ft_calloc(sizeof(char), (ft_strlen(line) + cnt_nospc(line)) + 1);
 	if (!new_line)
 		return (free(new_line), NULL);
-	while(line[i])
+	while (line[i])
 	{
 		if (line[i] == '\"' || line[i] == '\'')
-		{
-
 			quote_copy(line, new_line, &i, &j);
-		}
 		else if ((is_token(line[i]) && line[i + 1] != '\0'))
 		{
 			if (line[i - 1] != ' ')
 				new_line[j++] = ' ';
-			if ((line[i] == '>' && line[i + 1] == '>') || (line[i] == '<' && line[i + 1] == '<'))
+			if ((line[i] == '>' && line[i + 1] == '>')
+				|| (line[i] == '<' && line[i + 1] == '<'))
 				new_line[j++] = line[i++];
 			new_line[j++] = line[i++];
 			new_line[j++] = ' ';
@@ -129,41 +99,22 @@ char	*create_spaces(char *line, int i, int j)
 		else
 			new_line[j++] = line[i++];
 	}
-	return(new_line);
+	return (new_line);
 }
 
-char    *format_line(char *line)
+char	*format_line(char *line)
 {
 	int		i;
 	int		j;
+	int		space;
 	char	*temp;
-	
+
 	i = 0;
 	j = 0;
-	temp = remove_extra_spaces(line, i, j);
+	space = 1;
+	temp = remove_extra_spaces(line, i, j, space);
 	if (!temp)
 		return (NULL);
 	line = create_spaces(temp, i, j);
-	return (free(temp),line);
-}
-
-int cnt_nospc(char *line)
-{
-	int	i;
-	int	counter;
-	
-	i = 0;
-	counter = 0;
-	while (line[i])
-	{
-		if (is_token(line[i]))
-		{
-			if (line[i - 1] != ' ')
-				counter++;
-			if (line[i + 1 != ' '])
-				counter++;
-		}
-		i++;
-	}
-	return (counter);
+	return (free(temp), line);
 }

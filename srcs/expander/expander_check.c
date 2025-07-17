@@ -6,63 +6,53 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:44:06 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/11 16:12:36 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/16 19:11:44 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/*
-echo " ' $USER lives at $HOME"
-Count how many "$" are in command
-*/
-
-// char *expander_sub(char *line, char *expansion)
-// {
-		
-// }
-
-int		expand_check(char *line)
+int	expand_check(char *line)
 {
 	int	i;
 
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '\'' && !in_double_quotes(line, i)) 
+		if (line[i] == '\'' && !in_double_quotes(line, i))
 		{
 			i++;
-			i += skip_quotes(&line[i], '\'');	
+			i += skip_quotes(&line[i], '\'');
 		}
 		else if (line[i] == '$')
 			return (1);
 		i++;
 	}
-	return(0);
+	return (0);
 }
 
 char	*expand(char *line, char *key, int start, int end)
 {
-	char *str_start;
-	char *str_end;
-	char *value;
-	char *new_line;
-	
+	char	*str_start;
+	char	*str_end;
+	char	*value;
+	char	*new_line;
+
 	value = expand_arg(key);
 	str_start = ft_substr(line, 0, start);
 	str_end = ft_substr(line, end, ft_strlen(line) - end);
-	new_line  = ft_strjoin(str_start, value);
+	new_line = ft_strjoin(str_start, value);
 	free(value);
 	line = ft_strjoin(new_line, str_end);
 	free(str_end);
-	return(expand_caller(line));
+	return (expand_caller(line));
 }
 
 char	*expand_caller(char *line)
 {
-	int i;
-	int	start;
-	char quote;
+	int		i;
+	int		start;
+	char	quote;
 
 	start = -1;
 	i = 0;
@@ -73,10 +63,12 @@ char	*expand_caller(char *line)
 			quote = line[i];
 		else if (quote == line[i])
 			quote = 0;
-		if ((quote == 0 || quote == '\"') && (start == -1 && line[i] == '$') && (ft_isalnum(line[i + 1]) || line[i+1] == '?'))
+		if ((quote == 0 || quote == '\"') && (start == -1 && line[i] == '$')
+			&& (ft_isalnum(line[i + 1]) || line[i + 1] == '?'))
 			start = i;
-		else if ((quote == 0 || quote == '\"') && start != -1 && (!ft_isalnum(line[i + 1]) || line[i + 1] == '\0') && ++i)
-			break;
+		else if ((quote == 0 || quote == '\"') && start != -1
+			&& (!ft_isalnum(line[i + 1]) || line[i + 1] == '\0') && ++i)
+			break ;
 		i++;
 	}
 	if (start != -1)
@@ -84,29 +76,12 @@ char	*expand_caller(char *line)
 	return (line);
 }
 
-int	expansion_len(char *line)
-{
-	int	i;
-	int	j;
-	
-	j = 0;
-	i = 0;
-	while (line[i] && line[i] != '$')
-		i++;
-	while (line[i] && ft_isalnum(line[i]))
-	{
-		j++;
-		i++;
-	}
-	return (j);
-}
-
 char	*add_expansion(char *line, char *expansion, int i)
 {
-	int 	j;
+	int		j;
 	int		k;
 	int		l;
-	int 	full_len;
+	int		full_len;
 	char	*expanded_line;
 
 	j = 0;
@@ -117,7 +92,7 @@ char	*add_expansion(char *line, char *expansion, int i)
 	if (!expanded_line)
 		return (free(expanded_line), NULL);
 	while (j < full_len)
-	{ 
+	{
 		if (j == i)
 		{
 			while (expansion[k])
@@ -128,14 +103,13 @@ char	*add_expansion(char *line, char *expansion, int i)
 	return (free(line), free(expansion), expanded_line);
 }
 
-
 char	*get_expansion(char *line)
 {
-	int	i;
-	int len;
-	char *arg;
-	char *expansion;
-	
+	int		i;
+	int		len;
+	char	*arg;
+	char	*expansion;
+
 	i = 0;
 	len = arg_len(line);
 	arg = ft_calloc(sizeof(char), len + 1);
@@ -149,5 +123,3 @@ char	*get_expansion(char *line)
 	expansion = expand_arg(arg);
 	return (expansion);
 }
-
-
