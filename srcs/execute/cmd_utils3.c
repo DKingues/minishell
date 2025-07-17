@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:52:38 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/06/26 15:06:06 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/17 18:11:40 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,35 @@
 
 char	*set_blank(char *msg)
 {
-	int	var;
-	char *temp;
+	int		var;
+	char	*temp;
 
 	var = 0;
-	while(msg[var] != ' ')
+	while (msg[var] != ' ')
 		var++;
 	temp = ft_calloc(sizeof(char), var + 1);
 	var = 0;
-	while(msg[var] != ' ')
+	while (msg[var] != ' ')
 	{
 		temp[var] = msg[var];
 		var++;
 	}
-	return(temp);
+	return (temp);
 }
 
-char **quoting_set(void)
+char	**quoting_set(void)
 {
-	char **temp;
-	int	var;
+	char	**temp;
+	int		var;
 
 	var = 0;
-	while(shell()->exp[var])
+	while (shell()->exp[var])
 		var++;
 	temp = ft_calloc(sizeof(char *), var + 1);
 	var = 0;
-	while(shell()->exp[var])
+	while (shell()->exp[var])
 	{
-		if(shell()->exp[var][exp_len(shell()->exp[var])] == '=')
+		if (shell()->exp[var][exp_len(shell()->exp[var])] == '=')
 			temp[var] = exp_strdup(shell()->exp[var]);
 		else
 			temp[var] = ft_strdup(shell()->exp[var]);
@@ -56,7 +56,7 @@ char	*exp_strdup(const char *s1)
 {
 	char	*tmp;
 	size_t	i;
-	size_t len;
+	size_t	len;
 
 	len = exp_len(s1);
 	tmp = ft_calloc(sizeof(char), ft_strlen(s1) + 4);
@@ -90,12 +90,12 @@ int	error_syntax(char *array)
 		return (i);
 	while (array[i] != '\0')
 	{
-		if ((array[i] >= '0' && array[i] <= '9') ||
-				(array[i] == '-' || array[i] == '+') || ft_isspace(array[i]))
+		if ((array[i] >= '0' && array[i] <= '9')
+			|| (array[i] == '-' || array[i] == '+') || ft_isspace(array[i]))
 		{
-			if ((array[i] == '-' || array[i] == '+') &&
-				((array[i + 1] < '0' || array[i + 1] > '9') ||
-					(i != '\0')))
+			if ((array[i] == '-' || array[i] == '+')
+				&& ((array[i + 1] < '0' || array[i + 1] > '9')
+				|| (i != '\0')))
 			{
 				if (!ft_isspace(array[i]))
 					return (0);
@@ -110,9 +110,9 @@ int	error_syntax(char *array)
 
 int	long_check(char *str)
 {
-	int			a;
+	int					a;
 	unsigned long long	res;
-	long long	count;
+	long long			count;
 
 	a = 0;
 	res = 0;

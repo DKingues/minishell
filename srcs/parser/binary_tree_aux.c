@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 16:44:28 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/15 15:43:54 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/17 17:02:54 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,20 @@ void	tree_free(t_tree *ast)
 	if (ast->value)
 		free(ast->value);
 	free(ast);
+}
+
+t_tree	*new_node(char *value, int type)
+{
+	t_tree	*new;
+
+	new = ft_calloc(sizeof(t_tree), 1);
+	if (!new)
+		return (NULL);
+	new->value = ft_strdup(value);
+	new->type = type;
+	new->right = NULL;
+	new->left = NULL;
+	return (new);
 }
 
 /*int	add_nodes_to_ast(t_token *token, t_tree **root, int in_pipe)

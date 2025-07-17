@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:40:54 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/05/10 22:56:37 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/07/17 18:09:03 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,28 @@
 void	exp_organize(void)
 {
 	int	var;
-	
+
 	var = 0;
-	while(shell()->exp[var + 1])
+	while (shell()->exp[var + 1])
 	{
-		if(shell()->exp[var][0] > shell()->exp[var + 1][0])
+		if (shell()->exp[var][0] > shell()->exp[var + 1][0])
 		{
 			switch_str(var);
 			var = -1;
 		}
 		var++;
 	}
-	second_organize(0,0);
+	second_organize(0, 0);
 }
 
-void	second_organize(int	var, int var2)
+void	second_organize(int var, int var2)
 {
 	int	check;
 
 	var = 0;
-	while(shell()->exp[var + 1])
+	while (shell()->exp[var + 1])
 	{
-		if(shell()->exp[var][0] == shell()->exp[var + 1][0])
+		if (shell()->exp[var][0] == shell()->exp[var + 1][0])
 		{
 			check = 0;
 			while (shell()->exp[var + check + 1] && shell()->exp[var + 1]
@@ -60,8 +60,8 @@ void	second_organize(int	var, int var2)
 
 void	switch_str(int var)
 {
-	char *temp;
-	
+	char	*temp;
+
 	temp = ft_strdup(shell()->exp[var]);
 	free(shell()->exp[var]);
 	shell()->exp[var] = ft_strdup(shell()->exp[var + 1]);
@@ -70,21 +70,21 @@ void	switch_str(int var)
 	free(temp);
 }
 
-char **re_write_exp(char *msg)
+char	**re_write_exp(char *msg)
 {
-	int	var;
-	char **temp;
-	
+	int		var;
+	char	**temp;
+
 	var = 0;
-	while(shell()->exp[var])
+	while (shell()->exp[var])
 		var++;
-	temp = ft_calloc(sizeof(char*), var);
+	temp = ft_calloc(sizeof(char *), var);
 	var = 0;
-	while(shell()->exp[var])
+	while (shell()->exp[var])
 	{
 		if (!ft_strncmp(shell()->exp[var], msg, exp_len(msg)))
 		{
-			if (shell()->exp[var][exp_len(shell()->exp[var])] == '\0' 
+			if (shell()->exp[var][exp_len(shell()->exp[var])] == '\0'
 					|| shell()->exp[var][exp_len(shell()->exp[var])] == '=')
 				var++;
 		}
@@ -98,17 +98,17 @@ char **re_write_exp(char *msg)
 	return (temp);
 }
 
-char **re_write_env(char *msg)
+char	**re_write_env(char *msg)
 {
-	int	var;
-	char **temp;
-	
+	int		var;
+	char	**temp;
+
 	var = 0;
-	while(shell()->env[var])
+	while (shell()->env[var])
 		var++;
 	temp = ft_calloc(sizeof(char *), var);
 	var = 0;
-	while(shell()->env[var])
+	while (shell()->env[var])
 	{
 		if (!ft_strncmp(shell()->env[var], msg, exp_len(msg)))
 		{

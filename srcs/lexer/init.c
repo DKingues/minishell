@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:08:01 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/16 18:37:13 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/17 17:19:36 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	init_shell(char **ev)
 	shell()->pipe_count = 0;
 	shell()->in = 0;
 	shell()->out = 0;
-	shell()->alias = NULL;
 }
 
 void	init_env(char **ev)

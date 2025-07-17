@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:37:46 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/16 19:36:40 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/17 17:21:41 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 int	syntax_check(char *line)
 {
 	if (count_quotes(line) % 2 != 0)
-		return (ft_printf(2, RED"Invalid:"NO_COLOR" unclosed quotes.\n"), 0);
+		return (ft_printf(2, ERR_3), 0);
 	else if (check_pipes(line) == 0)
 		return (0);
 	else if (check_consecutive(line) == 0)
-		return (ft_printf(2, RED"Invalid:"NO_COLOR" unexpected token.\n"), 0);
+		return (ft_printf(2, ERR_4), 0);
 	else if (check_redirection(line) == 0)
 		return (0);
 	return (1);
@@ -32,7 +32,7 @@ int	check_pipes(char *line)
 	i = 0;
 	i += skip_spaces(&line[i]);
 	if (line && line[i] == '|')
-		return (ft_printf(2, RED"Invalid:"NO_COLOR" no command before pipe.\n"), 0);
+		return (ft_printf(2, ERR_5), 0);
 	while (line && line[i])
 	{
 		if (line[i] == '\"' || line[i] == '\'')
@@ -43,13 +43,13 @@ int	check_pipes(char *line)
 		else
 		{
 			if (line[i] == '|' && line[i + 1] == '|')
-				return (ft_printf(2, RED"Invalid:"NO_COLOR" unexpected token '|'.\n"), 0);
+				return (ft_printf(2, ERR_1), 0);
 			else if (line[i] == '|')
 			{
 				i++;
 				i += skip_spaces(&line[i]);
 				if (line[i] == '\0')
-					return (ft_printf(2, RED"Invalid:"NO_COLOR" no command after pipe.\n"), 0);
+					return (ft_printf(2, ERR_2), 0);
 			}
 			i++;
 		}
@@ -77,7 +77,7 @@ int	check_redirection(char *line)
 					i++;
 				i += skip_spaces(&line[i]);
 				if (line[i] == '\0')
-					return (ft_printf(2, RED"Invalid:"NO_COLOR" no file after '>'.\n"), 0);
+					return (ft_printf(2, ERR_6), 0);
 			}
 			if (line[i] == '<')
 			{
@@ -85,7 +85,7 @@ int	check_redirection(char *line)
 					i++;
 				i += skip_spaces(&line[i]);
 				if (line[i] == '\0')
-					return (ft_printf(2, RED"Invalid:"NO_COLOR" no file after '<'.\n"), 0);
+					return (ft_printf(2, ERR_7), 0);
 			}
 			else
 				i++;

@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/15 19:14:10 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/17 16:27:24 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int parser(char *line)
 	if(token)
 	{
 		pipe_counter(token);
-		shell()->tree = tokens_to_tree(token, NULL, shell()->tree, 0);
+		shell()->tree = tokens_to_tree(token, NULL, shell()->tree);
 	}
 	// printf("TREE\n");
 	// print_tree(shell()->tree);

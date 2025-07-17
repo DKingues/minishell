@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:08:44 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/15 15:37:36 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/17 17:03:18 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,6 @@ void	set_left_node(t_tree *ast, t_token *token)
 	}
 }
 
-t_tree	*new_node(char *value, int type)
-{
-	t_tree	*new;
-
-	new = ft_calloc(sizeof(t_tree), 1);
-	if (!new)
-		return (NULL);
-	new->value = ft_strdup(value);
-	new->type = type;
-	new->right = NULL;
-	new->left = NULL;
-	return (new);
-}
-
 t_tree	*phantom_node(void)
 {
 	t_tree	*new;
@@ -66,7 +52,7 @@ t_tree	*phantom_node(void)
 	return (new);
 }
 
-t_tree	*tokens_to_tree(t_token *token, t_token *target, t_tree *ast, int depth)
+t_tree	*tokens_to_tree(t_token *token, t_token *target, t_tree *ast)
 {
 	t_token	*temp;
 
@@ -76,25 +62,29 @@ t_tree	*tokens_to_tree(t_token *token, t_token *target, t_tree *ast, int depth)
 	if (temp)
 	{
 		ast = new_node(temp->value, temp->type);
-		ast->right = tokens_to_tree(temp->next, NULL, ast->right, depth + 1);
-		ast->left = tokens_to_tree(token, temp, ast->right, depth + 1);
+		ast->right = tokens_to_tree(temp->next, NULL, ast->right);
+		ast->left = tokens_to_tree(token, temp, ast->right);
 	}
 	else
+		ast = tokens_to_tree2(token, target, ast);
+	return (ast);
+}
+
+t_tree	*tokens_to_tree2(t_token *token, t_token *target, t_tree *ast)
+{
+	ast = phantom_node();
+	while (!(token == NULL || token == target))
 	{
-		ast = phantom_node();
-		while (!(token == NULL || token == target))
+		if (token->type != ARG)
+			set_left_node(ast, token);
+		else
 		{
-			if (token->type != ARG)
-				set_left_node(ast, token);
+			if (ast->value == NULL)
+				ast->value = ft_strdup(token->value);
 			else
-			{
-				if (ast->value == NULL)
-					ast->value = ft_strdup(token->value);
-				else
-					set_right_node(ast, token);
-			}
-			token = token->next;
+				set_right_node(ast, token);
 		}
+		token = token->next;
 	}
 	return (ast);
 }

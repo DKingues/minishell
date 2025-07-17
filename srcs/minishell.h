@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/16 19:35:22 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/17 17:21:43 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,14 @@
 # define RED "\033[1;31m"
 # define TOKEN_LIST "&|;<>,"
 # define SPACE_LIST " \t\n\v\f\r"
+# define ERR_1 RED"Invalid:"NO_COLOR" unexpected token '|'.\n"
+# define ERR_2 RED"Invalid:"NO_COLOR" no command after pipe.\n"
+# define ERR_3 RED"Invalid:"NO_COLOR" unclosed quotes.\n"
+# define ERR_4 RED"Invalid:"NO_COLOR" unexpected token.\n"
+# define ERR_5 RED"Invalid:"NO_COLOR" no command before pipe.\n"
+# define ERR_6 RED"Invalid:"NO_COLOR" no file after '>'.\n"
+# define ERR_7 RED"Invalid:"NO_COLOR" no file after '<'.\n"
+
 
 typedef enum s_token_type
 {
@@ -93,17 +101,19 @@ typedef enum s_sig_struct
 
 // binary_tree.c
 
-t_tree	*tokens_to_tree(t_token *token, t_token *target, \
-t_tree *ast, int depth);
+t_tree	*tokens_to_tree(t_token *token, t_token *target, t_tree *ast);
+t_tree	*tokens_to_tree2(t_token *token, t_token *target, t_tree *ast);
 void	set_left_node(t_tree *ast, t_token *token);
 void	set_right_node(t_tree *ast, t_token *token);
-t_tree	*new_node(char *value, int type);
+t_tree	*phantom_node(void);
 
 // binary_tree_aux.c
 
+int		parsing(char *line);
 void	tree_free(t_tree *ast);
 t_token	*find_pipe(t_token *token, t_token *target);
 int		pipe_counter(t_token *token);
+t_tree	*new_node(char *value, int type);
 
 // parse.C
 

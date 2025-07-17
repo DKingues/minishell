@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils4.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:08:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/05/08 16:07:07 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/17 18:13:29 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ void	set_old_path(void)
 
 	var = 0;
 	var2 = 0;
-	while(shell()->env[var])
+	while (shell()->env[var])
 	{
-		if(!ft_strncmp(shell()->env[var], "OLDPWD=", 7))
+		if (!ft_strncmp(shell()->env[var], "OLDPWD=", 7))
 		{
-			while(shell()->env[var2])
+			while (shell()->env[var2])
 			{
-				if(!ft_strncmp(shell()->env[var2], "PWD=", 4))
+				if (!ft_strncmp(shell()->env[var2], "PWD=", 4))
 				{
 					free(shell()->env[var]);
 					shell()->env[var] = ft_calloc(sizeof(char), ft_strlen(shell()->env[var2]) + 5);
@@ -48,13 +48,13 @@ void old_path_exp(void)
 
 	var = 0;
 	var2 = 0;
-	while(shell()->exp[var])
+	while (shell()->exp[var])
 	{
-		if(!ft_strncmp(shell()->exp[var], "OLDPWD=", 7))
+		if (!ft_strncmp(shell()->exp[var], "OLDPWD=", 7))
 		{
-			while(shell()->exp[var2])
+			while (shell()->exp[var2])
 			{
-				if(!ft_strncmp(shell()->exp[var2], "PWD=", 4))
+				if (!ft_strncmp(shell()->exp[var2], "PWD=", 4))
 				{
 					free(shell()->exp[var]);
 					shell()->exp[var] = ft_calloc(sizeof(char), ft_strlen(shell()->exp[var2]) + 5);
@@ -71,13 +71,13 @@ void old_path_exp(void)
 
 void set_new_path(void)
 {
-	int	var;
-	char buf[1000];
-	char *newpath;
+	int		var;
+	char	buf[1000];
+	char	*newpath;
 
 	var = 0;
 	newpath = getcwd(buf, sizeof(buf));
-	while(shell()->env[var])
+	while (shell()->env[var])
 	{
 		if (!ft_strncmp(shell()->env[var], "PWD=", 4))
 		{
@@ -94,13 +94,13 @@ void set_new_path(void)
 
 void new_path_exp(void)
 {
-	int	var;
-	char buf[1000];
-	char *newpath;
+	int		var;
+	char	buf[1000];
+	char	*newpath;
 
 	var = 0;
 	newpath = getcwd(buf, sizeof(buf));
-	while(shell()->exp[var])
+	while (shell()->exp[var])
 	{
 		if (!ft_strncmp(shell()->exp[var], "PWD=", 4))
 		{
@@ -126,7 +126,7 @@ void	mv_home(void)
 	{
 		if (!ft_strncmp(shell()->env[var], "HOME=", 5))
 		{
-			while(shell()->env[var][var2] != '=')
+			while (shell()->env[var][var2] != '=')
 				var2++;
 			chdir(shell()->env[var] + var2 + 1);
 			set_old_path();
