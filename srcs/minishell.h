@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/18 13:38:05 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/18 15:17:59 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,49 @@ typedef enum s_sig_struct
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
 # endif
+
+//tree_pipe.c
+void	child_process(t_tree *temp, t_tree *temp2, int check, int *fd);
+void	tree_executer(void);
+
+//here_doc.c
+int	check_docs(void);
+int	loop_docs(int count, t_tree *temp);
+int	manage_here_doc(void);
+
+//redir.c
+int		redir_input(t_tree	*redir);
+int		redir_input2(t_tree *redir, int fd, char *temp);
+void	here_doc(char *eof, int fd);
+void	close_fds(void);
+int		waitpids(int var);
+
+//builtins.c
+int		is_builtin(char *cmd);
+void	exp_parser(t_tree *temp);
+void	echo_parser(t_tree *temp, int flag, char *str);
+void	cd_parser(t_tree *temp);
+void	history_parser2(t_tree *temp, int flag, int var);
+
+//builtins2.c
+void	history_parser(t_tree *temp, int flag);
+void	builtin_exec2(t_tree *temp);
+void	builtin_exec(t_tree *tree);
+int		check_loop(char *path);
+
+//helper.c
+int		flag_check(char *flags, char *valid);
+char	**args_join(t_tree	*cmd);
+char	*search_alias(char *path);
+char	**split_redef(char **args, t_tree *cmd);
+char	**split_redef2(t_tree *temp2, char **temp, char **args, int var);
+
+//process.c
+void	execute(t_tree	*cmd);
+char **args_except(t_tree *cmd, char *path, char *temp);
+char *path_check(t_tree *cmd);
+void	execute2(char *temp, char *path, char **args, int check);
+void	exec_err(char *path, char *temp);
 
 // binary_tree.c
 
@@ -223,6 +266,7 @@ void	exit_cmd(t_tree *tree, int code);
 void	cd_cmd(char *path);
 void	single_exec(char *msg);
 char	*find_path(char *cmd);
+void	exit_help(void);
 
 // cmd_utils.c
 
@@ -262,13 +306,6 @@ void	mv_old(void);
 void	mv_abs(char *path);
 char	**hist_manage(char *line, int flag);
 int		redir_input(t_tree	*redir);
-
-// tree.c
-
-void	execute(t_tree	*cmd);
-char	**args_join(t_tree	*cmd);
-int		waitpids(int var);
-void	close_fds(void);
 
 // get_next_line
 

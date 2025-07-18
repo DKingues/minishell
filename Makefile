@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+         #
+#    By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/07/18 13:37:01 by dicosta-         ###   ########.fr        #
+#    Updated: 2025/07/18 15:17:32 by rmota-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ LEXER = init.c init2.c init3.c token.c custom_split.c custom_split_aux.c token_a
 
 PARSER = syntax_check.c binary_tree.c binary_tree_aux.c
 
-EXECUTER = commands.c commands2.c cmd_utils.c cmd_utils2.c cmd_utils3.c cmd_utils4.c cmd_utils5.c tree.c commands3.c
+EXECUTER = tree_pipe.c redir.c here_doc.c builtins.c builtins2.c helper.c process.c commands.c commands2.c cmd_utils.c cmd_utils2.c cmd_utils3.c cmd_utils4.c cmd_utils5.c tree.c commands3.c
 
 SIGNALS = signals.c
 
