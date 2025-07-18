@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 16:08:26 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/16 19:11:50 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/18 13:08:39 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,7 @@ char	*remove_expansion(char *line)
 	while (line[i])
 	{
 		if (line[i] == '\'' && !in_double_quotes(&line[i], i))
-		{
 			quote_copy(line, new_line, &i, &j);
-			ft_printf(1, "IN\n");
-		}
 		if (line[i] == '$')
 		{
 			while (line[i] && !ft_isspace(line[i]))
@@ -92,4 +89,14 @@ int	expa_len(char *line)
 		i++;
 	}
 	return (j);
+}
+
+int	skip_spaces(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (ft_isspace(line[i]))
+		i++;
+	return (i);
 }

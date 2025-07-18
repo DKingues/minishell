@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/17 18:49:05 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/18 13:38:05 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,18 @@
 # include <limits.h>
 # include <fcntl.h>
 
-# define NO_COLOR "\033[0m"
+# define NOCLR "\033[0m"
 # define RED "\033[1;31m"
 # define TOKEN_LIST "&|;<>,"
 # define SPACE_LIST " \t\n\v\f\r"
-# define ERR_1 RED"Invalid:"NO_COLOR" unexpected token '|'.\n"
-# define ERR_2 RED"Invalid:"NO_COLOR" no command after pipe.\n"
-# define ERR_3 RED"Invalid:"NO_COLOR" unclosed quotes.\n"
-# define ERR_4 RED"Invalid:"NO_COLOR" unexpected token.\n"
-# define ERR_5 RED"Invalid:"NO_COLOR" no command before pipe.\n"
-# define ERR_6 RED"Invalid:"NO_COLOR" no file after '>'.\n"
-# define ERR_7 RED"Invalid:"NO_COLOR" no file after '<'.\n"
-
+# define INV "Invalid: "
+# define ERR_1 "unexpected token '|'.\n"
+# define ERR_2 "no command after pipe.\n"
+# define ERR_3 "unclosed quotes.\n"
+# define ERR_4 "unexpected token.\n"
+# define ERR_5 "no command before pipe.\n"
+# define ERR_6 "no file after '>'.\n"
+# define ERR_7 "no file after '<'.\n"
 
 typedef enum s_token_type
 {
@@ -115,10 +115,6 @@ t_token	*find_pipe(t_token *token, t_token *target);
 int		pipe_counter(t_token *token);
 t_tree	*new_node(char *value, int type);
 
-// parse.C
-
-int		parsing(char *line);
-
 // signals.c
 
 void	root_handler(int signal);
@@ -164,14 +160,11 @@ int		is_command(char *value);
 // syntax_check.c
 
 int		syntax_check(char *line);
-int		check_pipes(char *line);
-int		check_redirection(char *line);
-int		check_consecutive(char *line);
+int		check_pipes(char *line, int i);
+int		check_redirection(char *line, int i);
+int		check_redirection2(char *line, int i, char redir_type);
+int		check_consecutive(char *line, int i, char temp, int consecutive);
 int		check_command(char *line);
-
-// syntax_aux.c
-
-int		skip_spaces(char *line);
 
 // expand.c
 
@@ -184,6 +177,7 @@ int		in_double_quotes(char *line, int i);
 char	*remove_expansion(char *line);
 int		arg_len(char *expansion_name);
 int		expa_len(char *line);
+int		skip_spaces(char *line);
 
 // expander_check.c
 
@@ -208,6 +202,10 @@ char	*find_home(void);
 char	*str_redef(char *str, int var, int var2, int except);
 char	*copy_no_nl(char *temp);
 void	set_alias(int len, int fd);
+void	set_alias2(char *line, int *len, int var);
+
+// init3.c
+
 void	init_alias(void);
 void	init_alias2(int fd, char *line, int var, char *home);
 

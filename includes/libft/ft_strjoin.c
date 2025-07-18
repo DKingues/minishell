@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scorpot <scorpot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:48:05 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/09 14:23:06 by scorpot          ###   ########.fr       */
+/*   Updated: 2025/07/18 13:46:36 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		j++;
 		i++;
 	}
-	free((char*)s1);
+	free((char *)s1);
 	return (mal);
 }
 

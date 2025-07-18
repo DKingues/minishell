@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:08:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/17 18:13:29 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/18 13:55:30 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	set_old_path(void)
 	old_path_exp();
 }
 
-void old_path_exp(void)
+void	old_path_exp(void)
 {
 	int	var;
 	int	var2;
@@ -69,7 +69,7 @@ void old_path_exp(void)
 	}
 }
 
-void set_new_path(void)
+void	set_new_path(void)
 {
 	int		var;
 	char	buf[1000];
@@ -92,7 +92,7 @@ void set_new_path(void)
 	new_path_exp();
 }
 
-void new_path_exp(void)
+void	new_path_exp(void)
 {
 	int		var;
 	char	buf[1000];

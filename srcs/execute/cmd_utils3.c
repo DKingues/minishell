@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:52:38 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/17 18:11:40 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/18 13:51:07 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	error_syntax(char *array)
 		{
 			if ((array[i] == '-' || array[i] == '+')
 				&& ((array[i + 1] < '0' || array[i + 1] > '9')
-				|| (i != '\0')))
+					|| (i != '\0')))
 			{
 				if (!ft_isspace(array[i]))
 					return (0);

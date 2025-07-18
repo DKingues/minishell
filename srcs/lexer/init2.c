@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 18:32:35 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/17 18:49:13 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/18 13:38:31 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,57 @@ char	*copy_no_nl(char *temp)
 	return (res);
 }
 
+//void	set_alias(int len, int fd)
+//{
+//	char	*line;
+//	char	*temp;
+//	char	*temp2;
+//	char	*temp3;
+//	int		var;
+
+//	shell()->alias = ft_calloc(sizeof(char *), len + 1);
+//	line = get_next_line(fd);
+//	len = 0;
+//	while (line)
+//	{
+//		var = 6;
+//		if (!ft_strncmp("alias ", line, 6))
+//		{
+//			temp = str_redef(line + exp_len(line) + 1, 0, 0, 0);
+//			if (!temp)
+//			{
+//				free(line);
+//				line = get_next_line(fd);
+//				continue ;
+//			}
+//			if (temp[ft_strlen(temp) - 1] == '\n')
+//				temp = copy_no_nl(temp);
+//			while (line[var] != '=')
+//				var++;
+//			temp2 = ft_calloc(sizeof(char), var + 2);
+//			var = 0;
+//			while (line[var + 6] != '=')
+//			{
+//				temp2[var] = line[var + 6];
+//				var++;
+//			}
+//			temp2[var] = '=';
+//			temp3 = ft_strjoin(temp2, temp);
+//			shell()->alias[len] = ft_strdup(temp2);
+//			free(temp3);
+//			len++;
+//			free(temp);
+//		}
+//		free(line);
+//		line = get_next_line(fd);
+//	}
+//	free(line);
+//	close(fd);
+//}
+
 void	set_alias(int len, int fd)
 {
 	char	*line;
-	char	*temp;
-	char	*temp2;
-	char	*temp3;
 	int		var;
 
 	shell()->alias = ft_calloc(sizeof(char *), len + 1);
@@ -87,32 +132,7 @@ void	set_alias(int len, int fd)
 	{
 		var = 6;
 		if (!ft_strncmp("alias ", line, 6))
-		{
-			temp = str_redef(line + exp_len(line) + 1, 0, 0, 0);
-			if (!temp)
-			{
-				free(line);
-				line = get_next_line(fd);
-				continue ;
-			}
-			if (temp[ft_strlen(temp) - 1] == '\n')
-				temp = copy_no_nl(temp);
-			while (line[var] != '=')
-				var++;
-			temp2 = ft_calloc(sizeof(char), var + 2);
-			var = 0;
-			while (line[var + 6] != '=')
-			{
-				temp2[var] = line[var + 6];
-				var++;
-			}
-			temp2[var] = '=';
-			temp3 = ft_strjoin(temp2, temp);
-			shell()->alias[len] = ft_strdup(temp2);
-			free(temp3);
-			len++;
-			free(temp);
-		}
+			set_alias2(line, &len, var);
 		free(line);
 		line = get_next_line(fd);
 	}
@@ -120,40 +140,30 @@ void	set_alias(int len, int fd)
 	close(fd);
 }
 
-void	init_alias(void)
+void	set_alias2(char *line, int *len, int var)
 {
-	int		fd;
-	char	*line;
-	int		var;
-	char	*home;
+	char	*temp;
+	char	*temp2;
+	char	*temp3;
 
-	var = 0;
-	home = find_home();
-	home = ft_strjoin(home, "/.zshrc");
-	fd = open(home, O_RDONLY);
-	line = NULL;
-	if (fd == -1)
-	{
-		if (home)
-			free(home);
-		shell()->alias = ft_calloc(1, sizeof(char *));
-		shell()->alias[0] = ft_strdup("");
+	temp = str_redef(line + exp_len(line) + 1, 0, 0, 0);
+	if (!temp)
 		return ;
-	}
-	init_alias2(fd, line, var, home);
-}
-
-void	init_alias2(int fd, char *line, int var, char *home)
-{
-	line = get_next_line(fd);
-	while (line)
+	if (temp[ft_strlen(temp) - 1] == '\n')
+		temp = copy_no_nl(temp);
+	while (line[var] != '=')
+		var++;
+	temp2 = ft_calloc(sizeof(char), var + 2);
+	var = 0;
+	while (line[var + 6] != '=')
 	{
-		if (!ft_strncmp("alias ", line, 6))
-			var++;
-		free(line);
-		line = get_next_line(fd);
+		temp2[var] = line[var + 6];
+		var++;
 	}
-	free(home);
-	free(line);
-	set_alias(var, fd);
+	temp2[var] = '=';
+	temp3 = ft_strjoin(temp2, temp);
+	shell()->alias[*len] = ft_strdup(temp2);
+	free(temp3);
+	(*len)++;
+	free(temp);
 }
