@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init3.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:36:07 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/18 13:36:41 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/18 15:46:58 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	init_alias2(int fd, char *line, int var, char *home)
 		free(line);
 		line = get_next_line(fd);
 	}
+	close(fd);
+	fd = open(home, O_RDONLY);
 	free(home);
 	free(line);
 	set_alias(var, fd);

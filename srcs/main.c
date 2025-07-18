@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/17 18:43:57 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/18 16:50:50 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ int parser(char *line)
 		pipe_counter(token);
 		shell()->tree = tokens_to_tree(token, NULL, shell()->tree);
 	}
-	// printf("TREE\n");
-	// print_tree(shell()->tree);
+	/* printf("TREE\n");
+	 print_tree(shell()->tree);*/
 	free_list(token);
 	free(line);
 	return (1);
@@ -126,12 +126,6 @@ int	main(int ac, char **av, char **ev)
 		return (ft_printf(1, "No arguments are needed\n"), 1);
 	//print_banner();
 	init_shell(ev);
-	ac = 0;
-	while(shell()->alias[ac])
-	{
-		ft_printf(2, "%s\n", shell()->alias[ac]);
-		ac++;
-	}
 	while(1)
 	{
 		choose_signal(ROOT);
@@ -141,14 +135,17 @@ int	main(int ac, char **av, char **ev)
 			ft_printf(1, "exit");
 			exit_cmd(NULL, 0);
 		}
-		if(!line[0])
+		reset_input(line);
+		if(!line[0] || !parser(line))
 		{
-			free(line);
+			if(!line[0])
+				shell()->exit = 0;
+			else
+				shell()->exit = 1;
+			if (line)
+				free(line);
 			continue ;
 		}
-		reset_input(line);
-		if (parser(line) == 0)
-			ft_printf(1, "");
 		if(shell()->tree)
 		{
 			if(manage_here_doc() == 1)
@@ -163,7 +160,7 @@ int	main(int ac, char **av, char **ev)
 				if(!shell()->pid)
 				{
 					choose_signal(CHLD);
-					tree_executer();
+					tree_executer(0, 0);
 				}
 				else
 				{
@@ -174,7 +171,7 @@ int	main(int ac, char **av, char **ev)
 				}
 			}
 			else
-				nptree_executer();
+				nptree_executer(NULL, NULL, 0);
 		}
 	}
 	return (0);

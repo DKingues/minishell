@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:29:30 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/17 18:21:54 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/18 15:54:22 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	cd_cmd(char *path)
 	if (path && !access(path, 0))
 	{
 		chdir(path);
-		set_old_path();
+		set_old_path(0, 0, 0, NULL);
 		set_new_path();
 	}
 	else if (!path)

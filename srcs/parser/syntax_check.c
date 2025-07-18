@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:37:46 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/18 13:12:13 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/18 16:54:55 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@ int	syntax_check(char *line)
 {
 	if (count_quotes(line) % 2 != 0)
 		return (ft_printf(2, RED INV NOCLR ERR_3), 0);
-	else if (check_consecutive(line, 0, 0, 0) == 0)
-		return (ft_printf(2, RED INV NOCLR ERR_4), 0);
+	else if (!ft_strcmp(line, "\"\"") || !ft_strcmp(line, "\'\'"))
+		return (ft_printf(2, "minishell: : command not found\n"), 0);
 	else if (check_pipes(line, 0) == 0)
 		return (0);
+	else if (check_consecutive(line, 0, 0, 0) == 0)
+		return (ft_printf(2, RED INV NOCLR ERR_4), 0);
 	else if (check_redirection(line, 0) == 0)
 		return (0);
 	return (1);
@@ -56,6 +58,8 @@ int	check_pipes(char *line, int i)
 
 int	check_redirection(char *line, int i)
 {
+	char	redir_type;
+
 	while (line && line[i])
 	{
 		if (line[i] == '\"' || line[i] == '\'')
@@ -65,15 +69,14 @@ int	check_redirection(char *line, int i)
 		}
 		else
 		{
-			if (line[i] == '>')
+			if (line[i] == '>' || line[i] == '<')
 			{
-				if (!check_redirection2(line, i, '>'))
-					return (ft_printf(2, RED INV NOCLR ERR_6), 0);
-			}
-			if (line[i] == '<')
-			{
-				if (!check_redirection2(line, i, '<'))
-					return (ft_printf(2, RED INV NOCLR ERR_7), 0);
+				redir_type = line[i];
+				while (line[i] == redir_type)
+					i++;
+				i += skip_spaces(&line[i]);
+				if (line[i] == '\0')
+					return (ft_printf(2, RED INV NOCLR ERR_6"'%c'.\n", line[i]), 0);
 			}
 			else
 				i++;
@@ -82,15 +85,16 @@ int	check_redirection(char *line, int i)
 	return (1);
 }
 
-int	check_redirection2(char *line, int i, char redir_type)
-{
-	while (line[i] == redir_type)
-		i++;
-	i += skip_spaces(&line[i]);
-	if (line[i] == '\0')
-		return (0);
-	return (1);
-}
+//int	check_redirection2(char *line, int i, char redir_type)
+//{
+//	ft_printf(1, "%s\n", line);
+//	while (line[i] == redir_type)
+//		i++;
+//	i += skip_spaces(&line[i]);
+//	if (line[i] == '\0')
+//		return (0);
+//	return (1);
+//}
 
 int	check_consecutive(char *line, int i, char temp, int consecutive)
 {

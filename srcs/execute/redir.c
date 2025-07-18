@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 14:06:06 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/18 14:07:42 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/18 16:18:58 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	redir_input2(t_tree *redir, int fd, char *temp)
 	if (redir->type == TRUNCATE)
 	{
 		fd = open(redir->value, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-		if (fd == -1)
+		if (fd < 0)
 		{
 			temp = ft_nfstrjoin("minishell: ", redir->value);
 			perror(temp);
@@ -29,7 +29,7 @@ int	redir_input2(t_tree *redir, int fd, char *temp)
 	else if (redir->type == APPEND)
 	{
 		fd = open(redir->value, O_WRONLY | O_APPEND | O_CREAT, 0644);
-		if (fd == -1)
+		if (fd < 0)
 		{
 			temp = ft_nfstrjoin("minishell: ", redir->value);
 			perror(temp);
@@ -49,7 +49,7 @@ int	redir_input(t_tree	*redir)
 	if (redir->type == READ)
 	{
 		fd = open(redir->value, O_RDONLY);
-		if (fd == -1)
+		if (fd < 0)
 		{
 			temp = ft_nfstrjoin("minishell: ", redir->value);
 			perror(temp);
@@ -75,6 +75,7 @@ int	waitpids(int var)
 
 	i = 0;
 	code = 0;
+	singleton_free(1);
 	close(0);
 	while (i < var)
 	{

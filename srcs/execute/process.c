@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:23:17 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/18 14:04:13 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/18 16:47:43 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	exec_err(char *path, char *temp)
 {
-	if (opendir(path))
+	if (path && opendir(path))
 		ft_printf(2, "minishell: %s: Is a directory\n", path);
 	else
 	{

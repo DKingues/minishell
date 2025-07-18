@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/18 15:17:59 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/18 16:32:22 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@
 # define ERR_3 "unclosed quotes.\n"
 # define ERR_4 "unexpected token.\n"
 # define ERR_5 "no command before pipe.\n"
-# define ERR_6 "no file after '>'.\n"
-# define ERR_7 "no file after '<'.\n"
+# define ERR_6 "no file after"
 
 typedef enum s_token_type
 {
@@ -99,16 +98,27 @@ typedef enum s_sig_struct
 #  define BUFFER_SIZE 42
 # endif
 
+//tree.c
+
+void	nptree_executer(t_tree *temp, t_tree *temp2, int pid);
+void	nptree_builtin(t_tree *temp, t_tree *temp2, int check2);
+void	npchild_process(t_tree *temp, t_tree *temp2, int check2);
+void	npparent_process(void);
+
 //tree_pipe.c
+
+int		parent_process(t_tree *temp2, int *check, int *fd, int var);
 void	child_process(t_tree *temp, t_tree *temp2, int check, int *fd);
-void	tree_executer(void);
+void	tree_executer(int var, int check);
 
 //here_doc.c
-int	check_docs(void);
-int	loop_docs(int count, t_tree *temp);
-int	manage_here_doc(void);
+
+int		check_docs(void);
+int		loop_docs(int count, t_tree *temp);
+int		manage_here_doc(void);
 
 //redir.c
+
 int		redir_input(t_tree	*redir);
 int		redir_input2(t_tree *redir, int fd, char *temp);
 void	here_doc(char *eof, int fd);
@@ -116,6 +126,7 @@ void	close_fds(void);
 int		waitpids(int var);
 
 //builtins.c
+
 int		is_builtin(char *cmd);
 void	exp_parser(t_tree *temp);
 void	echo_parser(t_tree *temp, int flag, char *str);
@@ -123,12 +134,14 @@ void	cd_parser(t_tree *temp);
 void	history_parser2(t_tree *temp, int flag, int var);
 
 //builtins2.c
+
 void	history_parser(t_tree *temp, int flag);
 void	builtin_exec2(t_tree *temp);
 void	builtin_exec(t_tree *tree);
 int		check_loop(char *path);
 
 //helper.c
+
 int		flag_check(char *flags, char *valid);
 char	**args_join(t_tree	*cmd);
 char	*search_alias(char *path);
@@ -136,9 +149,10 @@ char	**split_redef(char **args, t_tree *cmd);
 char	**split_redef2(t_tree *temp2, char **temp, char **args, int var);
 
 //process.c
+
 void	execute(t_tree	*cmd);
-char **args_except(t_tree *cmd, char *path, char *temp);
-char *path_check(t_tree *cmd);
+char	**args_except(t_tree *cmd, char *path, char *temp);
+char	*path_check(t_tree *cmd);
 void	execute2(char *temp, char *path, char **args, int check);
 void	exec_err(char *path, char *temp);
 
@@ -261,10 +275,9 @@ void	unset_cmd(char *msg);
 void	env_cmd(t_tree *tree);
 
 // commands2.c
-
+void	singleton_free(int exit);
 void	exit_cmd(t_tree *tree, int code);
 void	cd_cmd(char *path);
-void	single_exec(char *msg);
 char	*find_path(char *cmd);
 void	exit_help(void);
 
@@ -294,8 +307,8 @@ int		long_check(char *str);
 
 // cmd_utils4.c
 
-void	set_old_path(void);
-void	old_path_exp(void);
+void	set_old_path(int var, int var2, int len, char *temp);
+void	old_path_exp(int var, int var2, int len, char *temp);
 void	set_new_path(void);
 void	new_path_exp(void);
 void	mv_home(void);
@@ -313,13 +326,5 @@ char	*get_next_line(int fd);
 int		ft_linelen_gnl(char *str);
 char	*ft_strjoin_gnl(char *s1, char *s2);
 void	ft_buffer_clean(char *str);
-
-void	free_list(t_token *token);
-void	singleton_free(int exit);
-int		manage_here_doc(void);
-void	nptree_executer(void);
-void	tree_executer(void);
-int		flag_check(char *flags, char *valid);
-char	*find_home(void);
 
 #endif

@@ -6,11 +6,18 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 14:24:31 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/18 14:28:04 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/18 16:54:05 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	exit_help2(void)
+{
+	if (shell()->env)
+		ft_free_split(shell()->env);
+	exit(shell()->exit);
+}
 
 void	child_process(t_tree *temp, t_tree *temp2, int check, int *fd)
 {
@@ -28,7 +35,7 @@ void	child_process(t_tree *temp, t_tree *temp2, int check, int *fd)
 		check2 = 1;
 		if (temp->type == READ || temp->type == HERE_DOC
 			|| temp->type == TRUNCATE || temp->type == APPEND)
-			if(redir_input(temp))
+			if (redir_input(temp))
 				break ;
 		check2 = 0;
 		temp = temp->left;
@@ -38,23 +45,38 @@ void	child_process(t_tree *temp, t_tree *temp2, int check, int *fd)
 	else if (temp2->left && temp2->left->value
 		&& temp2->left->type == COMMAND && !check2)
 		execute(temp2->left);
-	exit_help();
+	exit_help2();
 }
 
-void	tree_executer(void)
+int	parent_process(t_tree *temp2, int *check, int *fd, int var)
+{
+	t_tree	*temp;
+
+	temp = temp2;
+	while (temp)
+	{
+		if (temp->type == HERE_DOC)
+			shell()->count++;
+		temp = temp->left;
+	}
+	if (*check == 1)
+		dup2(fd[0], 0);
+	if ((temp2 && temp2->value && temp2->type == COMMAND)
+		|| (temp2->left && temp2->left->value
+			&& temp2->left->type == COMMAND))
+		var++;
+	*check = 0;
+	return (var);
+}
+
+void	tree_executer(int var, int check)
 {
 	int		fd[2];
-	int		var;
-	int		check;
-	int		check2;
 	t_tree	*temp;
 	t_tree	*temp2;
 
-	var = 0;
-	check = 0;
 	shell()->pids = ft_calloc(shell()->pipe_count + 2, sizeof(int));
 	shell()->count = 0;
-	check2 = 0;
 	choose_signal(CHLD);
 	temp2 = shell()->tree;
 	while (temp2)
@@ -70,24 +92,8 @@ void	tree_executer(void)
 		if (!shell()->pids[var])
 			child_process(temp, temp2, check, fd);
 		else
-		{
-			temp = temp2;
-			while (temp)
-			{
-				if (temp->type == HERE_DOC)
-					shell()->count++;
-				temp = temp->left;
-			}
-			if (check == 1)
-				dup2(fd[0], 0);
-		}
-		check = 0;
-		if ((temp2 && temp2->value && temp2->type == COMMAND)
-			|| (temp2->left && temp2->left->value
-				&& temp2->left->type == COMMAND))
-			var++;
+			var = parent_process(temp2, &check, fd, var);
 		temp2 = temp2->right;
 	}
-	singleton_free(1);
 	exit(waitpids(var));
 }
