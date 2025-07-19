@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/19 16:06:42 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 18:40:25 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ int parser(char *line)
 	t_token *token;
 	
 	token = assign_token(line);
-	// printf("TOKEN\n");
-	// print_tokens(token);
-	// printf("\n\n");
+	/* printf("TOKEN\n");
+	 print_tokens(token);
+	 printf("\n\n");*/
 	if(token)
 	{
 		pipe_counter(token);

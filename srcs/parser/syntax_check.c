@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:37:46 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/19 17:00:09 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 18:44:30 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	syntax_check(char *line)
 	{
 		shell()->parser = 1;
 		shell()->exit = 127;
-		return (free(line), ft_printf(2, "minishell: : command not found\n"), 0);
+		return (free(line), ft_printf(2, ": command not found\n"), 0);
 	}
 	else if (check_pipes(line, 0) == 0)
 		return (free(line), 0);
@@ -133,7 +133,7 @@ int consec_counter(int *i, char *line, char temp)
 	int	consecutive;
 
 	consecutive = 0;
-	while (line[*i] == temp)
+	while (line[*i] && line[*i] == temp)
 	{
 		(*i)++;
 		consecutive++;
