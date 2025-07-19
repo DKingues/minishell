@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   binary_tree_aux.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 16:44:28 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/17 17:02:54 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/19 14:51:37 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,12 @@ void	tree_free(t_tree *ast)
 	tree_free(ast->left);
 	tree_free(ast->right);
 	if (ast->value)
+	{
 		free(ast->value);
+		ast->value = NULL;
+	}
 	free(ast);
+	ast = NULL;
 }
 
 t_tree	*new_node(char *value, int type)

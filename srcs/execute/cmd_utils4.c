@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:08:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/18 15:58:15 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 15:15:19 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,8 @@ void	old_path_exp(int var, int var2, int len, char *temp)
 	}
 }
 
-void	set_new_path(void)
+void	set_new_path(int var)
 {
-	int		var;
 	char	*temp;
 	char	buf[1000];
 	char	*newpath;
@@ -110,6 +109,7 @@ void	new_path_exp(void)
 			ft_strcpy(temp + 5, newpath);
 			temp[ft_strlen(temp)] = '\"';
 			shell()->exp[var] = ft_strdup(temp);
+			free(temp);
 			break ;
 		}
 		var++;
@@ -120,19 +120,18 @@ void	mv_home(void)
 {
 	int	var;
 	int	var2;
+	char *home;
 
 	var = 0;
 	var2 = 0;
-	while (shell()->env[var])
+	home = find_home();
+	if (!home)
 	{
-		if (!ft_strncmp(shell()->env[var], "HOME=", 5))
-		{
-			while (shell()->env[var][var2] != '=')
-				var2++;
-			chdir(shell()->env[var] + var2 + 1);
-			set_old_path(0, 0, 0, NULL);
-			set_new_path();
-		}
-		var++;
+		ft_printf(2, "minishell: cd: HOME not set\n");
+		return ;
 	}
+	chdir(home);
+	set_old_path(0, 0, 0, NULL);
+	set_new_path(0);
+	free(home);
 }

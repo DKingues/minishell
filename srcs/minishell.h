@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/19 12:25:05 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 16:06:24 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,7 +311,7 @@ int		long_check(char *str);
 
 void	set_old_path(int var, int var2, int len, char *temp);
 void	old_path_exp(int var, int var2, int len, char *temp);
-void	set_new_path(void);
+void	set_new_path(int var);
 void	new_path_exp(void);
 void	mv_home(void);
 

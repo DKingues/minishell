@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:29:30 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/18 15:54:22 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 16:06:54 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,32 @@ void	singleton_free(int exit)
 {
 	if (exit)
 	{
-		if (shell()->env)
+		if (shell()->env && shell()->env[0])
 			ft_free_split(shell()->env);
+		shell()->env = NULL;
 		close_fds();
 	}
-	if (shell()->alias)
+	if (shell()->alias && shell()->alias[0])
+	{
 		ft_free_split(shell()->alias);
-	if (shell()->hist)
+		shell()->alias = NULL;
+	}
+	if (shell()->hist && shell()->hist[0])
+	{
 		ft_free_split(shell()->hist);
-	if (shell()->exp)
+		shell()->hist = NULL;
+	}
+	if (shell()->exp && shell()->exp[0])
+	{
 		ft_free_split(shell()->exp);
-	if (shell()->docs)
+		shell()->exp = NULL;
+	}
+	if (shell()->docs && shell()->docs[0])
+	{
 		free(shell()->docs);
-	if (shell()->tree)
+		shell()->docs = NULL;
+	}
+	if (shell()->tree && shell()->tree->value)
 		tree_free(shell()->tree);
 }
 
@@ -68,11 +81,15 @@ void	exit_cmd(t_tree	*tree, int code)
 
 void	cd_cmd(char *path)
 {
-	if (path && !access(path, 0))
+	/*if(path)
+		ft_printf(2, "%s\n", path);
+	else
+		ft_printf(2, "ERROR");*/		
+	if (path && !access(path, F_OK) && !access(path, X_OK))
 	{
 		chdir(path);
 		set_old_path(0, 0, 0, NULL);
-		set_new_path();
+		set_new_path(0);
 	}
 	else if (!path)
 		mv_home();

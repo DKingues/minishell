@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/19 12:31:33 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 16:06:42 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int parser(char *line)
 	/* printf("TREE\n");
 	 print_tree(shell()->tree);*/
 	free_list(token);
-	//free(line);
+	free(line);
 	return (1);
 }
 
@@ -107,7 +107,7 @@ void	reset_input(char *line)
 	shell()->pid = 0;
 	shell()->in = dup(0);
 	shell()->out = dup(1);
-	if(shell()->tree)
+	if(shell()->tree && shell()->tree->value)
 	{
 		tree_free(shell()->tree);
 		shell()->tree = NULL;
@@ -136,18 +136,19 @@ int	main(int ac, char **av, char **ev)
 			ft_printf(1, "exit");
 			exit_cmd(NULL, 0);
 		}
-		reset_input(line);
-		if(!line[0] || !parser(line))
+		if(!line[0])
 		{
-			if(!line[0])
-				shell()->exit = 0;
-			else if (!shell()->parser)
-				shell()->exit = 1;
-			if (line)
-				free(line);
+			shell()->exit = 0;
+			free(line);
 			continue ;
 		}
-		free(line);
+		reset_input(line);
+		if(!parser(line))
+		{
+			if (!shell()->parser)
+				shell()->exit = 1;
+			continue ;
+		}
 		if(shell()->tree)
 		{
 			if(manage_here_doc() == 1)

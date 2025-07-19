@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_check.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:44:06 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/16 19:11:44 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/19 15:38:16 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ char	*expand(char *line, char *key, int start, int end)
 	str_end = ft_substr(line, end, ft_strlen(line) - end);
 	new_line = ft_strjoin(str_start, value);
 	free(value);
+	free(key);
+	free(line);
 	line = ft_strjoin(new_line, str_end);
 	free(str_end);
 	return (expand_caller(line));

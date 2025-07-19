@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 14:47:46 by scorpot           #+#    #+#             */
-/*   Updated: 2025/07/16 19:23:52 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/19 16:06:17 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*expand_arg(char *arg)
 		temp = ft_itoa(shell()->exit);
 		if (ft_strlen(arg) >= 2)
 			temp = ft_strjoin(temp, arg + 2);
-		return (free(arg), temp);
+		return (temp);
 	}
 	return (expand_arg_continue(arg, var, len, temp));
 }
@@ -42,17 +42,17 @@ char	*expand_arg_continue(char *arg, int var, int len, char *temp)
 			{
 				temp = ft_strdup(shell()->env[var] + len + 1);
 				temp = ft_strjoin(temp, arg + len + 1);
-				return (free(arg), temp);
+				return (temp);
 			}
 			else if (arg[len] && ft_isalnum(arg[len + 1]))
 				len++;
 			else
 			{
 				temp = ft_strdup(shell()->env[var] + len + 1);
-				return (free(arg), temp);
+				return (temp);
 			}
 		}
 		var++;
 	}
-	return (free(arg), ft_strdup(""));
+	return (ft_strdup(""));
 }
