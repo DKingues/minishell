@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:37:46 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/18 16:54:55 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 12:25:18 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,14 @@ int	syntax_check(char *line)
 	if (count_quotes(line) % 2 != 0)
 		return (ft_printf(2, RED INV NOCLR ERR_3), 0);
 	else if (!ft_strcmp(line, "\"\"") || !ft_strcmp(line, "\'\'"))
+	{
+		shell()->parser = 1;
+		shell()->exit = 127;
 		return (ft_printf(2, "minishell: : command not found\n"), 0);
+	}
 	else if (check_pipes(line, 0) == 0)
 		return (0);
-	else if (check_consecutive(line, 0, 0, 0) == 0)
+	else if (check_consecutive(line, 0, 0) == 0)
 		return (ft_printf(2, RED INV NOCLR ERR_4), 0);
 	else if (check_redirection(line, 0) == 0)
 		return (0);
@@ -96,7 +100,7 @@ int	check_redirection(char *line, int i)
 //	return (1);
 //}
 
-int	check_consecutive(char *line, int i, char temp, int consecutive)
+int	check_consecutive(char *line, int i, char temp)
 {
 	while (line[i])
 	{
@@ -110,12 +114,9 @@ int	check_consecutive(char *line, int i, char temp, int consecutive)
 			if (is_token(line[i]))
 			{
 				temp = line[i++];
-				while (line[i++] == temp)
-					consecutive++;
-				i--;
-				if ((temp == '>' || temp == '<') && consecutive > 1)
+				if ((temp == '>' || temp == '<') && consec_counter(&i, line, temp) > 1)
 					return (0);
-				else if ((temp != '>' && temp != '<') && consecutive > 0)
+				else if ((temp != '>' && temp != '<') &&  consec_counter(&i, line, temp) > 0)
 					return (0);
 			}
 			else
@@ -123,4 +124,17 @@ int	check_consecutive(char *line, int i, char temp, int consecutive)
 		}
 	}
 	return (1);
+}
+
+int consec_counter(int *i, char *line, char temp)
+{
+	int	consecutive;
+
+	consecutive = 0;
+	while (line[*i] == temp)
+	{
+		(*i)++;
+		consecutive++;
+	}
+	return (consecutive);
 }

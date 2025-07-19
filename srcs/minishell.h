@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/18 16:32:22 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 12:25:05 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct s_token
 
 typedef struct s_shell
 {
+	int		parser;
 	int		*pids;
 	char	**alias;
 	int		in;
@@ -110,6 +111,7 @@ void	npparent_process(void);
 int		parent_process(t_tree *temp2, int *check, int *fd, int var);
 void	child_process(t_tree *temp, t_tree *temp2, int check, int *fd);
 void	tree_executer(int var, int check);
+void	exit_help2(int check2);
 
 //here_doc.c
 
@@ -219,9 +221,9 @@ int		is_command(char *value);
 int		syntax_check(char *line);
 int		check_pipes(char *line, int i);
 int		check_redirection(char *line, int i);
-int		check_redirection2(char *line, int i, char redir_type);
-int		check_consecutive(char *line, int i, char temp, int consecutive);
+int		check_consecutive(char *line, int i, char temp);
 int		check_command(char *line);
+int		consec_counter(int *i, char *line, char temp);
 
 // expand.c
 

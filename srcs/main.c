@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/18 16:50:50 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 12:31:33 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int parser(char *line)
 	/* printf("TREE\n");
 	 print_tree(shell()->tree);*/
 	free_list(token);
-	free(line);
+	//free(line);
 	return (1);
 }
 
@@ -114,6 +114,7 @@ void	reset_input(char *line)
 	}
 	shell()->count = 0;
 	shell()->pipe_count = 0;
+	shell()->parser = 0;
 	shell()->hist = hist_manage(line, 0);
 }
 
@@ -140,12 +141,13 @@ int	main(int ac, char **av, char **ev)
 		{
 			if(!line[0])
 				shell()->exit = 0;
-			else
+			else if (!shell()->parser)
 				shell()->exit = 1;
 			if (line)
 				free(line);
 			continue ;
 		}
+		free(line);
 		if(shell()->tree)
 		{
 			if(manage_here_doc() == 1)

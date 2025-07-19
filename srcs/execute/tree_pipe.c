@@ -6,15 +6,17 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 14:24:31 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/18 16:54:05 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 12:09:01 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	exit_help2(void)
+void	exit_help2(int check2)
 {
-	if (shell()->env)
+	if(check2)
+		singleton_free(1);
+	else if (shell()->env)
 		ft_free_split(shell()->env);
 	exit(shell()->exit);
 }
@@ -45,7 +47,7 @@ void	child_process(t_tree *temp, t_tree *temp2, int check, int *fd)
 	else if (temp2->left && temp2->left->value
 		&& temp2->left->type == COMMAND && !check2)
 		execute(temp2->left);
-	exit_help2();
+	exit_help2(check2);
 }
 
 int	parent_process(t_tree *temp2, int *check, int *fd, int var)

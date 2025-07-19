@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 14:06:06 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/18 16:18:58 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 11:55:24 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	redir_input2(t_tree *redir, int fd, char *temp)
 			temp = ft_nfstrjoin("minishell: ", redir->value);
 			perror(temp);
 			free(temp);
+			shell()->exit = 1;
 			return (1);
 		}
 		return (dup2(fd, 1), 0);
@@ -34,6 +35,7 @@ int	redir_input2(t_tree *redir, int fd, char *temp)
 			temp = ft_nfstrjoin("minishell: ", redir->value);
 			perror(temp);
 			free(temp);
+			shell()->exit = 1;
 			return (1);
 		}
 		return (dup2(fd, 1), 0);
@@ -54,6 +56,7 @@ int	redir_input(t_tree	*redir)
 			temp = ft_nfstrjoin("minishell: ", redir->value);
 			perror(temp);
 			free(temp);
+			shell()->exit = 1;
 			return (1);
 		}
 		dup2(fd, 0);

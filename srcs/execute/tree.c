@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:41:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/18 16:42:32 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 12:12:25 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,7 @@ void	npchild_process(t_tree *temp, t_tree *temp2, int check2)
 	}
 	if (temp2 && temp2->value && temp2->type == COMMAND && !check2)
 		execute(temp2);
-	if (shell()->env)
-		ft_free_split(shell()->env);
-	close_fds();
-	exit(shell()->exit);
+	exit_help2(check2);
 }
 
 void	nptree_builtin(t_tree *temp, t_tree *temp2, int check2)
@@ -62,7 +59,7 @@ void	nptree_builtin(t_tree *temp, t_tree *temp2, int check2)
 		dup2(shell()->out, 1);
 		ft_printf(1, "exit\n");
 	}
-	else
+	else if (!check2)
 		shell()->exit = 0;
 	if (temp2 && temp2->value && temp2->type == COMMAND && !check2)
 		execute(temp2);
