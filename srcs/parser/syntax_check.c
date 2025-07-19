@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:37:46 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/19 16:50:06 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 17:00:09 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	syntax_check(char *line)
 	return (1);
 }
 
-int	check_pipes(char *line, int i) //"" | ""
+int	check_pipes(char *line, int i)
 {
 	i += skip_spaces(&line[i]);
 	if (line && line[i] == '|')

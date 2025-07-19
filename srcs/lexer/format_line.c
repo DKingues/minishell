@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:49:28 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/19 16:55:14 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 16:59:03 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	*create_spaces(char *line, int i, int j)
 			quote_copy(line, new_line, &i, &j);
 		else if ((is_token(line[i]) && line[i + 1] != '\0'))
 		{
-			if (line[i - 1] && line[i - 1] != ' ')
+			if (line[i - 1] && line[i - 1] != ' ' && new_line[j - 1] != ' ')
 				new_line[j++] = ' ';
 			if ((line[i] == '>' && line[i + 1] == '>')
 				|| (line[i] == '<' && line[i + 1] == '<'))
@@ -99,6 +99,7 @@ char	*create_spaces(char *line, int i, int j)
 		else
 			new_line[j++] = line[i++];
 	}
+	ft_printf(2, "%s\n", new_line);
 	return (new_line);
 }
 

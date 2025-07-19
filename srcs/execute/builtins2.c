@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:29:47 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/18 13:37:15 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 17:07:42 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,10 @@ void	builtin_exec2(t_tree *temp)
 
 void	builtin_exec(t_tree *tree)
 {
-	int		flag;
 	t_tree	*temp;
 	char	*str;
-	int		var;
 
-	flag = 0;
 	temp = tree;
-	var = 0;
 	str = NULL;
 	if (!ft_strncmp(temp->value, "export", ft_strlen(temp->value) + 1))
 		exp_parser(temp);
