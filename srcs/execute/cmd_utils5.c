@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:03:49 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/19 15:14:01 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 18:51:59 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	mv_old(void)
 		}
 		var++;
 	}
-	ft_printf(2, "bash: cd: OLDPWD not set\n");
+	ft_printf(2, "minishell: cd: OLDPWD not set\n");
 }
 
 void	mv_abs(char *path)

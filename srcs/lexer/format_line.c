@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:49:28 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/19 18:33:05 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 19:47:04 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ char	*format_line(char *line)
 	int		j;
 	int		space;
 	char	*temp;
+
 	i = 0;
 	j = 0;
 	space = 1;

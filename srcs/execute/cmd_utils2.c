@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:40:54 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/17 18:09:03 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/19 19:26:18 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,57 +70,96 @@ void	switch_str(int var)
 	free(temp);
 }
 
-char	**re_write_exp(char *msg)
+void	exp_helper2000(char **temp)
 {
-	int		var;
-	char	**temp;
+	int	var;
 
 	var = 0;
-	while (shell()->exp[var])
-		var++;
-	temp = ft_calloc(sizeof(char *), var);
-	var = 0;
-	while (shell()->exp[var])
-	{
-		if (!ft_strncmp(shell()->exp[var], msg, exp_len(msg)))
-		{
-			if (shell()->exp[var][exp_len(shell()->exp[var])] == '\0'
-					|| shell()->exp[var][exp_len(shell()->exp[var])] == '=')
-				var++;
-		}
-		if (shell()->exp[var])
-		{
-			temp[var] = ft_strdup(shell()->exp[var]);
-			var++;
-		}
-	}
 	ft_free_split(shell()->exp);
-	return (temp);
+	while(temp[var])
+		var++;
+	shell()->exp = ft_calloc(var + 1, sizeof(char *));
+	var = 0;
+	while(temp[var])
+	{
+		shell()->exp[var] = ft_strdup(temp[var]);
+		var++;
+	}
 }
 
-char	**re_write_env(char *msg)
+void	re_write_exp(char *msg)
 {
 	int		var;
+	int		var2;
 	char	**temp;
 
 	var = 0;
+	var2 = 0;
+	while (shell()->exp[var])
+		var++;
+	temp = ft_calloc(sizeof(char *), var);
+	var = 0;
+	while (shell()->exp[var + var2])
+	{
+		if (!ft_strncmp(shell()->exp[var + var2], msg, exp_len(msg)))
+		{
+			if (shell()->exp[var + var2][exp_len(shell()->exp[var + var2])] == '\0'
+					|| shell()->exp[var + var2][exp_len(shell()->exp[var + var2])] == '=')
+				var2++;
+		}
+		if (shell()->exp[var + var2])
+		{
+			temp[var] = ft_strdup(shell()->exp[var + var2]);
+			var++;
+		}
+	}
+	exp_helper2000(temp);
+	ft_free_split(temp);
+}
+
+void	env_helper2000(char **temp)
+{
+	int	var;
+
+	var = 0;
+	ft_free_split(shell()->env);
+	while(temp[var])
+		var++;
+	shell()->env = ft_calloc(var + 1, sizeof(char *));
+	var = 0;
+	while(temp[var])
+	{
+		shell()->env[var] = ft_strdup(temp[var]);
+		var++;
+	}
+}
+
+void	re_write_env(char *msg)
+{
+	int		var;
+	int		var2;
+	char	**temp;
+
+	var = 0;
+	var2 = 0;
 	while (shell()->env[var])
 		var++;
 	temp = ft_calloc(sizeof(char *), var);
 	var = 0;
-	while (shell()->env[var])
+	while (shell()->env[var + var2])
 	{
-		if (!ft_strncmp(shell()->env[var], msg, exp_len(msg)))
+		if (!ft_strncmp(shell()->env[var + var2], msg, exp_len(msg)))
 		{
-			if (shell()->env[var][exp_len(shell()->env[var])] == '=')
-				var++;
+			if (shell()->env[var][exp_len(shell()->env[var + var2])] == '\0'
+					|| shell()->env[var][exp_len(shell()->env[var + var2])] == '=')
+				var2++;
 		}
-		if (shell()->env[var])
+		if (shell()->env[var + var2])
 		{
-			temp[var] = ft_strdup(shell()->env[var]);
+			temp[var] = ft_strdup(shell()->env[var + var2]);
 			var++;
 		}
 	}
-	ft_free_split(shell()->env);
-	return (temp);
+	env_helper2000(temp);
+	ft_free_split(temp);
 }

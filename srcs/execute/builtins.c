@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:29:13 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/19 14:58:31 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 18:51:46 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	history_parser2(t_tree *temp, int flag, int var)
 	{
 		if (!ft_isdigit(temp->value[flag]))
 		{
-			ft_printf(2, "bash: history: %s: numeric argument \
+			ft_printf(2, "minishell: history: %s: numeric argument \
 				required\n", temp->value);
 			return ;
 		}

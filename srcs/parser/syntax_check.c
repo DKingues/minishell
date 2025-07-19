@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:37:46 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/19 18:44:30 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 19:44:04 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,37 @@ int	check_pipes(char *line, int i)
 				i += skip_spaces(&line[i]);
 				if (line[i] == '\0')
 					return (ft_printf(2, RED INV NOCLR ERR_2), 0);
+			}
+			i++;
+		}
+	}
+	return (1);
+}
+
+int	check_pipes2(char *line, int i)
+{
+	i += skip_spaces(&line[i]);
+	if (line && line[i] == '|')
+		return (0);
+	while (line && line[i])
+	{
+		if (line[i] == '\"' || line[i] == '\'')
+		{
+			i++;
+			i += skip_quotes(&line[i], line[i - 1]);
+			if (line[i])
+				i++;
+		}
+		else
+		{
+			if (line[i] == '|' && line[i + 1] == '|')
+				return (0);
+			else if (line[i] == '|')
+			{
+				i++;
+				i += skip_spaces(&line[i]);
+				if (line[i] == '\0')
+					return (0);
 			}
 			i++;
 		}

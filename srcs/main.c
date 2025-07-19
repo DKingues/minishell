@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/19 18:40:25 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 19:46:25 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,15 @@ void	print_tokens(t_token *token)
 		token = token->next;
 	}
 }
+
 int parser(char *line)
 {
+	
 	if (syntax_check(line) == 0)
 		return (0);
 	line = expand_caller(line);
+	if (check_pipes2(line, 0) == 0)
+		return (free(line), 0);
 	t_token *token;
 	
 	token = assign_token(line);
@@ -133,7 +137,7 @@ int	main(int ac, char **av, char **ev)
 		line = readline("minishell ▸ ");
 		if (!line)
 		{
-			ft_printf(1, "exit");
+			ft_printf(1, "exit\n");
 			exit_cmd(NULL, 0);
 		}
 		if(!line[0])

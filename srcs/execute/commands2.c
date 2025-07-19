@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:29:30 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/19 16:06:54 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 18:52:13 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,6 @@ void	exit_cmd(t_tree	*tree, int code)
 
 void	cd_cmd(char *path)
 {
-	/*if(path)
-		ft_printf(2, "%s\n", path);
-	else
-		ft_printf(2, "ERROR");*/		
 	if (path && !access(path, F_OK) && !access(path, X_OK))
 	{
 		chdir(path);

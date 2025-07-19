@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/19 16:06:24 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 19:44:23 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,10 @@ typedef enum s_sig_struct
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
 # endif
+
+void	exp_helper2000(char **temp);
+void	env_helper2000(char **temp);
+int	check_pipes2(char *line, int i);
 
 //tree.c
 
@@ -296,8 +300,8 @@ size_t	exp_len(const char *s);
 void	exp_organize(void);
 void	second_organize(int var, int var2);
 void	switch_str(int var);
-char	**re_write_exp(char *msg);
-char	**re_write_env(char *msg);
+void	re_write_exp(char *msg);
+void	re_write_env(char *msg);
 
 // cmd_utils3.c
 
