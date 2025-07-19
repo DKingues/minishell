@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:08:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/19 15:15:19 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 17:09:43 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,12 +118,8 @@ void	new_path_exp(void)
 
 void	mv_home(void)
 {
-	int	var;
-	int	var2;
 	char *home;
 
-	var = 0;
-	var2 = 0;
 	home = find_home();
 	if (!home)
 	{
