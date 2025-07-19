@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   format_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:49:28 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/11 16:11:28 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/19 16:55:14 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	is_token(char c)
 	return (0);
 }
 
-char	*remove_extra_spaces(char *line, int i, int j, int space)
+char	*remove_extra_spaces(char *line, int i, int j, int space) // <|cat
 {
 	char	*new_line;
 
@@ -88,7 +88,7 @@ char	*create_spaces(char *line, int i, int j)
 			quote_copy(line, new_line, &i, &j);
 		else if ((is_token(line[i]) && line[i + 1] != '\0'))
 		{
-			if (line[i - 1] != ' ')
+			if (line[i - 1] && line[i - 1] != ' ')
 				new_line[j++] = ' ';
 			if ((line[i] == '>' && line[i + 1] == '>')
 				|| (line[i] == '<' && line[i + 1] == '<'))

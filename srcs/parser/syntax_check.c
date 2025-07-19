@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:37:46 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/19 14:40:33 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/19 16:50:06 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@
 int	syntax_check(char *line)
 {
 	if (count_quotes(line) % 2 != 0)
-		return (ft_printf(2, RED INV NOCLR ERR_3), 0);
+		return (free(line), ft_printf(2, RED INV NOCLR ERR_3), 0);
 	else if (!ft_strcmp(line, "\"\"") || !ft_strcmp(line, "\'\'"))
 	{
 		shell()->parser = 1;
 		shell()->exit = 127;
-		return (ft_printf(2, "minishell: : command not found\n"), 0);
+		return (free(line), ft_printf(2, "minishell: : command not found\n"), 0);
 	}
 	else if (check_pipes(line, 0) == 0)
-		return (0);
+		return (free(line), 0);
 	else if (check_consecutive(line, 0, 0) == 0)
-		return (ft_printf(2, RED INV NOCLR ERR_4), 0);
+		return (free(line), ft_printf(2, RED INV NOCLR ERR_4), 0);
 	else if (check_redirection(line, 0) == 0)
-		return (0);
+		return (free(line), 0);
 	return (1);
 }
 
@@ -81,8 +81,8 @@ int	check_redirection(char *line, int i)
 				while (line[i] == redir_type)
 					i++;
 				i += skip_spaces(&line[i]);
-				if (line[i] == '\0')
-					return (ft_printf(2, RED INV NOCLR ERR_6"'%c'.\n", line[i]), 0);
+				if (line[i] == '\0' || line[i] == '|')
+					return (ft_printf(2, RED INV NOCLR ERR_6" '%c'.\n", redir_type), 0);
 			}
 			else
 				i++;

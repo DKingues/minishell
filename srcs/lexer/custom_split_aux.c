@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   custom_split_aux.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:12:44 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/18 13:12:37 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/19 16:45:16 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,9 @@ int	cnt_nospc(char *line)
 	{
 		if (is_token(line[i]))
 		{
-			if (line[i - 1] != ' ')
+			if (line[i - 1] && line[i - 1] != ' ')
 				counter++;
-			if (line[i + 1 != ' '])
+			if (line[i + 1] && line[i + 1] != ' ')
 				counter++;
 		}
 		i++;
