@@ -1,41 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   syntax_check.c                                     :+:      :+:    :+:   */
+/*   syntax_check2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/19 13:37:46 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/20 19:35:48 by dicosta-         ###   ########.fr       */
+/*   Created: 2025/07/20 19:29:35 by dicosta-          #+#    #+#             */
+/*   Updated: 2025/07/20 20:14:18 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	syntax_check(char *line)
+int	syntax_check2(char *line)
 {
-	if (count_quotes(line) % 2 != 0)
-		return (free(line), ft_printf(2, RED INV NOCLR ERR_3), 0);
-	else if (!ft_strcmp(line, "\"\"") || !ft_strcmp(line, "\'\'"))
+	if (!ft_strcmp(line, "\"\"") || !ft_strcmp(line, "\'\'"))
 	{
 		shell()->parser = 1;
 		shell()->exit = 127;
-		return (free(line), ft_printf(2, ": command not found\n"), 0);
+		return (free(line), ft_printf(2, "\n"), 0);
 	}
-	else if (check_pipes(line, 0) == 0)
+	else if (check_pipes2(line, 0) == 0)
 		return (free(line), 0);
-	else if (check_consecutive(line, 0, 0) == 0)
-		return (free(line), ft_printf(2, RED INV NOCLR ERR_4), 0);
-	else if (check_redirection(line, 0) == 0)
+	else if (check_consecutive2(line, 0, 0) == 0)
+		return (free(line), ft_printf(2, "\n"), 0);
+	else if (check_redirection2(line, 0) == 0)
 		return (free(line), 0);
 	return (1);
 }
 
-int	check_pipes(char *line, int i)
+int	check_pipes2(char *line, int i)
 {
 	i += skip_spaces(&line[i]);
 	if (line && line[i] == '|')
-		return (ft_printf(2, RED INV NOCLR ERR_5), 0);
+		return (0);
 	while (line && line[i])
 	{
 		if (line[i] == '\"' || line[i] == '\'')
@@ -48,13 +46,13 @@ int	check_pipes(char *line, int i)
 		else
 		{
 			if (line[i] == '|' && line[i + 1] == '|')
-				return (ft_printf(2, RED INV NOCLR ERR_1), 0);
+				return (0);
 			else if (line[i] == '|')
 			{
 				i++;
 				i += skip_spaces(&line[i]);
 				if (line[i] == '\0')
-					return (ft_printf(2, RED INV NOCLR ERR_2), 0);
+					return (0);
 			}
 			i++;
 		}
@@ -62,7 +60,7 @@ int	check_pipes(char *line, int i)
 	return (1);
 }
 
-int	check_redirection(char *line, int i)
+int	check_redirection2(char *line, int i)
 {
 	char	redir_type;
 
@@ -82,7 +80,7 @@ int	check_redirection(char *line, int i)
 					i++;
 				i += skip_spaces(&line[i]);
 				if (line[i] == '\0' || line[i] == '|')
-					return (ft_printf(2, RED INV NOCLR ERR_6" '%c'.\n", redir_type), 0);
+					return (0);
 			}
 			else
 				i++;
@@ -91,18 +89,7 @@ int	check_redirection(char *line, int i)
 	return (1);
 }
 
-//int	check_redirection2(char *line, int i, char redir_type)
-//{
-//	ft_printf(1, "%s\n", line);
-//	while (line[i] == redir_type)
-//		i++;
-//	i += skip_spaces(&line[i]);
-//	if (line[i] == '\0')
-//		return (0);
-//	return (1);
-//}
-
-int	check_consecutive(char *line, int i, char temp)
+int	check_consecutive2(char *line, int i, char temp)
 {
 	while (line[i])
 	{
@@ -128,15 +115,3 @@ int	check_consecutive(char *line, int i, char temp)
 	return (1);
 }
 
-int consec_counter(int *i, char *line, char temp)
-{
-	int	consecutive;
-
-	consecutive = 0;
-	while (line[*i] && line[*i] == temp)
-	{
-		(*i)++;
-		consecutive++;
-	}
-	return (consecutive);
-}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/19 19:44:23 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/20 19:35:11 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,8 +226,13 @@ int		syntax_check(char *line);
 int		check_pipes(char *line, int i);
 int		check_redirection(char *line, int i);
 int		check_consecutive(char *line, int i, char temp);
-int		check_command(char *line);
 int		consec_counter(int *i, char *line, char temp);
+
+// syntax_check2.c
+
+int		syntax_check2(char *line);
+int		check_redirection2(char *line, int i);
+int		check_consecutive2(char *line, int i, char temp);
 
 // expand.c
 

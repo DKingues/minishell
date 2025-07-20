@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/19 19:46:25 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/20 20:14:33 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ int parser(char *line)
 	if (syntax_check(line) == 0)
 		return (0);
 	line = expand_caller(line);
-	if (check_pipes2(line, 0) == 0)
-		return (free(line), 0);
+	if (syntax_check2(line) == 0)
+		return (0);
 	t_token *token;
 	
 	token = assign_token(line);
@@ -150,7 +150,7 @@ int	main(int ac, char **av, char **ev)
 		if(!parser(line))
 		{
 			if (!shell()->parser)
-				shell()->exit = 1;
+				shell()->exit = 0;
 			continue ;
 		}
 		if(shell()->tree)
