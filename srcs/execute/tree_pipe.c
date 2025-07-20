@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 14:24:31 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/19 14:49:46 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/20 23:51:13 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	exit_help2(int check2)
 {
-	if(check2)
+	if (check2)
 		singleton_free(1);
 	else if (shell()->env)
 		ft_free_split(shell()->env);
@@ -80,6 +80,8 @@ void	tree_executer(int var, int check)
 	t_tree	*temp2;
 
 	shell()->pids = ft_calloc(shell()->pipe_count + 2, sizeof(int));
+	if (!shell()->pids)
+		return ;
 	shell()->count = 0;
 	choose_signal(CHLD);
 	temp2 = shell()->tree;

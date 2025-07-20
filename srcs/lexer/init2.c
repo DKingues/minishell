@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 18:32:35 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/18 15:47:59 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/20 23:43:48 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ char	*str_redef(char *str, int var, int var2, int except)
 	if (except == 0)
 		var2 = 0;
 	res = ft_calloc(sizeof(char), var - except + 1);
+	if (!res)
+		return (NULL);
 	var = 0;
 	while (str[var + except] != '\0' && str[var + except] != '\n')
 	{
@@ -62,6 +64,8 @@ char	*copy_no_nl(char *temp)
 
 	var = 0;
 	res = ft_calloc(sizeof(char), ft_strlen(temp));
+	if (!res)
+		return (NULL);
 	while (temp[var] != '\n')
 	{
 		res[var] = temp[var];
@@ -78,6 +82,8 @@ void	set_alias(int len, int fd)
 	int		var;
 
 	shell()->alias = ft_calloc(sizeof(char *), len + 1);
+	if (!shell()->alias)
+		return ;
 	line = get_next_line(fd);
 	len = 0;
 	while (line)
@@ -106,6 +112,8 @@ void	set_alias2(char *line, int *len, int var)
 	while (line[var] != '=')
 		var++;
 	temp2 = ft_calloc(sizeof(char), var + 2);
+	if (!temp2)
+		return ;
 	var = 0;
 	while (line[var + 6] != '=')
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:35:48 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/18 13:36:36 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/20 23:31:21 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ char	**args_join(t_tree	*cmd)
 		temp = temp->right;
 	}
 	res = ft_calloc(sizeof(char *), var + 1);
+	if (!res)
+		return (NULL);
 	var = 0;
 	while (cmd)
 	{
@@ -99,6 +101,8 @@ char	**split_redef(char **args, t_tree *cmd)
 		var++;
 	}
 	temp = ft_calloc(sizeof(char *), var + 1);
+	if (!temp)
+		return (NULL);
 	var = 0;
 	while (args[var])
 	{

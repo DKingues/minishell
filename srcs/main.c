@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/20 20:14:33 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/20 23:48:47 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,16 +89,16 @@ int parser(char *line)
 	t_token *token;
 	
 	token = assign_token(line);
-	/* printf("TOKEN\n");
-	 print_tokens(token);
-	 printf("\n\n");*/
+	/*printf("TOKEN\n");
+	print_tokens(token);
+	printf("\n\n");*/
 	if(token)
 	{
 		pipe_counter(token);
 		shell()->tree = tokens_to_tree(token, NULL, shell()->tree);
 	}
 	/* printf("TREE\n");
-	 print_tree(shell()->tree);*/
+	print_tree(shell()->tree);*/
 	free_list(token);
 	free(line);
 	return (1);
@@ -120,6 +120,8 @@ void	reset_input(char *line)
 	shell()->pipe_count = 0;
 	shell()->parser = 0;
 	shell()->hist = hist_manage(line, 0);
+	if (!shell()->hist)
+		return ;
 }
 
 int	main(int ac, char **av, char **ev)

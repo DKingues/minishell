@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:40:54 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/19 19:26:18 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/20 23:52:13 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,13 @@ void	exp_helper2000(char **temp)
 
 	var = 0;
 	ft_free_split(shell()->exp);
-	while(temp[var])
+	while (temp[var])
 		var++;
 	shell()->exp = ft_calloc(var + 1, sizeof(char *));
+	if (!shell()->exp)
+		return ;
 	var = 0;
-	while(temp[var])
+	while (temp[var])
 	{
 		shell()->exp[var] = ft_strdup(temp[var]);
 		var++;
@@ -98,6 +100,8 @@ void	re_write_exp(char *msg)
 	while (shell()->exp[var])
 		var++;
 	temp = ft_calloc(sizeof(char *), var);
+	if (!temp)
+		return ;
 	var = 0;
 	while (shell()->exp[var + var2])
 	{
@@ -123,11 +127,13 @@ void	env_helper2000(char **temp)
 
 	var = 0;
 	ft_free_split(shell()->env);
-	while(temp[var])
+	while (temp[var])
 		var++;
 	shell()->env = ft_calloc(var + 1, sizeof(char *));
+	if (!shell()->env)
+		return ;
 	var = 0;
-	while(temp[var])
+	while (temp[var])
 	{
 		shell()->env[var] = ft_strdup(temp[var]);
 		var++;
@@ -145,6 +151,8 @@ void	re_write_env(char *msg)
 	while (shell()->env[var])
 		var++;
 	temp = ft_calloc(sizeof(char *), var);
+	if (!temp)
+		return ;
 	var = 0;
 	while (shell()->env[var + var2])
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_check.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:44:06 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/19 15:38:16 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/20 23:33:00 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char	*add_expansion(char *line, char *expansion, int i)
 	full_len = ft_strlen(line) + ft_strlen(expansion);
 	expanded_line = ft_calloc(sizeof(char), full_len + 1);
 	if (!expanded_line)
-		return (free(expanded_line), NULL);
+		return (NULL);
 	while (j < full_len)
 	{
 		if (j == i)
@@ -105,7 +105,7 @@ char	*add_expansion(char *line, char *expansion, int i)
 	return (free(line), free(expansion), expanded_line);
 }
 
-char	*get_expansion(char *line)
+/*char	*get_expansion(char *line)
 {
 	int		i;
 	int		len;
@@ -124,4 +124,4 @@ char	*get_expansion(char *line)
 	}
 	expansion = expand_arg(arg);
 	return (expansion);
-}
+}*/

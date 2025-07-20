@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:52:38 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/18 13:51:07 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/20 23:26:40 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ char	*set_blank(char *msg)
 	while (msg[var] != ' ')
 		var++;
 	temp = ft_calloc(sizeof(char), var + 1);
+	if (!temp)
+		return (NULL);
 	var = 0;
 	while (msg[var] != ' ')
 	{
@@ -39,6 +41,8 @@ char	**quoting_set(void)
 	while (shell()->exp[var])
 		var++;
 	temp = ft_calloc(sizeof(char *), var + 1);
+	if (!temp)
+		return (NULL);
 	var = 0;
 	while (shell()->exp[var])
 	{

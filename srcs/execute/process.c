@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:23:17 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/19 15:10:57 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/20 23:53:51 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	exec_err(char *path, char *temp)
 {
-	DIR *filedir;
+	DIR	*filedir;
 
 	filedir = NULL;
-	if(path)
+	if (path)
 		filedir = opendir(path);
 	if (path && filedir)
 		ft_printf(2, "minishell: %s: Is a directory\n", path);
@@ -74,7 +74,7 @@ char	*path_check(t_tree *cmd)
 	if (is_builtin(cmd->value))
 	{
 		builtin_exec(cmd);
-		if(shell()->pipe_count)
+		if (shell()->pipe_count)
 			singleton_free(0);
 		close_fds();
 		return (NULL);

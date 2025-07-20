@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init3.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:36:07 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/18 15:46:58 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/20 23:36:02 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	init_alias(void)
 		if (home)
 			free(home);
 		shell()->alias = ft_calloc(1, sizeof(char *));
+		if (!shell()->alias)
+			return ;
 		shell()->alias[0] = ft_strdup("");
 		return ;
 	}

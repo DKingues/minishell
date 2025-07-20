@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/20 19:35:11 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/20 23:50:22 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ typedef enum s_sig_struct
 
 void	exp_helper2000(char **temp);
 void	env_helper2000(char **temp);
-int	check_pipes2(char *line, int i);
+int		check_pipes2(char *line, int i);
 
 //tree.c
 

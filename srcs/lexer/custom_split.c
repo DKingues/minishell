@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:51:07 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/25 12:06:21 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/20 23:32:34 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ char	**split_tokens(char *line)
 	j = 0;
 	line = format_line(line);
 	tokens = ft_calloc(sizeof(char *), count_tokens(line) + 1);
+	if (!tokens)
+		return (NULL);
 	while (i < count_tokens(line))
 	{
 		j += skip_spaces(&line[j]);

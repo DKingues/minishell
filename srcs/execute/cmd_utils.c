@@ -6,7 +6,7 @@
 /*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 15:36:39 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/17 18:06:16 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/20 23:30:34 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ char	**exp_set(char *msg)
 		var++;
 	}
 	temp = ft_calloc(sizeof(char *), var + 2);
+	if (!temp)
+		return (NULL);
 	var = 0;
 	while (shell()->exp[var])
 	{
@@ -52,6 +54,8 @@ char	**env_set(char *msg)
 		var++;
 	}
 	temp = ft_calloc(sizeof(char *), var + 2);
+	if (!temp)
+		return (NULL);
 	var = 0;
 	while (shell()->env[var])
 	{
@@ -72,6 +76,8 @@ char	**exp_redef(int var2, char *msg)
 	while (shell()->exp[var])
 		var++;
 	temp = ft_calloc(sizeof(char *), var + 1);
+	if (!temp)
+		return (NULL);
 	var = 0;
 	while (shell()->exp[var])
 	{
@@ -100,6 +106,8 @@ char	**env_redef(int var2, char *msg)
 	while (shell()->env[var])
 		var++;
 	temp = ft_calloc(sizeof(char *), var + 1);
+	if (!temp)
+		return (NULL);
 	var = 0;
 	while (shell()->env[var])
 	{

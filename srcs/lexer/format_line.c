@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   format_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:49:28 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/19 19:47:04 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/20 23:50:53 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*remove_extra_spaces(char *line, int i, int j, int space) // <|cat
 
 	new_line = ft_calloc(sizeof(char), ft_strlen(line) + 1);
 	if (!new_line)
-		return (free(new_line), NULL);
+		return (NULL);
 	while (line[i])
 	{
 		if ((line[i] && !ft_isspace(line[i]))
@@ -78,10 +78,10 @@ char	*remove_extra_spaces(char *line, int i, int j, int space) // <|cat
 char	*create_spaces(char *line, int i, int j)
 {
 	char	*new_line;
-	
+
 	new_line = ft_calloc(sizeof(char), (ft_strlen(line) + cnt_nospc(line)) + 1);
 	if (!new_line)
-		return (free(new_line), NULL);
+		return (NULL);
 	while (line[i])
 	{
 		if (line[i] == '\"' || line[i] == '\'')
