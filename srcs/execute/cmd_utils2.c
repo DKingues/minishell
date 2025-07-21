@@ -3,60 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:40:54 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/20 23:52:13 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:48:15 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	exp_organize(void)
-{
-	int	var;
-
-	var = 0;
-	while (shell()->exp[var + 1])
-	{
-		if (shell()->exp[var][0] > shell()->exp[var + 1][0])
-		{
-			switch_str(var);
-			var = -1;
-		}
-		var++;
-	}
-	second_organize(0, 0);
-}
-
-void	second_organize(int var, int var2)
-{
-	int	check;
-
-	var = 0;
-	while (shell()->exp[var + 1])
-	{
-		if (shell()->exp[var][0] == shell()->exp[var + 1][0])
-		{
-			check = 0;
-			while (shell()->exp[var + check + 1] && shell()->exp[var + 1]
-				&& shell()->exp[var][0] == shell()->exp[var + check + 1][0])
-			{
-				var2 = 0;
-				while (shell()->exp[var][var2] == shell()->exp[var + 1][var2])
-					var2++;
-				if (shell()->exp[var][var2] > shell()->exp[var + 1][var2])
-				{
-					switch_str(var);
-					var = -1;
-					break ;
-				}
-				check++;
-			}
-		}
-		var++;
-	}
-}
 
 void	switch_str(int var)
 {
@@ -89,32 +43,28 @@ void	exp_helper2000(char **temp)
 	}
 }
 
-void	re_write_exp(char *msg)
+void	re_write_exp(char *msg, int v, int v2)
 {
-	int		var;
-	int		var2;
 	char	**temp;
 
-	var = 0;
-	var2 = 0;
-	while (shell()->exp[var])
-		var++;
-	temp = ft_calloc(sizeof(char *), var);
+	while (shell()->exp[v])
+		v++;
+	temp = ft_calloc(sizeof(char *), v);
 	if (!temp)
 		return ;
-	var = 0;
-	while (shell()->exp[var + var2])
+	v = 0;
+	while (shell()->exp[v + v2])
 	{
-		if (!ft_strncmp(shell()->exp[var + var2], msg, exp_len(msg)))
+		if (!ft_strncmp(shell()->exp[v + v2], msg, exp_len(msg)))
 		{
-			if (shell()->exp[var + var2][exp_len(shell()->exp[var + var2])] == '\0'
-					|| shell()->exp[var + var2][exp_len(shell()->exp[var + var2])] == '=')
-				var2++;
+			if (!shell()->exp[v + v2][exp_len(shell()->exp[v + v2])]
+				|| shell()->exp[v + v2][exp_len(shell()->exp[v + v2])] == '=')
+				v2++;
 		}
-		if (shell()->exp[var + var2])
+		if (shell()->exp[v + v2])
 		{
-			temp[var] = ft_strdup(shell()->exp[var + var2]);
-			var++;
+			temp[v] = ft_strdup(shell()->exp[v + v2]);
+			v++;
 		}
 	}
 	exp_helper2000(temp);
@@ -140,32 +90,29 @@ void	env_helper2000(char **temp)
 	}
 }
 
-void	re_write_env(char *msg)
+void	re_write_env(char *msg, int v, int v2)
 {
-	int		var;
-	int		var2;
 	char	**temp;
 
-	var = 0;
-	var2 = 0;
-	while (shell()->env[var])
-		var++;
-	temp = ft_calloc(sizeof(char *), var);
+	while (shell()->env[v])
+		v++;
+	temp = ft_calloc(sizeof(char *), v);
 	if (!temp)
 		return ;
-	var = 0;
-	while (shell()->env[var + var2])
+	v = 0;
+	while (shell()->env[v + v2])
 	{
-		if (!ft_strncmp(shell()->env[var + var2], msg, exp_len(msg)))
+		if (!ft_strncmp(shell()->env[v + v2], msg,
+				exp_len(shell()->env[v + v2]) - 1))
 		{
-			if (shell()->env[var][exp_len(shell()->env[var + var2])] == '\0'
-					|| shell()->env[var][exp_len(shell()->env[var + var2])] == '=')
-				var2++;
+			if (shell()->env[v][exp_len(shell()->env[v + v2])] == '\0'
+					|| shell()->env[v][exp_len(shell()->env[v + v2])] == '=')
+				v2++;
 		}
-		if (shell()->env[var + var2])
+		if (shell()->env[v + v2])
 		{
-			temp[var] = ft_strdup(shell()->env[var + var2]);
-			var++;
+			temp[v] = ft_strdup(shell()->env[v + v2]);
+			v++;
 		}
 	}
 	env_helper2000(temp);

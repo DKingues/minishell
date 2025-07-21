@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:23:17 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 13:55:30 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:50:40 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,11 @@ char	*path_check(t_tree *cmd)
 	if (cmd->value[0] == '~' && cmd->value[1] == '/')
 	{
 		temp = ft_strjoin(find_home(), cmd->value + 1);
-		path = find_path(temp);
+		path = find_path(temp, 0);
 		free(temp);
 	}
 	else
-		path = find_path(cmd->value);
+		path = find_path(cmd->value, 0);
 	return (path);
 }
 
@@ -116,16 +116,16 @@ void	execute(t_tree	*cmd)
 		path = search_alias(path);
 		if (!ft_strncmp(temp, path, ft_strlen(path)))
 		{
-			args = args_join(cmd);
+			args = args_join(cmd, 0);
 			free(temp);
 		}
 		else
 		{
 			args = args_except(cmd, path, temp);
-			path = find_path(args[0]);
+			path = find_path(args[0], 0);
 		}
 	}
 	else
-		args = args_join(cmd);
+		args = args_join(cmd, 0);
 	execute2(NULL, path, args, ft_strdup(cmd->value));
 }

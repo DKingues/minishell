@@ -6,20 +6,14 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 16:54:31 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 18:38:55 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_shell	*shell(void)
+void	print_banner(void)
 {
-	static t_shell	shell;
-
-	return (&shell);
-}
-
-void	print_banner() {
 	ft_printf(1, "\033[1;95m ________________________________");
 	ft_printf(1, "____________________________\n");
 	ft_printf(1, "|  \033[1;96m _    _  _____  _____  _    _");
@@ -42,75 +36,36 @@ void	print_banner() {
 	ft_printf(1, " & dicosta-       \033[0m\n\n");
 }
 
-void	print_tree(t_tree *tree)
-{
-	if (tree == NULL)
-	{
-		ft_printf(1, "NULL\n");
-		return ;
-	}
-	ft_printf(1, "Value: [%s]\t Type: [%d]\n", tree->value, tree->type);	
-	ft_printf(1, "LEFT: ");
-	print_tree(tree->left);
-	ft_printf(1, "RIGHT: ");
-	print_tree(tree->right);
-}
+//void	print_tree(t_tree *tree)
+//{
+//	if (tree == NULL)
+//	{
+//		ft_printf(1, "NULL\n");
+//		return ;
+//	}
+//	ft_printf(1, "Value: [%s]\t Type: [%d]\n", tree->value, tree->type);	
+//	ft_printf(1, "LEFT: ");
+//	print_tree(tree->left);
+//	ft_printf(1, "RIGHT: ");
+//	print_tree(tree->right);
+//}
 
-void	free_list(t_token *token)
-{
-	t_token *temp;
-	
-	while (token)
-	{
-		temp = token;
-		token = token->next;
-		free(temp->value);
-		free(temp);
-	}
-}
-
-void	print_tokens(t_token *token)
-{
-	while (token)
-	{
-		ft_printf(1, "Value: [%s]\t Type: [%d]\n", token->value, token->type);	
-		token = token->next;
-	}
-}
-
-int parser(char *line)
-{
-	if (syntax_check(line) == 0)
-		return (0);
-	line = expand_caller(line);
-	if (syntax_check2(line) == 0)
-		return (0);
-	t_token *token;
-	
-	token = assign_token(line);
-	printf("TOKEN\n");
-	print_tokens(token);
-	printf("\n\n");
-	if(token)
-	{
-		pipe_counter(token);
-		shell()->tree = tokens_to_tree(token, NULL, shell()->tree);
-	}
-	/* printf("TREE\n");
-	print_tree(shell()->tree);*/
-	free_list(token);
-	free(line);
-	return (1);
-}
+//void	print_tokens(t_token *token)
+//{
+//	while (token)
+//	{
+//		ft_printf(1, "Value: [%s]\t Type: [%d]\n", token->value, token->type);	
+//		token = token->next;
+//	}
+//}
 
 void	reset_input(char *line)
 {
-	//printf("%s\n", line);
 	close_fds();
 	shell()->pid = 0;
 	shell()->in = dup(0);
 	shell()->out = dup(1);
-	if(shell()->tree && shell()->tree->value)
+	if (shell()->tree && shell()->tree->value)
 	{
 		tree_free(shell()->tree);
 		shell()->tree = NULL;
@@ -122,16 +77,55 @@ void	reset_input(char *line)
 		return ;
 }
 
+void	main3(void)
+{
+	shell()->pid = fork();
+	if (!shell()->pid)
+	{
+		choose_signal(CHLD);
+		tree_executer(0, 0, NULL, NULL);
+	}
+	else
+	{
+		choose_signal(IGNORE);
+		waitpid(shell()->pid, &shell()->exit, 0);
+		choose_signal(ROOT);
+		shell()->exit = shell()->exit / 256;
+	}
+}
+
+void	main2(char *line)
+{
+	reset_input(line);
+	if (!parser(line))
+	{
+		return ;
+	}
+	if (shell()->tree)
+	{
+		if (manage_here_doc() == 1)
+		{
+			if (shell()->docs)
+				free(shell()->docs);
+			return ;
+		}
+		if (shell()->tree->type == PIPE)
+			main3();
+		else
+			nptree_executer(NULL, NULL, 0);
+	}
+}
+
 int	main(int ac, char **av, char **ev)
 {
+	char	*line;
+
 	(void)av;
-	char *line;
-	
 	if (ac != 1)
 		return (ft_printf(1, "No arguments are needed\n"), 1);
-	//print_banner();
+	print_banner();
 	init_shell(ev);
-	while(1)
+	while (1)
 	{
 		choose_signal(ROOT);
 		line = readline("minishell ▸ ");
@@ -140,45 +134,13 @@ int	main(int ac, char **av, char **ev)
 			ft_printf(1, "exit\n");
 			exit_cmd(NULL, 0);
 		}
-		if(!line[0])
+		if (!line[0])
 		{
 			shell()->exit = 0;
 			free(line);
 			continue ;
 		}
-		reset_input(line);
-		if(!parser(line))
-		{
-			continue ;
-		}
-		/*if(shell()->tree)
-		{
-			if(manage_here_doc() == 1)
-			{
-				if(shell()->docs)
-					free(shell()->docs);
-				continue ;
-			}
-			if(shell()->tree->type == PIPE)
-			{
-				shell()->pid = fork();
-				if(!shell()->pid)
-				{
-					choose_signal(CHLD);
-					tree_executer(0, 0);
-				}
-				else
-				{
-					choose_signal(IGNORE);
-					waitpid(shell()->pid, &shell()->exit, 0);
-					choose_signal(ROOT);
-					shell()->exit = shell()->exit / 256;
-				}
-			}
-			else
-				nptree_executer(NULL, NULL, 0);
-		}*/
+		main2(line);
 	}
 	return (0);
 }
-

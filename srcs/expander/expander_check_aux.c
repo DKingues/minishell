@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_check_aux.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 16:08:26 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 13:45:45 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:57:31 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,4 +100,3 @@ int	skip_spaces(char *line)
 		i++;
 	return (i);
 }
-

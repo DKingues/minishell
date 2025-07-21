@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:29:47 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 12:24:08 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:43:39 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,11 @@ int	check_loop(char *path)
 	{
 		if (path[var] == '/')
 			check = 1;
-		if (path[var] == '/' && path[var + 1] && path[var + 1] == '.' && !path[var + 2])
+		if (path[var] == '/' && path[var + 1]
+			&& path[var + 1] == '.' && !path[var + 2])
 			return (0);
-		else if (path[var] == '/' && path[var + 2] && path[var + 2] == '.' && !path[var + 3])
+		else if (path[var] == '/' && path[var + 2]
+			&& path[var + 2] == '.' && !path[var + 3])
 			return (0);
 		var++;
 	}

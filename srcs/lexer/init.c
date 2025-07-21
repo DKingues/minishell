@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:08:01 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 13:06:30 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:58:09 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	init_env(char **ev)
 		while (ev[var])
 			var++;
 		shell()->env = ft_calloc(sizeof(char *), var + 1);
+		if (!shell()->env)
+			exit(1);
 		var = 0;
 		while (ev[var])
 		{
@@ -48,6 +50,8 @@ void	init_env(char **ev)
 	else
 	{
 		shell()->env = ft_calloc(sizeof(char *), 1);
+		if (!shell()->env)
+			exit(1);
 		shell()->env[0] = ft_strdup("");
 	}
 }

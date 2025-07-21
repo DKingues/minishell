@@ -6,13 +6,13 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:49:28 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 17:09:38 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:57:56 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	quote_copy(char *line, char *new_line, int *i, int *j) // echo "''"$PWD
+void	quote_copy(char *line, char *new_line, int *i, int *j)
 {
 	char	quote_type;
 
@@ -78,8 +78,8 @@ char	*remove_extra_spaces(char *line, int i, int j, int space)
 char	*create_spaces(char *line, int i, int j)
 {
 	char	*new_line;
+
 	new_line = ft_calloc(sizeof(char), (ft_strlen(line) + cnt_nospc(line) + 1));
-	ft_printf(1, "CNTNOSPC: %d\n", cnt_nospc(line));
 	if (!new_line)
 		return (NULL);
 	while (line[i])
@@ -88,7 +88,7 @@ char	*create_spaces(char *line, int i, int j)
 			quote_copy(line, new_line, &i, &j);
 		else if ((is_token(line[i]) && line[i + 1] != '\0'))
 		{
-			if (line[i - 1] && line[i - 1] != ' ')
+			if (i > 0 && line[i - 1] && line[i - 1] != ' ')
 				new_line[j++] = ' ';
 			if ((line[i] == '>' && line[i + 1] && line[i + 1] == '>')
 				|| (line[i] == '<' && line[i + 1] && line[i + 1] == '<'))
@@ -114,11 +114,9 @@ char	*format_line(char *line)
 	i = 0;
 	j = 0;
 	space = 1;
-	ft_printf(1, "line: %s$\n", line);
 	temp = remove_extra_spaces(line, i, j, space);
 	if (!temp)
 		return (NULL);
 	line = create_spaces(temp, i, j);
-	ft_printf(1, "line: %s$\n", line);
 	return (free(temp), line);
 }

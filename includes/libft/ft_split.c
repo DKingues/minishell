@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 15:02:50 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 13:10:27 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:42:22 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	ft_free_split(char **mal)
 		free(mal[i]);
 		i++;
 	}
-	if(mal)
+	if (mal)
 		free(mal);
 }
 

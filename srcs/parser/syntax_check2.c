@@ -6,11 +6,31 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 19:29:35 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 14:27:48 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 18:39:10 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	parser(char *line)
+{
+	t_token	*token;
+
+	if (syntax_check(line) == 0)
+		return (0);
+	line = expand_caller(line);
+	if (syntax_check2(line) == 0)
+		return (0);
+	token = assign_token(line);
+	if (token)
+	{
+		pipe_counter(token);
+		shell()->tree = tokens_to_tree(token, NULL, shell()->tree);
+	}
+	free_list(token);
+	free(line);
+	return (1);
+}
 
 int	syntax_check2(char *line)
 {
@@ -29,12 +49,7 @@ int	check_pipes2(char *line, int i)
 	while (line && line[i])
 	{
 		if (line[i] == '\"' || line[i] == '\'')
-		{
-			i++;
-			i += skip_quotes(&line[i], line[i - 1]);
-			if (line[i])
-				i++;
-		}
+			i = check_pipes_aux(line, i);
 		else
 		{
 			if (line[i] == '|' && line[i + 1] == '|')
@@ -52,7 +67,7 @@ int	check_pipes2(char *line, int i)
 	return (1);
 }
 
-int	check_redirection2(char *line, int i, char *expansion)
+int	check_redirection2(char *line, int i, char *exp)
 {
 	char	redir_type;
 
@@ -72,7 +87,7 @@ int	check_redirection2(char *line, int i, char *expansion)
 					i++;
 				i += skip_spaces(&line[i]);
 				if (line[i] == '\0' || line[i] == '|')
-					return (ft_printf(2, "%s: ambiguous redirect.", expansion), free(expansion), 0);
+					return (ft_printf(2, "%s: "AMB, exp), free(exp), 0);
 			}
 			else
 				i++;
@@ -95,9 +110,11 @@ int	check_consecutive2(char *line, int i, char temp)
 			if (is_token(line[i]))
 			{
 				temp = line[i++];
-				if ((temp == '>' || temp == '<') && consec_counter(&i, line, temp) > 1)
+				if ((temp == '>' || temp == '<')
+					&& consec_counter(&i, line, temp) > 1)
 					return (0);
-				else if ((temp != '>' && temp != '<') &&  consec_counter(&i, line, temp) > 0)
+				else if ((temp != '>' && temp != '<')
+					&& consec_counter(&i, line, temp) > 0)
 					return (0);
 			}
 			else
@@ -106,4 +123,3 @@ int	check_consecutive2(char *line, int i, char temp)
 	}
 	return (1);
 }
-

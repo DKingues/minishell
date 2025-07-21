@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 14:57:02 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/19 19:17:08 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:47:56 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ void	unset_cmd(char *msg)
 					|| shell()->exp[var][exp_len(shell()->exp[var])] == '=')
 				{
 					if (shell()->exp[var][exp_len(shell()->exp[var])] == '=')
-						re_write_env(msg);
-					re_write_exp(msg);
+						re_write_env(msg, 0, 0);
+					re_write_exp(msg, 0, 0);
 					return ;
 				}
 			}

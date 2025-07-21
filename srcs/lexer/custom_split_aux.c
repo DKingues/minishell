@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:12:44 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 17:03:52 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 18:00:31 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,15 +104,17 @@ int	cnt_nospc(char *line)
 {
 	int	i;
 	int	counter;
+
 	i = 0;
 	counter = 0;
 	while (line[i])
 	{
 		if (is_token(line[i]))
 		{
-			if ((line[i] == '<' && line[i + 1] == '<') || (line[i] == '>' && line[i + 1] == '>'))
+			if ((line[i] == '<' && line[i + 1] == '<')
+				|| (line[i] == '>' && line[i + 1] == '>'))
 				i++;
-			else if (line[i - 1] && line[i - 1] != ' ')
+			else if (i > 0 && line[i - 1] && line[i - 1] != ' ')
 				counter++;
 			if (line[i + 1] && line[i + 1] != ' ')
 				counter++;

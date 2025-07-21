@@ -6,71 +6,12 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:37:46 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 16:18:27 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 18:23:30 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	check_redir_exp(char *line)
-{
-	int	var;
-	int	var2 = 0;
-	int	check;
-	int	check2 = 1;
-
-	var = 0;
-	while (line[var])
-	{
-		var2 = 0;
-		check = 0;
-		if(line[var] == '<' || line[var] == '>')
-		{
-			if (line[var] == '<' && line[var + 1] == '<')
-				var ++;
-			else
-			{
-				var++;
-				while(line[var] && ft_isspace(line[var]))
-					var++;
-				if (line[var] == '$' && line[var + 1] && !ft_isspace(line[var + 1]) && line[var + 1] != '?')
-				{
-					while (shell()->env[var2])
-					{
-						if(!ft_strncmp(shell()->env[var2], line + var + 1, exp_len(shell()->env[var2])))
-							check++;
-						var2++;
-					}
-					if(!check)
-					{
-						check2 = 0;
-						shell()->exit = 1;
-						ft_printf(2, "%s: ambiguous redirect\n", get_expansion(line + var)), 0;
-						while(line[var])
-						{
-							if(line[var] == '|')
-								break;
-							var++;
-							if(!line[var + 1])
-								return (0);
-						}
-					}
-				}
-			}
-		}
-		var++;
-	}
-	return (check2);
-}
-
-int	check_pipes_rev(char *line, int i)
-{
-	while (i > 0 && ft_isspace(line[i]))
-		i--;
-	if (line[i] == '|')
-		return (ft_printf(2, RED INV NOCLR ERR_2), 0);
-	return (1);
-}
 int	syntax_check(char *line)
 {
 	if (count_quotes(line) % 2 != 0)
@@ -83,11 +24,10 @@ int	syntax_check(char *line)
 		return (free(line), ft_printf(2, RED INV NOCLR ERR_4), 0);
 	else if (check_redirection(line, 0) == 0)
 		return (free(line), 0);
-	else if (!check_redir_exp(line))
+	else if (!check_redir_exp(line, 0, 0, 1))
 		return (free(line), 0);
 	return (1);
 }
-
 
 int	check_pipes(char *line, int i)
 {
@@ -96,12 +36,7 @@ int	check_pipes(char *line, int i)
 	while (line && line[i])
 	{
 		if (line[i] == '\"' || line[i] == '\'')
-		{
-			i++;
-			i += skip_quotes(&line[i], line[i - 1]);
-			if (line[i])
-				i++;
-		}
+			i = check_pipes_aux(line, i);
 		else
 		{
 			if (line[i] == '|' && line[i + 1] == '|')
@@ -121,7 +56,7 @@ int	check_pipes(char *line, int i)
 
 int	check_redirection(char *line, int i)
 {
-	char	redir_type;
+	char	rd;
 
 	while (line && line[i])
 	{
@@ -134,12 +69,12 @@ int	check_redirection(char *line, int i)
 		{
 			if (line[i] == '>' || line[i] == '<')
 			{
-				redir_type = line[i];
-				while (line[i] == redir_type)
+				rd = line[i];
+				while (line[i] == rd)
 					i++;
 				i += skip_spaces(&line[i]);
 				if (line[i] == '\0' || line[i] == '|')
-					return (ft_printf(2, RED INV NOCLR ERR_6" '%c'.\n", redir_type), 0);
+					return (ft_printf(2, RED INV NOCLR ERR_6" '%c'.\n", rd), 0);
 			}
 			else
 				i++;
@@ -147,17 +82,6 @@ int	check_redirection(char *line, int i)
 	}
 	return (1);
 }
-
-//int	check_redirection2(char *line, int i, char redir_type)
-//{
-//	ft_printf(1, "%s\n", line);
-//	while (line[i] == redir_type)
-//		i++;
-//	i += skip_spaces(&line[i]);
-//	if (line[i] == '\0')
-//		return (0);
-//	return (1);
-//}
 
 int	check_consecutive(char *line, int i, char temp)
 {
@@ -173,9 +97,11 @@ int	check_consecutive(char *line, int i, char temp)
 			if (is_token(line[i]))
 			{
 				temp = line[i++];
-				if ((temp == '>' || temp == '<') && consec_counter(&i, line, temp) > 1)
+				if ((temp == '>' || temp == '<')
+					&& consec_counter(&i, line, temp) > 1)
 					return (0);
-				else if ((temp != '>' && temp != '<') &&  consec_counter(&i, line, temp) > 0)
+				else if ((temp != '>' && temp != '<')
+					&& consec_counter(&i, line, temp) > 0)
 					return (0);
 			}
 			else
@@ -185,7 +111,7 @@ int	check_consecutive(char *line, int i, char temp)
 	return (1);
 }
 
-int consec_counter(int *i, char *line, char temp)
+int	consec_counter(int *i, char *line, char temp)
 {
 	int	consecutive;
 

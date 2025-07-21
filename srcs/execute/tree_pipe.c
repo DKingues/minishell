@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 14:24:31 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 15:43:16 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:56:06 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,33 +23,31 @@ void	exit_help2(int check2)
 
 void	child_process(t_tree *temp, t_tree *temp2, int check, int *fd)
 {
-	int	check2;
-
-	check2 = 0;
 	free(shell()->pids);
 	if (check == 1)
 		dup2(fd[1], 1);
+	check = 0;
 	if (temp2->type == READ || temp2->type == HERE_DOC
 		|| temp2->type == TRUNCATE || temp2->type == APPEND)
 		redir_input(temp2);
 	while (temp)
 	{
-		check2 = 1;
+		check = 1;
 		if (temp->type == READ || temp->type == HERE_DOC
 			|| temp->type == TRUNCATE || temp->type == APPEND)
 			if (redir_input(temp))
 				break ;
-		check2 = 0;
+		check = 0;
 		temp = temp->left;
 	}
-	if (temp2 && temp2->value && temp2->type == COMMAND && !check2)
+	if (temp2 && temp2->value && temp2->type == COMMAND && !check)
 		execute(temp2);
 	else if (temp2->left && temp2->left->value
-		&& temp2->left->type == COMMAND && !check2)
+		&& temp2->left->type == COMMAND && !check)
 		execute(temp2->left);
 	else
 		close_fds();
-	exit_help2(check2);
+	exit_help2(check);
 }
 
 int	parent_process(t_tree *temp2, int *check, int *fd, int var)
@@ -73,11 +71,9 @@ int	parent_process(t_tree *temp2, int *check, int *fd, int var)
 	return (var);
 }
 
-void	tree_executer(int var, int check)
+void	tree_executer(int var, int check, t_tree *temp, t_tree *temp2)
 {
 	int		fd[2];
-	t_tree	*temp;
-	t_tree	*temp2;
 
 	shell()->pids = ft_calloc(shell()->pipe_count + 2, sizeof(int));
 	if (!shell()->pids)

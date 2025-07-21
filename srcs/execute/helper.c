@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:35:48 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 12:36:17 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:50:53 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,12 @@ int	flag_check(char *flags, char *valid)
 	return (0);
 }
 
-char	**args_join(t_tree	*cmd)
+char	**args_join(t_tree	*cmd, int var)
 {
-	int		var;
 	char	*home;
 	char	**res;
 	t_tree	*temp;
 
-	var = 0;
 	temp = cmd;
 	home = find_home();
 	while (temp)
@@ -68,7 +66,7 @@ char	**args_join(t_tree	*cmd)
 char	*search_alias(char *path)
 {
 	int		var;
-	int	len;
+	int		len;
 	char	*str;
 
 	var = 0;

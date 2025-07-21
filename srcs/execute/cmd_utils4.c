@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:08:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 12:35:25 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:49:02 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	set_new_path(int var)
 
 	var = 0;
 	newpath = getcwd(buf, sizeof(buf));
-	if(!newpath)
+	if (!newpath)
 		return ;
 	while (shell()->env[var])
 	{
@@ -95,17 +95,15 @@ void	set_new_path(int var)
 		}
 		var++;
 	}
-	new_path_exp();
+	new_path_exp(0);
 }
 
-void	new_path_exp(void)
+void	new_path_exp(int var)
 {
-	int		var;
 	char	buf[1000];
 	char	*newpath;
 	char	*temp;
 
-	var = 0;
 	newpath = getcwd(buf, sizeof(buf));
 	if (!newpath)
 		return ;

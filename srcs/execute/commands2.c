@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:29:30 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 15:32:23 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:49:38 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	singleton_free(int exit)
 	ft_free_split(shell()->alias);
 	ft_free_split(shell()->hist);
 	ft_free_split(shell()->exp);
-	if(shell()->docs)
+	if (shell()->docs)
 	{
 		free(shell()->docs);
 	}
@@ -87,14 +87,12 @@ void	cd_cmd(char *path)
 	}
 }
 
-char	*find_path(char *cmd)
+char	*find_path(char *cmd, int var)
 {
 	char	**path;
 	char	*line;
 	char	*temp;
-	int		var;
 
-	var = 0;
 	while (ft_strnstr(shell()->env[var], "PATH", 4) == 0
 		&& shell()->env[var + 1])
 		var++;
@@ -111,9 +109,9 @@ char	*find_path(char *cmd)
 		free(line);
 		var++;
 	}
-	if(cmd)
+	if (cmd)
 		temp = ft_strdup(cmd);
 	else
 		temp = NULL;
-	return (ft_free_split(path),temp);
+	return (ft_free_split(path), temp);
 }

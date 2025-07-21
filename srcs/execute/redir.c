@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 14:06:06 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 15:36:32 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 18:26:48 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,14 @@
 
 int	redir_input2(t_tree *redir, int fd, char *temp)
 {
-	DIR *directory;
+	DIR	*directory;
 
 	if (redir->type == TRUNCATE)
 	{
 		directory = opendir(redir->value);
 		fd = open(redir->value, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		if (fd < 0 || directory)
-		{
-			temp = ft_nfstrjoin("minishell: ", redir->value);
-			perror(temp);
-			free(temp);
-			shell()->exit = 1;
-			return (1);
-		}
+			return (trunc_help(temp, redir->value));
 		closedir(directory);
 		return (dup2(fd, 1), 0);
 	}
@@ -36,13 +30,7 @@ int	redir_input2(t_tree *redir, int fd, char *temp)
 		directory = opendir(redir->value);
 		fd = open(redir->value, O_WRONLY | O_APPEND | O_CREAT, 0644);
 		if (fd < 0 || directory)
-		{
-			temp = ft_nfstrjoin("minishell: ", redir->value);
-			perror(temp);
-			free(temp);
-			shell()->exit = 1;
-			return (1);
-		}
+			return (trunc_help(temp, redir->value));
 		return (dup2(fd, 1), 0);
 	}
 	return (1);

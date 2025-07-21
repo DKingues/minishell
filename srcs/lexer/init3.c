@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init3.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:36:07 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/20 23:36:02 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/21 18:39:31 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,11 @@ void	init_alias2(int fd, char *line, int var, char *home)
 	free(home);
 	free(line);
 	set_alias(var, fd);
+}
+
+t_shell	*shell(void)
+{
+	static t_shell	shell;
+
+	return (&shell);
 }

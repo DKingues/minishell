@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 14:28:07 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 18:39:22 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define ERR_4 "unexpected token.\n"
 # define ERR_5 "no command before pipe.\n"
 # define ERR_6 "no file after"
+# define AMB "ambiguous redirect."
 
 typedef enum s_token_type
 {
@@ -102,6 +103,7 @@ void	exp_helper2000(char **temp);
 void	env_helper2000(char **temp);
 int		check_pipes2(char *line, int i);
 void	print_tree(t_tree *tree);
+
 //tree.c
 
 void	nptree_executer(t_tree *temp, t_tree *temp2, int pid);
@@ -113,7 +115,7 @@ void	npparent_process(void);
 
 int		parent_process(t_tree *temp2, int *check, int *fd, int var);
 void	child_process(t_tree *temp, t_tree *temp2, int check, int *fd);
-void	tree_executer(int var, int check);
+void	tree_executer(int var, int check, t_tree *temp, t_tree *temp2);
 void	exit_help2(int check2);
 
 //here_doc.c
@@ -148,7 +150,7 @@ int		check_loop(char *path);
 //helper.c
 
 int		flag_check(char *flags, char *valid);
-char	**args_join(t_tree	*cmd);
+char	**args_join(t_tree	*cmd, int var);
 char	*search_alias(char *path);
 char	**split_redef(char **args, t_tree *cmd);
 char	**split_redef2(t_tree *temp2, char **temp, char **args, int var);
@@ -229,8 +231,17 @@ int		consec_counter(int *i, char *line, char temp);
 
 // syntax_check2.c
 
+int		parser(char *line);
+void	free_list(t_token *token);
 int		syntax_check2(char *line);
 int		check_consecutive2(char *line, int i, char temp);
+
+// syntax_check_aux.c
+
+int		check_pipes_aux(char *line, int i);
+int		check_pipes_rev(char *line, int i);
+int		check_redir_exp(char *line, int v, int v2, int check2);
+int		redir_exp_helper(char **line, int *var, int *var2, int *check);
 
 // expand.c
 
@@ -268,7 +279,7 @@ char	*find_home(void);
 char	*str_redef(char *str, int var, int var2, int except);
 char	*copy_no_nl(char *temp);
 void	set_alias(int len, int fd);
-void	set_alias2(char *line, int *len, int var);
+void	set_alias2(char *line, int *len, int var, char *temp);
 
 // init3.c
 
@@ -287,7 +298,7 @@ void	env_cmd(t_tree *tree);
 void	singleton_free(int exit);
 void	exit_cmd(t_tree *tree, int code);
 void	cd_cmd(char *path);
-char	*find_path(char *cmd);
+char	*find_path(char *cmd, int var);
 void	exit_help(void);
 
 // cmd_utils.c
@@ -300,11 +311,9 @@ size_t	exp_len(const char *s);
 
 // cmd_utils2.c
 
-void	exp_organize(void);
-void	second_organize(int var, int var2);
 void	switch_str(int var);
-void	re_write_exp(char *msg);
-void	re_write_env(char *msg);
+void	re_write_exp(char *msg, int v, int v2);
+void	re_write_env(char *msg, int v, int v2);
 
 // cmd_utils3.c
 
@@ -319,7 +328,7 @@ int		long_check(char *str);
 void	set_old_path(int var, int var2, int len, char *temp);
 void	old_path_exp(int var, int var2, int len, char *temp);
 void	set_new_path(int var);
-void	new_path_exp(void);
+void	new_path_exp(int var);
 void	mv_home(void);
 
 // cmd_utils5.c
@@ -328,6 +337,12 @@ void	mv_old(void);
 void	mv_abs(char *path);
 char	**hist_manage(char *line, int flag);
 int		redir_input(t_tree	*redir);
+
+// cmd_utils6.c
+
+int		trunc_help(char *temp, char *value);
+void	exp_organize(void);
+void	second_organize(int var, int var2);
 
 // get_next_line
 

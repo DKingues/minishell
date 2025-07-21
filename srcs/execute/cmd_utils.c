@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 15:36:39 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/20 23:30:34 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:44:12 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,7 @@ char	**exp_redef(int var2, char *msg)
 			temp[var] = ft_strdup(shell()->exp[var]);
 		var++;
 	}
-	ft_free_split(shell()->exp);
-	return (temp);
+	return (ft_free_split(shell()->exp), temp);
 }
 
 char	**env_redef(int var2, char *msg)
@@ -123,8 +122,7 @@ char	**env_redef(int var2, char *msg)
 			temp[var] = ft_strdup(shell()->env[var]);
 		var++;
 	}
-	ft_free_split(shell()->env);
-	return (temp);
+	return (ft_free_split(shell()->env), temp);
 }
 
 size_t	exp_len(const char *s)

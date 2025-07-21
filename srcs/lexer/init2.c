@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 18:32:35 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/20 23:43:48 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:59:55 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ char	*str_redef(char *str, int var, int var2, int except)
 	char	*res;
 
 	except = 2;
-	var = 0;
-	var2 = 1;
 	if ((str[0] == '\'' && str[ft_strlen(str) - 2] != '\'')
 		|| (str[0] != '\'' && str[ft_strlen(str) - 2] == '\''))
 		return (NULL);
@@ -90,7 +88,7 @@ void	set_alias(int len, int fd)
 	{
 		var = 6;
 		if (!ft_strncmp("alias ", line, 6))
-			set_alias2(line, &len, var);
+			set_alias2(line, &len, var, NULL);
 		free(line);
 		line = get_next_line(fd);
 	}
@@ -98,13 +96,12 @@ void	set_alias(int len, int fd)
 	close(fd);
 }
 
-void	set_alias2(char *line, int *len, int var)
+void	set_alias2(char *line, int *len, int var, char *temp)
 {
-	char	*temp;
 	char	*temp2;
 	char	*temp3;
 
-	temp = str_redef(line + exp_len(line) + 1, 0, 0, 0);
+	temp = str_redef(line + exp_len(line) + 1, 0, 1, 0);
 	if (!temp)
 		return ;
 	if (temp[ft_strlen(temp) - 1] == '\n')
