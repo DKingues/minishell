@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:35:48 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/20 23:31:21 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/21 12:36:17 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,16 @@ char	**args_join(t_tree	*cmd)
 
 char	*search_alias(char *path)
 {
-	int	var;
+	int		var;
+	int	len;
+	char	*str;
 
 	var = 0;
 	while (shell()->alias[var])
 	{
+		len = exp_len(shell()->alias[var]);
 		if (!ft_strncmp(path, shell()->alias[var],
-				exp_len(shell()->alias[var])))
+				len) && len >= 1)
 		{
 			free(path);
 			path = ft_strdup(shell()->alias[var]
@@ -82,7 +85,9 @@ char	*search_alias(char *path)
 		}
 		var++;
 	}
-	return (path);
+	str = ft_strdup(path);
+	free(path);
+	return (str);
 }
 
 char	**split_redef(char **args, t_tree *cmd)

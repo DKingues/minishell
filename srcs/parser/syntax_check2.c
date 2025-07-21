@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 19:29:35 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/20 20:14:18 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/21 12:39:01 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	syntax_check2(char *line)
 {
 	if (!ft_strcmp(line, "\"\"") || !ft_strcmp(line, "\'\'"))
 	{
-		shell()->parser = 1;
 		shell()->exit = 127;
 		return (free(line), ft_printf(2, "\n"), 0);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:23:17 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/20 23:53:51 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/21 12:37:05 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,15 @@ void	exec_err(char *path, char *temp)
 	close_fds();
 }
 
-void	execute2(char *temp, char *path, char **args, int check)
+void	execute2(char *temp, char *path, char **args, char *cmd)
 {
-	check = check_loop(path);
 	singleton_free(0);
 	close_fds();
 	if (execve(path, args, shell()->env) == -1)
 	{
-		if (!check)
+		if (!check_loop(path))
 		{
-			ft_printf(2, "minishell: %s: command not found\n", path);
+			ft_printf(2, "minishell: %s: command not found\n", cmd);
 			shell()->exit = 127;
 		}
 		else
@@ -63,6 +62,7 @@ void	execute2(char *temp, char *path, char **args, int check)
 	}
 	ft_free_split(args);
 	free(path);
+	free(cmd);
 }
 
 char	*path_check(t_tree *cmd)

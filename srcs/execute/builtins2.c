@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:29:47 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/19 19:03:41 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 12:24:08 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	history_parser(t_tree *temp, int flag)
 
 void	builtin_exec2(t_tree *temp)
 {
-	if (!ft_strncmp(temp->value, "unset", ft_strlen(temp->value) + 1))
+	if (temp && !ft_strncmp(temp->value, "unset", ft_strlen(temp->value) + 1))
 	{
 		temp = temp->right;
 		while (temp)
@@ -84,12 +84,16 @@ int	check_loop(char *path)
 	int	var;
 	int	check;
 
-	check = 0;
 	var = 0;
+	check = 0;
 	while (path[var])
 	{
 		if (path[var] == '/')
 			check = 1;
+		if (path[var] == '/' && path[var + 1] && path[var + 1] == '.' && !path[var + 2])
+			return (0);
+		else if (path[var] == '/' && path[var + 2] && path[var + 2] == '.' && !path[var + 3])
+			return (0);
 		var++;
 	}
 	return (check);

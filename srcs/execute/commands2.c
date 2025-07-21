@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:29:30 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/19 18:52:13 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 12:24:25 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,21 @@ void	singleton_free(int exit)
 {
 	if (exit)
 	{
-		if (shell()->env && shell()->env[0])
-			ft_free_split(shell()->env);
+		ft_free_split(shell()->env);
 		shell()->env = NULL;
 		close_fds();
 	}
-	if (shell()->alias && shell()->alias[0])
-	{
-		ft_free_split(shell()->alias);
-		shell()->alias = NULL;
-	}
-	if (shell()->hist && shell()->hist[0])
-	{
-		ft_free_split(shell()->hist);
-		shell()->hist = NULL;
-	}
-	if (shell()->exp && shell()->exp[0])
-	{
-		ft_free_split(shell()->exp);
-		shell()->exp = NULL;
-	}
-	if (shell()->docs && shell()->docs[0])
+	ft_free_split(shell()->alias);
+	ft_free_split(shell()->hist);
+	shell()->hist = NULL;
+	ft_free_split(shell()->exp);
+	shell()->exp = NULL;
+	if(shell()->docs)
 	{
 		free(shell()->docs);
 		shell()->docs = NULL;
 	}
-	if (shell()->tree && shell()->tree->value)
+	if (shell()->tree)
 		tree_free(shell()->tree);
 }
 

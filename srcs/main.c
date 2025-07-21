@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/20 23:48:47 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/21 12:38:53 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ void	reset_input(char *line)
 	}
 	shell()->count = 0;
 	shell()->pipe_count = 0;
-	shell()->parser = 0;
 	shell()->hist = hist_manage(line, 0);
 	if (!shell()->hist)
 		return ;
@@ -151,8 +150,6 @@ int	main(int ac, char **av, char **ev)
 		reset_input(line);
 		if(!parser(line))
 		{
-			if (!shell()->parser)
-				shell()->exit = 0;
 			continue ;
 		}
 		if(shell()->tree)

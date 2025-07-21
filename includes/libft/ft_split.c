@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 15:02:50 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/05/06 17:53:48 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/21 12:22:25 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ void	ft_free_split(char **mal)
 		free(mal[i]);
 		i++;
 	}
-	free(mal);
+	if(!mal)
+		free(mal);
 }
 
 char	**ft_split(char const *s, char c)

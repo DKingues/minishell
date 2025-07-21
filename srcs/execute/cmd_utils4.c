@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils4.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:08:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/20 23:52:42 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/21 12:35:25 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void	set_new_path(int var)
 
 	var = 0;
 	newpath = getcwd(buf, sizeof(buf));
+	if(!newpath)
+		return ;
 	while (shell()->env[var])
 	{
 		if (!ft_strncmp(shell()->env[var], "PWD=", 4))
@@ -105,6 +107,8 @@ void	new_path_exp(void)
 
 	var = 0;
 	newpath = getcwd(buf, sizeof(buf));
+	if (!newpath)
+		return ;
 	while (shell()->exp[var])
 	{
 		if (!ft_strncmp(shell()->exp[var], "PWD=", 4))

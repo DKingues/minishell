@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:37:46 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/20 23:54:53 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/21 12:38:55 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	syntax_check(char *line)
 		return (free(line), ft_printf(2, RED INV NOCLR ERR_3), 0);
 	else if (!ft_strcmp(line, "\"\"") || !ft_strcmp(line, "\'\'"))
 	{
-		shell()->parser = 1;
 		shell()->exit = 127;
 		return (free(line), ft_printf(2, ": command not found\n"), 0);
 	}
