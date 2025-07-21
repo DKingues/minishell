@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils5.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:03:49 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/20 23:28:38 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/21 13:09:11 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	**hist_manage(char *line, int flag)
 		return (shell()->hist);
 	if (flag)
 		return (ft_free_split(shell()->hist), rl_clear_history(),
-			ft_calloc(sizeof(char *), 1));
+			ft_calloc(sizeof(char *), 2));
 	add_history(line);
 	while (shell()->hist[var])
 		var++;

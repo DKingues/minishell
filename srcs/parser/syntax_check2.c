@@ -6,20 +6,46 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 19:29:35 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 12:39:01 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 13:24:12 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+int	empty_check2(char *line)
+{
+	int var;
+
+	var = 0;
+	while(line[var])
+	{
+		if(!ft_isspace(line[var]))
+		{
+			if (line[var + 1] && (line[var] == '\"' && line[var + 1] == '\"'))
+				var++;
+			else if (line[var + 1] && (line[var] == '\'' && line[var + 1] == '\''))
+				var++;
+			else if (line[var] == '|' || line[var] == '\n')
+				var += 0;
+			else
+				return (1);
+		}
+		var++;
+	}
+	var = 0;
+	while(line[var])
+	{
+		if(!ft_isspace(line[var]))
+			if (line[var] != '|' && line[var] != '\n')
+				return (0);
+		var++;
+	}
+	return (1);
+}
+
 int	syntax_check2(char *line)
 {
-	if (!ft_strcmp(line, "\"\"") || !ft_strcmp(line, "\'\'"))
-	{
-		shell()->exit = 127;
-		return (free(line), ft_printf(2, "\n"), 0);
-	}
-	else if (check_pipes2(line, 0) == 0)
+	if (check_pipes2(line, 0) == 0)
 		return (free(line), 0);
 	else if (check_consecutive2(line, 0, 0) == 0)
 		return (free(line), ft_printf(2, "\n"), 0);

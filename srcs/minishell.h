@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 12:38:45 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 12:45:38 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ typedef enum s_sig_struct
 void	exp_helper2000(char **temp);
 void	env_helper2000(char **temp);
 int		check_pipes2(char *line, int i);
-
+void	print_tree(t_tree *tree);
 //tree.c
 
 void	nptree_executer(t_tree *temp, t_tree *temp2, int pid);
@@ -158,7 +158,7 @@ char	**split_redef2(t_tree *temp2, char **temp, char **args, int var);
 void	execute(t_tree	*cmd);
 char	**args_except(t_tree *cmd, char *path, char *temp);
 char	*path_check(t_tree *cmd);
-void	execute2(char *temp, char *path, char **args, int check);
+void	execute2(char *temp, char *path, char **args, char *cmd);
 void	exec_err(char *path, char *temp);
 
 // binary_tree.c

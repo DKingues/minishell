@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 12:38:53 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 12:44:14 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ void	print_tokens(t_token *token)
 
 int parser(char *line)
 {
-	
 	if (syntax_check(line) == 0)
 		return (0);
 	line = expand_caller(line);
