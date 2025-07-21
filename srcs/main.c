@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 12:44:14 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 16:54:31 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,9 @@ int parser(char *line)
 	t_token *token;
 	
 	token = assign_token(line);
-	/*printf("TOKEN\n");
+	printf("TOKEN\n");
 	print_tokens(token);
-	printf("\n\n");*/
+	printf("\n\n");
 	if(token)
 	{
 		pipe_counter(token);
@@ -151,7 +151,7 @@ int	main(int ac, char **av, char **ev)
 		{
 			continue ;
 		}
-		if(shell()->tree)
+		/*if(shell()->tree)
 		{
 			if(manage_here_doc() == 1)
 			{
@@ -177,7 +177,7 @@ int	main(int ac, char **av, char **ev)
 			}
 			else
 				nptree_executer(NULL, NULL, 0);
-		}
+		}*/
 	}
 	return (0);
 }

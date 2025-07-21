@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 19:29:35 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 13:28:41 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/21 14:27:48 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ int	syntax_check2(char *line)
 		return (free(line), 0);
 	else if (check_consecutive2(line, 0, 0) == 0)
 		return (free(line), ft_printf(2, "\n"), 0);
-	else if (check_redirection2(line, 0) == 0)
-		return (free(line), 0);
 	return (1);
 }
 
@@ -54,7 +52,7 @@ int	check_pipes2(char *line, int i)
 	return (1);
 }
 
-int	check_redirection2(char *line, int i)
+int	check_redirection2(char *line, int i, char *expansion)
 {
 	char	redir_type;
 
@@ -74,7 +72,7 @@ int	check_redirection2(char *line, int i)
 					i++;
 				i += skip_spaces(&line[i]);
 				if (line[i] == '\0' || line[i] == '|')
-					return (0);
+					return (ft_printf(2, "%s: ambiguous redirect.", expansion), free(expansion), 0);
 			}
 			else
 				i++;

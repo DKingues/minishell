@@ -3,18 +3,69 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:37:46 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 13:53:18 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/21 16:18:27 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+int	check_redir_exp(char *line)
+{
+	int	var;
+	int	var2 = 0;
+	int	check;
+	int	check2 = 1;
+
+	var = 0;
+	while (line[var])
+	{
+		var2 = 0;
+		check = 0;
+		if(line[var] == '<' || line[var] == '>')
+		{
+			if (line[var] == '<' && line[var + 1] == '<')
+				var ++;
+			else
+			{
+				var++;
+				while(line[var] && ft_isspace(line[var]))
+					var++;
+				if (line[var] == '$' && line[var + 1] && !ft_isspace(line[var + 1]) && line[var + 1] != '?')
+				{
+					while (shell()->env[var2])
+					{
+						if(!ft_strncmp(shell()->env[var2], line + var + 1, exp_len(shell()->env[var2])))
+							check++;
+						var2++;
+					}
+					if(!check)
+					{
+						check2 = 0;
+						shell()->exit = 1;
+						ft_printf(2, "%s: ambiguous redirect\n", get_expansion(line + var)), 0;
+						while(line[var])
+						{
+							if(line[var] == '|')
+								break;
+							var++;
+							if(!line[var + 1])
+								return (0);
+						}
+					}
+				}
+			}
+		}
+		var++;
+	}
+	return (check2);
+}
+
 int	check_pipes_rev(char *line, int i)
 {
-	while (ft_isspace(line[i]))
+	while (i > 0 && ft_isspace(line[i]))
 		i--;
 	if (line[i] == '|')
 		return (ft_printf(2, RED INV NOCLR ERR_2), 0);
@@ -31,6 +82,8 @@ int	syntax_check(char *line)
 	else if (check_consecutive(line, 0, 0) == 0)
 		return (free(line), ft_printf(2, RED INV NOCLR ERR_4), 0);
 	else if (check_redirection(line, 0) == 0)
+		return (free(line), 0);
+	else if (!check_redir_exp(line))
 		return (free(line), 0);
 	return (1);
 }

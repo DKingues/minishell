@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 12:45:38 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 14:28:07 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,7 +230,6 @@ int		consec_counter(int *i, char *line, char temp);
 // syntax_check2.c
 
 int		syntax_check2(char *line);
-int		check_redirection2(char *line, int i);
 int		check_consecutive2(char *line, int i, char temp);
 
 // expand.c

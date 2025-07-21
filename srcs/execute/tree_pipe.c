@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 14:24:31 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/20 23:51:13 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/21 15:43:16 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	child_process(t_tree *temp, t_tree *temp2, int check, int *fd)
 		&& temp2->left->type == COMMAND && !check2)
 		execute(temp2->left);
 	else
-		singleton_free(1);
+		close_fds();
 	exit_help2(check2);
 }
 

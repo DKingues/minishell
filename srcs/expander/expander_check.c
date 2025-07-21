@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_check.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:44:06 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/20 23:33:00 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/21 14:37:37 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,23 +105,30 @@ char	*add_expansion(char *line, char *expansion, int i)
 	return (free(line), free(expansion), expanded_line);
 }
 
-/*char	*get_expansion(char *line)
+char	*get_expansion(char *line)
 {
-	int		i;
-	int		len;
-	char	*arg;
+	int	var;
+	int	var2;
 	char	*expansion;
 
-	i = 0;
-	len = arg_len(line);
-	arg = ft_calloc(sizeof(char), len + 1);
-	if (!arg)
-		return (NULL);
-	while (i < len)
+	var = 0;
+	var2 = 0;
+	while(line[var])
 	{
-		arg[i] = line[i];
-		i++;
+		if(line[var] == '$')
+		{
+			while(line[var + var2] && !ft_isspace(line[var + var2]))
+				var2++;
+			expansion = ft_calloc(var2 + 1, sizeof(char));
+			var2 = 0;
+			while(line[var + var2] && !ft_isspace(line[var + var2]))
+			{
+				expansion[var2] = line[var + var2];
+				var2++;
+			}
+			return(expansion);
+		}
+		var++;
 	}
-	expansion = expand_arg(arg);
-	return (expansion);
-}*/
+	return (NULL);
+}
