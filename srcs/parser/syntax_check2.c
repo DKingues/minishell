@@ -6,11 +6,20 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 19:29:35 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 18:39:10 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 19:07:39 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	print_tokens(t_token *token)
+{
+	while (token)
+	{
+		ft_printf(1, "Value: [%s]\t Type: [%d]\n", token->value, token->type);	
+		token = token->next;
+	}
+}
 
 int	parser(char *line)
 {

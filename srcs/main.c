@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 18:38:55 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 19:02:55 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	print_banner(void)
 //	print_tree(tree->right);
 //}
 
+
 //void	print_tokens(t_token *token)
 //{
 //	while (token)
@@ -58,6 +59,7 @@ void	print_banner(void)
 //		token = token->next;
 //	}
 //}
+
 
 void	reset_input(char *line)
 {
@@ -77,45 +79,6 @@ void	reset_input(char *line)
 		return ;
 }
 
-void	main3(void)
-{
-	shell()->pid = fork();
-	if (!shell()->pid)
-	{
-		choose_signal(CHLD);
-		tree_executer(0, 0, NULL, NULL);
-	}
-	else
-	{
-		choose_signal(IGNORE);
-		waitpid(shell()->pid, &shell()->exit, 0);
-		choose_signal(ROOT);
-		shell()->exit = shell()->exit / 256;
-	}
-}
-
-void	main2(char *line)
-{
-	reset_input(line);
-	if (!parser(line))
-	{
-		return ;
-	}
-	if (shell()->tree)
-	{
-		if (manage_here_doc() == 1)
-		{
-			if (shell()->docs)
-				free(shell()->docs);
-			return ;
-		}
-		if (shell()->tree->type == PIPE)
-			main3();
-		else
-			nptree_executer(NULL, NULL, 0);
-	}
-}
-
 int	main(int ac, char **av, char **ev)
 {
 	char	*line;
@@ -123,7 +86,7 @@ int	main(int ac, char **av, char **ev)
 	(void)av;
 	if (ac != 1)
 		return (ft_printf(1, "No arguments are needed\n"), 1);
-	print_banner();
+	//print_banner();
 	init_shell(ev);
 	while (1)
 	{
@@ -140,7 +103,38 @@ int	main(int ac, char **av, char **ev)
 			free(line);
 			continue ;
 		}
-		main2(line);
+		reset_input(line);
+		if (!parser(line))
+		{
+			continue ;
+		}
+		if (shell()->tree)
+		{
+			if (manage_here_doc() == 1)
+			{
+				if (shell()->docs)
+					free(shell()->docs);
+				continue ;
+			}
+			if (shell()->tree->type == PIPE)
+			{
+				shell()->pid = fork();
+				if (!shell()->pid)
+				{
+					choose_signal(CHLD);
+					tree_executer(0, 0);
+				}
+				else
+				{
+					choose_signal(IGNORE);
+					waitpid(shell()->pid, &shell()->exit, 0);
+					choose_signal(ROOT);
+					shell()->exit = shell()->exit / 256;
+				}
+			}
+			else
+				nptree_executer(NULL, NULL, 0);
+		}
 	}
 	return (0);
 }

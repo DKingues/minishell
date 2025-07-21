@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 18:39:22 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 18:54:46 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void	npparent_process(void);
 
 int		parent_process(t_tree *temp2, int *check, int *fd, int var);
 void	child_process(t_tree *temp, t_tree *temp2, int check, int *fd);
-void	tree_executer(int var, int check, t_tree *temp, t_tree *temp2);
+void	tree_executer(int var, int check);
 void	exit_help2(int check2);
 
 //here_doc.c

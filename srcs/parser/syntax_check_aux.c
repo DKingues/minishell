@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 18:17:03 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 18:38:31 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 19:06:58 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ int	check_redir_exp(char *line, int v, int v2, int check2)
 {
 	int	check;
 
+	v = 0;
+	check2 = 1;
 	while (line[v])
 	{
 		v2 = 0;
@@ -88,9 +90,29 @@ int	check_redir_exp(char *line, int v, int v2, int check2)
 					v++;
 				if (line[v] == '$' && line[v + 1]
 					&& !ft_isspace(line[v + 1]) && line[v + 1] != '?')
-					check2 = redir_exp_helper(&line, &v, &v2, &check);
-				if (check2)
-					return (0);
+				{
+					while (shell()->env[v2])
+					{
+						if (!ft_strncmp(shell()->env[v2],
+							line + v + 1, exp_len(shell()->env[v2])))
+							check++;
+						v2++;
+					}
+					if (!check)
+					{
+						shell()->exit = 1;
+						ft_printf(2, "%s: ambiguous redirect\n",
+							get_expansion(line + v));
+						while (line[v])
+						{
+							if (line[v] == '|')
+								break ;
+							v++;
+							if (!line[v + 1])
+								return (0);
+						}
+					}
+				}
 			}
 		}
 		v++;
