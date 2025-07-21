@@ -3,65 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:37:46 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 13:24:03 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 13:53:18 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	check22 = 0;
-
-int	empty_check(char *line)
+int	check_pipes_rev(char *line, int i)
 {
-	int var;
-	char *temp = ft_strdup(line);
-	temp = expand_caller(temp);
-	var = 0;
-	while(line[var])
-	{
-		if(!ft_isspace(line[var]))
-		{
-			if (line[var + 1] && (line[var] == '\"' && line[var + 1] == '\"'))
-				var++;
-			else if (line[var + 1] && (line[var] == '\'' && line[var + 1] == '\''))
-				var++;
-			else if (line[var] == '|' || line[var] == '\n')
-				check22++;
-			else
-				return (free(temp), 1);
-		}
-		var++;
-	}
-	var = 0;
-	while(line[var])
-	{
-		if(!ft_isspace(line[var]))
-			if (line[var] != '|' && line[var] != '\n')
-				return (free(temp), 0);
-		var++;
-	}
-	return (free(temp), 1);
+	while (ft_isspace(line[i]))
+		i--;
+	if (line[i] == '|')
+		return (ft_printf(2, RED INV NOCLR ERR_2), 0);
+	return (1);
 }
-
 int	syntax_check(char *line)
 {
 	if (count_quotes(line) % 2 != 0)
 		return (free(line), ft_printf(2, RED INV NOCLR ERR_3), 0);
-	else if (check_pipes(line, 0) == 0)
+	else if (check_pipes(line, skip_spaces(line)) == 0)
 		return (free(line), 0);
-	else if (!empty_check(line))
-	{
-		while(check22 > 0)
-		{
-			ft_printf(2, ": command not found\n");
-			check22--;
-		}
-		shell()->exit = 127;
-		return (free(line), ft_printf(2, ": command not found\n"), 0);
-	}
+	else if (!check_pipes_rev(line, ft_strlen(line) - 1))
+		return (free(line), 0);
 	else if (check_consecutive(line, 0, 0) == 0)
 		return (free(line), ft_printf(2, RED INV NOCLR ERR_4), 0);
 	else if (check_redirection(line, 0) == 0)
@@ -69,9 +35,9 @@ int	syntax_check(char *line)
 	return (1);
 }
 
+
 int	check_pipes(char *line, int i)
 {
-	i += skip_spaces(&line[i]);
 	if (line && line[i] == '|')
 		return (ft_printf(2, RED INV NOCLR ERR_5), 0);
 	while (line && line[i])

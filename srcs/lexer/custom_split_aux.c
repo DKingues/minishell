@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   custom_split_aux.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:12:44 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/19 17:48:42 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 13:31:26 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	skip_quotes(char *line, char quote_type)
 	int	i;
 
 	i = 0;
+	if (line[i] == quote_type)
+		return (0);
 	while (line[i] && line[i] != quote_type)
 		i++;
 	return (i);

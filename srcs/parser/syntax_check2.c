@@ -3,45 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 19:29:35 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 13:24:12 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/21 13:28:41 by dicosta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	empty_check2(char *line)
-{
-	int var;
-
-	var = 0;
-	while(line[var])
-	{
-		if(!ft_isspace(line[var]))
-		{
-			if (line[var + 1] && (line[var] == '\"' && line[var + 1] == '\"'))
-				var++;
-			else if (line[var + 1] && (line[var] == '\'' && line[var + 1] == '\''))
-				var++;
-			else if (line[var] == '|' || line[var] == '\n')
-				var += 0;
-			else
-				return (1);
-		}
-		var++;
-	}
-	var = 0;
-	while(line[var])
-	{
-		if(!ft_isspace(line[var]))
-			if (line[var] != '|' && line[var] != '\n')
-				return (0);
-		var++;
-	}
-	return (1);
-}
 
 int	syntax_check2(char *line)
 {
