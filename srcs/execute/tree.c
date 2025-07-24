@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:41:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 12:46:20 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/24 18:25:07 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	npparent_process(void)
 
 void	npchild_process(t_tree *temp, t_tree *temp2, int check2)
 {
+	check2 = 0;
 	if (temp2->type == READ || temp2->type == HERE_DOC
 		|| temp2->type == TRUNCATE || temp2->type == APPEND)
 		redir_input(temp2);
@@ -37,6 +38,8 @@ void	npchild_process(t_tree *temp, t_tree *temp2, int check2)
 	}
 	if (temp2 && temp2->value && temp2->type == COMMAND && !check2)
 		execute(temp2);
+	else if (temp2 && !temp2->value && temp2->type == COMMAND && !check2)
+		check2 = 1;
 	exit_help2(check2);
 }
 

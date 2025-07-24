@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:44:06 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 17:57:19 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/24 16:57:41 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*expand_caller(char *line)
 		else if (quote == line[i])
 			quote = 0;
 		if ((quote == 0 || quote == '\"') && (start == -1 && line[i] == '$')
-			&& (ft_isalnum(line[i + 1]) || line[i + 1] == '?'))
+			&& (ft_isalnum(line[i + 1]) || line[i + 1] == '?' || line[i + 1] == '$'))
 			start = i;
 		else if ((quote == 0 || quote == '\"') && start != -1
 			&& (!ft_isalnum(line[i + 1]) || line[i + 1] == '\0') && ++i)

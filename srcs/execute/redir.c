@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 14:06:06 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 18:26:48 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/24 19:26:48 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ int	waitpids(int var)
 		waitpid(shell()->pids[i], &code, 0);
 		i++;
 	}
+	if (i == 1)
+		code = 0;
 	free(shell()->pids);
 	return (code / 256);
 }

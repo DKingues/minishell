@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:23:17 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 17:50:40 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/24 19:33:51 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ void	execute2(char *temp, char *path, char **args, char *cmd)
 	close_fds();
 	if (execve(path, args, shell()->env) == -1)
 	{
-		if (!cmd[0] || !check_loop(path))
+		if ((!cmd[0] || !check_loop(path)))
 		{
 			ft_printf(2, "minishell: %s: command not found\n", cmd);
 			shell()->exit = 127;
 		}
-		else
+		else// if (ft_isprint(cmd[0]) || !cmd[0])
 		{
 			if (!access(path, F_OK))
 				exec_err(path, temp);

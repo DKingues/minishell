@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 14:24:31 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 19:13:46 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:26:21 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	child_process(t_tree *temp, t_tree *temp2, int check, int *fd)
 	else if (temp2->left && temp2->left->value
 		&& temp2->left->type == COMMAND && !check2)
 		execute(temp2->left);
-	else
+	else if (!check2)
 	{
 		singleton_free(0);
 		close_fds();

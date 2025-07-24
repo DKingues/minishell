@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:29:47 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 17:43:39 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:42:19 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	builtin_exec2(t_tree *temp)
 		temp = temp->right;
 		while (temp)
 		{
-			unset_cmd(temp->value);
+			if (temp->value)
+				unset_cmd(temp->value);
 			temp = temp->right;
 		}
 	}
@@ -49,9 +50,6 @@ void	builtin_exec2(t_tree *temp)
 		cd_parser(temp);
 	else if (!ft_strncmp(temp->value, "history", ft_strlen(temp->value) + 1))
 		history_parser(temp, 0);
-	dup2(shell()->in, 0);
-	dup2(shell()->out, 1);
-	close_fds();
 }
 
 void	builtin_exec(t_tree *tree)
@@ -76,7 +74,11 @@ void	builtin_exec(t_tree *tree)
 		else
 			exit_cmd(NULL, 0);
 	}
-	builtin_exec2(temp);
+	else
+		builtin_exec2(temp);
+	dup2(shell()->in, 0);
+	dup2(shell()->out, 1);
+	close_fds();
 }
 
 int	check_loop(char *path)

@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 19:02:55 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/24 19:11:45 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,19 @@ void	print_banner(void)
 	ft_printf(1, " & dicosta-       \033[0m\n\n");
 }
 
-//void	print_tree(t_tree *tree)
-//{
-//	if (tree == NULL)
-//	{
-//		ft_printf(1, "NULL\n");
-//		return ;
-//	}
-//	ft_printf(1, "Value: [%s]\t Type: [%d]\n", tree->value, tree->type);	
-//	ft_printf(1, "LEFT: ");
-//	print_tree(tree->left);
-//	ft_printf(1, "RIGHT: ");
-//	print_tree(tree->right);
-//}
+void	print_tree(t_tree *tree)
+{
+	if (tree == NULL)
+	{
+		ft_printf(1, "NULL\n");
+		return ;
+	}
+	ft_printf(1, "Value: [%s]\t Type: [%d]\n", tree->value, tree->type);	
+	ft_printf(1, "LEFT: ");
+	print_tree(tree->left);
+	ft_printf(1, "RIGHT: ");
+	print_tree(tree->right);
+}
 
 
 //void	print_tokens(t_token *token)
@@ -67,11 +67,8 @@ void	reset_input(char *line)
 	shell()->pid = 0;
 	shell()->in = dup(0);
 	shell()->out = dup(1);
-	if (shell()->tree && shell()->tree->value)
-	{
-		tree_free(shell()->tree);
-		shell()->tree = NULL;
-	}
+	tree_free(shell()->tree);
+	shell()->tree = NULL;
 	shell()->count = 0;
 	shell()->pipe_count = 0;
 	shell()->hist = hist_manage(line, 0);

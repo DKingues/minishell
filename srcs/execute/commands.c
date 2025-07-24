@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 14:57:02 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 17:47:56 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:43:33 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,14 @@ void	unset_cmd(char *msg)
 			return ;
 		while (shell()->exp[var])
 		{
-			if (!ft_strncmp(shell()->exp[var], msg, exp_len(msg)))
+			if (!ft_strncmp(shell()->exp[var], msg, exp_len(shell()->exp[var])))
 			{
 				if (shell()->exp[var][exp_len(shell()->exp[var])] == '\0'
 					|| shell()->exp[var][exp_len(shell()->exp[var])] == '=')
 				{
 					if (shell()->exp[var][exp_len(shell()->exp[var])] == '=')
-						re_write_env(msg, 0, 0);
-					re_write_exp(msg, 0, 0);
+						shell()->env = re_write_env(msg, 0, 0);
+					shell()->exp = re_write_exp(msg, 0, 0);
 					return ;
 				}
 			}

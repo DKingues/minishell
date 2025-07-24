@@ -6,17 +6,32 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:08:01 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 17:58:09 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/24 16:42:19 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char *getpid_self(void)
+{
+	char	*current;
+	char	*pid;
+	char path[1000];
+	
+	current = ft_strdup(getcwd(path, sizeof(path)));
+	chdir("/proc/self");
+	pid = ft_strdup(getcwd(path, sizeof(path)) + 6);
+	chdir(current);
+	free(current);
+	return (pid);
+}
 
 void	init_shell(char **ev)
 {
 	init_env(ev);
 	init_exp(ev);
 	init_alias();
+	shell()->proc_id = getpid_self();
 	shell()->count = 0;
 	shell()->tree = NULL;
 	shell()->hist = ft_calloc(sizeof(char *), 2);

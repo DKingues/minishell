@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:40:54 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 17:48:15 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:38:30 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	exp_helper2000(char **temp)
 	}
 }
 
-void	re_write_exp(char *msg, int v, int v2)
+char	**re_write_exp(char *msg, int v, int v2)
 {
 	char	**temp;
 
@@ -51,7 +51,7 @@ void	re_write_exp(char *msg, int v, int v2)
 		v++;
 	temp = ft_calloc(sizeof(char *), v);
 	if (!temp)
-		return ;
+		return (NULL);
 	v = 0;
 	while (shell()->exp[v + v2])
 	{
@@ -67,8 +67,8 @@ void	re_write_exp(char *msg, int v, int v2)
 			v++;
 		}
 	}
-	exp_helper2000(temp);
-	ft_free_split(temp);
+	ft_free_split(shell()->exp);
+	return (temp);
 }
 
 void	env_helper2000(char **temp)
@@ -90,7 +90,7 @@ void	env_helper2000(char **temp)
 	}
 }
 
-void	re_write_env(char *msg, int v, int v2)
+char	**re_write_env(char *msg, int v, int v2)
 {
 	char	**temp;
 
@@ -98,7 +98,7 @@ void	re_write_env(char *msg, int v, int v2)
 		v++;
 	temp = ft_calloc(sizeof(char *), v);
 	if (!temp)
-		return ;
+		return (NULL);
 	v = 0;
 	while (shell()->env[v + v2])
 	{
@@ -115,6 +115,6 @@ void	re_write_env(char *msg, int v, int v2)
 			v++;
 		}
 	}
-	env_helper2000(temp);
-	ft_free_split(temp);
+	ft_free_split(shell()->env);
+	return (temp);
 }

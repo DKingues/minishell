@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 18:54:46 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/24 16:38:00 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_token
 
 typedef struct s_shell
 {
+	char	*proc_id;
 	int		*pids;
 	char	**alias;
 	int		in;
@@ -312,8 +313,8 @@ size_t	exp_len(const char *s);
 // cmd_utils2.c
 
 void	switch_str(int var);
-void	re_write_exp(char *msg, int v, int v2);
-void	re_write_env(char *msg, int v, int v2);
+char	**re_write_exp(char *msg, int v, int v2);
+char	**re_write_env(char *msg, int v, int v2);
 
 // cmd_utils3.c
 

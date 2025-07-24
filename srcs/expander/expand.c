@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 14:47:46 by scorpot           #+#    #+#             */
-/*   Updated: 2025/07/19 19:41:30 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/24 19:17:45 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@ char	*expand_arg(char *arg)
 	if (arg[1] == '?')
 	{
 		temp = ft_itoa(shell()->exit);
+		if (ft_strlen(arg) >= 2)
+			temp = ft_strjoin(temp, arg + 2);
+		return (temp);
+	}
+	else if (arg[0] == '$' && arg[1] == '$')
+	{
+		temp = ft_strdup(shell()->proc_id);
 		if (ft_strlen(arg) >= 2)
 			temp = ft_strjoin(temp, arg + 2);
 		return (temp);
@@ -54,5 +61,5 @@ char	*expand_arg_continue(char *arg, int var, int len, char *temp)
 		}
 		var++;
 	}
-	return (ft_strdup(""));
+	return (ft_strdup("\1"));
 }
