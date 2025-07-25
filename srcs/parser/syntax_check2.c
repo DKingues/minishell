@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 19:29:35 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/25 16:34:50 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/25 17:31:19 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,8 @@ int	parser(char *line)
 	line = expand_caller(line);
 	if (syntax_check2(line) == 0)
 		return (free(temp), 0);
-	ft_printf(2, "LINE: %s&\n", line);
 	line = hdoc_exp(line, temp);
-	ft_printf(2, "LINE: %s&\n", line);
 	token = assign_token(line);
-	printf("\nTOKEN\n");
-	print_tokens(token);
-	printf("\nTREE\n");
 	if (token)
 	{
 		pipe_counter(token);

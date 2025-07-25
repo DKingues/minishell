@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/24 16:38:00 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:47:18 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ typedef enum s_sig_struct
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
 # endif
+
+void	print_tokens(t_token *token);
 
 void	exp_helper2000(char **temp);
 void	env_helper2000(char **temp);

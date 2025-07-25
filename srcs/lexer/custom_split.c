@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   custom_split.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:51:07 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/20 23:32:34 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/25 17:26:57 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ char	*fill_token(char *line, char *token)
 {
 	int	i;
 	int	j;
+	char	quo;
 
 	i = 0;
 	j = 0;
@@ -28,7 +29,17 @@ char	*fill_token(char *line, char *token)
 		return (token);
 	}
 	while (line[i] && !ft_isspace(line[i]))
+	{
+		if (line[i] && line[i] == '=' && (line[i + 1] == '\"' || line[i + 1] == '\''))
+		{
+			token[j++] = line[i++];
+			quo = line[i];
+			token[j++] = line[i++];
+			while(line[i] && line[i] != quo)
+				token[j++] = line[i++];
+		}
 		token[j++] = line[i++];
+	}
 	return (token);
 }
 

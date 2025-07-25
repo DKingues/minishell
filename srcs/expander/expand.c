@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 14:47:46 by scorpot           #+#    #+#             */
-/*   Updated: 2025/07/24 19:17:45 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/25 17:30:22 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ char	*expand_arg(char *arg)
 
 char	*expand_arg_continue(char *arg, int var, int len, char *temp)
 {
-	while (shell()->env[var])
+	while (shell()->exp[var])
 	{
-		len = exp_len(shell()->env[var]);
-		if (!ft_strncmp(shell()->env[var], arg + 1, len))
+		len = exp_len(shell()->exp[var]);
+		if (!ft_strncmp(shell()->exp[var], arg + 1, len) && shell()->exp[var][len] == '=')
 		{
 			if (arg[len] && !ft_isalnum(arg[len + 1]))
 			{
-				temp = ft_strdup(shell()->env[var] + len + 1);
+				temp = ft_strdup(shell()->exp[var] + len + 1);
 				temp = ft_strjoin(temp, arg + len + 1);
 				return (temp);
 			}
@@ -55,7 +55,7 @@ char	*expand_arg_continue(char *arg, int var, int len, char *temp)
 				len++;
 			else
 			{
-				temp = ft_strdup(shell()->env[var] + len + 1);
+				temp = ft_strdup(shell()->exp[var] + len + 1);
 				return (temp);
 			}
 		}

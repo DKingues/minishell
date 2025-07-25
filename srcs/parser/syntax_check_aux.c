@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 18:17:03 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/25 16:31:22 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/25 17:01:10 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,11 @@ int	check_redir_exp(char *line, int v, int v2, int check2)
 					if (!check)
 					{
 						shell()->exit = 1;
+						char *temp22 = get_expansion(line + v);
 						ft_printf(2, "%s: ambiguous redirect\n",
-							get_expansion(line + v));
+							temp22);
+						if(temp22)
+							free(temp22);
 						while (line[v])
 						{
 							if (line[v] == '|')
