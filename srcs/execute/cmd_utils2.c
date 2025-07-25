@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:40:54 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/24 15:38:30 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:17:29 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,25 +22,6 @@ void	switch_str(int var)
 	free(shell()->exp[var + 1]);
 	shell()->exp[var + 1] = ft_strdup(temp);
 	free(temp);
-}
-
-void	exp_helper2000(char **temp)
-{
-	int	var;
-
-	var = 0;
-	ft_free_split(shell()->exp);
-	while (temp[var])
-		var++;
-	shell()->exp = ft_calloc(var + 1, sizeof(char *));
-	if (!shell()->exp)
-		return ;
-	var = 0;
-	while (temp[var])
-	{
-		shell()->exp[var] = ft_strdup(temp[var]);
-		var++;
-	}
 }
 
 char	**re_write_exp(char *msg, int v, int v2)
@@ -71,25 +52,6 @@ char	**re_write_exp(char *msg, int v, int v2)
 	return (temp);
 }
 
-void	env_helper2000(char **temp)
-{
-	int	var;
-
-	var = 0;
-	ft_free_split(shell()->env);
-	while (temp[var])
-		var++;
-	shell()->env = ft_calloc(var + 1, sizeof(char *));
-	if (!shell()->env)
-		return ;
-	var = 0;
-	while (temp[var])
-	{
-		shell()->env[var] = ft_strdup(temp[var]);
-		var++;
-	}
-}
-
 char	**re_write_env(char *msg, int v, int v2)
 {
 	char	**temp;
@@ -102,11 +64,10 @@ char	**re_write_env(char *msg, int v, int v2)
 	v = 0;
 	while (shell()->env[v + v2])
 	{
-		if (!ft_strncmp(shell()->env[v + v2], msg,
-				exp_len(shell()->env[v + v2]) - 1))
+		if (!ft_strncmp(shell()->env[v + v2], msg, exp_len(msg)))
 		{
-			if (shell()->env[v][exp_len(shell()->env[v + v2])] == '\0'
-					|| shell()->env[v][exp_len(shell()->env[v + v2])] == '=')
+			if (!shell()->env[v + v2][exp_len(shell()->env[v + v2])]
+				|| shell()->env[v + v2][exp_len(shell()->env[v + v2])] == '=')
 				v2++;
 		}
 		if (shell()->env[v + v2])

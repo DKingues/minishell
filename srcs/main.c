@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/24 19:11:45 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:32:41 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int	main(int ac, char **av, char **ev)
 		{
 			continue ;
 		}
+		print_tree(shell()->tree);
 		if (shell()->tree)
 		{
 			if (manage_here_doc() == 1)

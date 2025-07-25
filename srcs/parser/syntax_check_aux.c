@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 18:17:03 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 19:06:58 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:31:22 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,22 @@ int	redir_exp_helper(char **line, int *var, int *var2, int *check)
 	return (0);
 }
 
+int	check_spaces(char *expansion)
+{
+	int	var;
+
+	var = 0;
+	if(!expansion && !expansion[0])
+		return (0);
+	while(expansion[var])
+	{
+		if (ft_isspace(expansion[var]))
+			return (0);
+		var++;
+	}
+	return (1);
+}
+
 int	check_redir_exp(char *line, int v, int v2, int check2)
 {
 	int	check;
@@ -95,7 +111,7 @@ int	check_redir_exp(char *line, int v, int v2, int check2)
 					{
 						if (!ft_strncmp(shell()->env[v2],
 							line + v + 1, exp_len(shell()->env[v2])))
-							check++;
+							check = check_spaces(shell()->env[v2]);
 						v2++;
 					}
 					if (!check)
