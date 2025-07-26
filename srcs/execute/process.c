@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:23:17 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/26 15:03:47 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:46:30 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,8 @@ void	exec_err(char *path, char *temp)
 			temp = ft_nfstrjoin("minishell: ", path);
 		else
 			temp = ft_nfstrjoin("minishell: ", path);
-		if(!temp)
-		{
-			shell()->exit = 1;
-			exit_cmd(NULL, 0);
-		}
+		if (!temp)
+			malloc_err(NULL, "malloc");
 		perror(temp);
 		free(temp);
 	}
@@ -43,11 +40,8 @@ void	exec_err(char *path, char *temp)
 
 void	execute2(char *temp, char *path, char **args, char *cmd)
 {
-	if(!cmd)
-	{
-		shell()->exit = 1;
-		exit_cmd(NULL, 0);
-	}
+	if (!cmd)
+		malloc_err(NULL, "malloc");
 	singleton_free(0);
 	close_fds();
 	if (execve(path, args, shell()->env) == -1)
@@ -57,22 +51,12 @@ void	execute2(char *temp, char *path, char **args, char *cmd)
 			ft_printf(2, "minishell: %s: command not found\n", cmd);
 			shell()->exit = 127;
 		}
-		else// if (ft_isprint(cmd[0]) || !cmd[0])
+		else
 		{
 			if (!access(path, F_OK))
 				exec_err(path, temp);
 			else
-			{
-				temp = ft_nfstrjoin("minishell: ", path);
-				if(!temp)
-				{
-					ft_free_split(shell()->env);
-					exit(1);
-				}
-				perror(temp);
-				free(temp);
-				shell()->exit = 127;
-			}
+				else_exec(path);
 		}
 	}
 	ft_free_split(args);
@@ -85,7 +69,6 @@ char	*path_check(t_tree *cmd)
 	char	*temp;
 	char	*path;
 
-	temp = NULL;
 	if (is_builtin(cmd->value))
 	{
 		builtin_exec(cmd);
@@ -97,19 +80,16 @@ char	*path_check(t_tree *cmd)
 	if (cmd->value[0] == '~' && cmd->value[1] == '/')
 	{
 		temp = find_home_alias();
-		if(!temp)
+		if (!temp)
 			return (NULL);
 		temp = ft_strjoin(temp, cmd->value + 1);
-		if(!temp)
-		{
-			shell()->exit = 1;
-			exit_cmd(NULL, 0);
-		}
-		path = find_path(temp, 0);
+		if (!temp)
+			malloc_err(NULL, "malloc");
+		path = find_path(temp, 0, NULL, NULL);
 		free(temp);
 	}
 	else
-		path = find_path(cmd->value, 0);
+		path = find_path(cmd->value, 0, NULL, NULL);
 	return (path);
 }
 
@@ -124,11 +104,9 @@ char	**args_except(t_tree *cmd, char *path, char *temp)
 	return (args);
 }
 
-void	execute(t_tree	*cmd)
+void	execute(t_tree	*cmd, char *temp, char *path)
 {
-	char	*path;
 	char	**args;
-	char	*temp;
 
 	path = path_check(cmd);
 	if (!path)
@@ -136,11 +114,8 @@ void	execute(t_tree	*cmd)
 	if (access(path, F_OK) && access(path, X_OK))
 	{
 		temp = ft_strdup(path);
-		if(!temp)
-		{
-			shell()->exit = 1;
-			exit_cmd(NULL, 0);
-		}
+		if (!temp)
+			malloc_err(NULL, "malloc");
 		path = search_alias(path);
 		if (!ft_strncmp(temp, path, ft_strlen(path)))
 		{
@@ -150,7 +125,7 @@ void	execute(t_tree	*cmd)
 		else
 		{
 			args = args_except(cmd, path, temp);
-			path = find_path(args[0], 0);
+			path = find_path(args[0], 0, NULL, NULL);
 		}
 	}
 	else

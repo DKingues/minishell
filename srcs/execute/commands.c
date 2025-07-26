@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 14:57:02 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/24 15:43:33 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 16:29:31 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	exp_cmd(int flag, char *msg, int var)
 			shell()->exit = 1;
 			return ;
 		}
-		shell()->exp = exp_set(msg);
+		shell()->exp = exp_set(msg, NULL, 0);
 		if (msg[exp_len(msg)] == '=')
 			shell()->env = env_set(msg);
 		exp_organize();

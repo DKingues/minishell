@@ -6,20 +6,16 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:51:07 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/25 17:26:57 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 18:05:20 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*fill_token(char *line, char *token)
+char	*fill_token(char *line, char *token, int i, int j)
 {
-	int	i;
-	int	j;
 	char	quo;
 
-	i = 0;
-	j = 0;
 	token = ft_calloc(sizeof(char), token_len(line) + 1);
 	if (!token)
 		return (NULL);
@@ -30,12 +26,13 @@ char	*fill_token(char *line, char *token)
 	}
 	while (line[i] && !ft_isspace(line[i]))
 	{
-		if (line[i] && line[i] == '=' && (line[i + 1] == '\"' || line[i + 1] == '\''))
+		if (line[i] && line[i] == '=' && (line[i + 1] == '\"'
+				|| line[i + 1] == '\''))
 		{
 			token[j++] = line[i++];
 			quo = line[i];
 			token[j++] = line[i++];
-			while(line[i] && line[i] != quo)
+			while (line[i] && line[i] != quo)
 				token[j++] = line[i++];
 		}
 		token[j++] = line[i++];
@@ -58,7 +55,7 @@ char	**split_tokens(char *line)
 	while (i < count_tokens(line))
 	{
 		j += skip_spaces(&line[j]);
-		tokens[i] = fill_token(&line[j], tokens[i]);
+		tokens[i] = fill_token(&line[j], tokens[i], 0, 0);
 		if (!tokens[i])
 			return (ft_free_split(tokens), NULL);
 		j += token_len(tokens[i]);

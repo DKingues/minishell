@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:29:30 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/26 14:36:22 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:45:40 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	singleton_free(int exit)
 	}
 	if (shell()->tree)
 		tree_free(shell()->tree);
-	if(shell()->proc_id)
+	if (shell()->proc_id)
 		free(shell()->proc_id);
 }
 
@@ -72,7 +72,7 @@ void	cd_cmd(char *path)
 	{
 		chdir(path);
 		set_old_path(0, 0, 0, NULL);
-		set_new_path(0);
+		set_new_path(0, NULL, NULL);
 	}
 	else if (!path)
 		mv_home();
@@ -89,11 +89,9 @@ void	cd_cmd(char *path)
 	}
 }
 
-char	*find_path(char *cmd, int var)
+char	*find_path(char *cmd, int var, char *line, char *temp)
 {
 	char	**path;
-	char	*line;
-	char	*temp;
 
 	while (ft_strnstr(shell()->env[var], "PATH", 4) == 0
 		&& shell()->env[var + 1])
@@ -101,29 +99,21 @@ char	*find_path(char *cmd, int var)
 	if (!shell()->env[var + 1])
 		return (ft_strdup(cmd));
 	path = ft_split(shell()->env[var] + 5, ':');
+	if (!path)
+		malloc_err(NULL, "malloc");
 	var = 0;
 	while (path[var] != NULL)
 	{
 		temp = ft_nfstrjoin(path[var], "/");
-		if(!temp)
-		{
-			shell()->exit = 1;
-			exit_cmd(NULL, 0);
-		}
+		if (!temp)
+			malloc_err(NULL, "malloc");
 		line = ft_strjoin(temp, cmd);
-		if(!line)
-		{
-			shell()->exit = 1;
-			exit_cmd(NULL, 0);
-		}
+		if (!line)
+			malloc_err(NULL, "malloc");
 		if (access(line, 0) == 0)
 			return (ft_free_split(path), line);
 		free(line);
 		var++;
 	}
-	if (cmd)
-		temp = ft_strdup(cmd);
-	else
-		temp = NULL;
-	return (ft_free_split(path), temp);
+	return (ft_free_split(path), find_final(cmd, temp));
 }

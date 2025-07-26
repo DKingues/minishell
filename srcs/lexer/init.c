@@ -6,42 +6,28 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:08:01 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/26 14:42:52 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 18:11:47 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char *getpid_self(void)
+char	*getpid_self(void)
 {
 	char	*current;
 	char	*pid;
-	char path[1000];
-	
+	char	path[1000];
+
 	current = ft_strdup(getcwd(path, sizeof(path)));
 	if (!current)
-	{
-		if (shell()->alias)
-			ft_free_split(shell()->alias);
-		if (shell()->env)
-			ft_free_split(shell()->env);
-		if (shell()->exp)
-			ft_free_split(shell()->exp);
-		exit(1);
-	}
+		malloc_err(NULL, "malloc");
 	chdir("/proc/self");
 	pid = ft_strdup(getcwd(path, sizeof(path)) + 6);
 	if (!pid)
 	{
 		if (current)
 			free(current);
-		if (shell()->alias)
-			ft_free_split(shell()->alias);
-		if (shell()->env)
-			ft_free_split(shell()->env);
-		if (shell()->exp)
-			ft_free_split(shell()->exp);
-		exit(1);
+		malloc_err(NULL, "malloc");
 	}
 	chdir(current);
 	free(current);
@@ -57,33 +43,11 @@ void	init_shell(char **ev)
 	shell()->count = 0;
 	shell()->tree = NULL;
 	shell()->hist = ft_calloc(sizeof(char *), 2);
-	if(!shell()->hist)
-	{
-		if (shell()->proc_id)
-			free(shell()->proc_id);
-		if (shell()->alias)
-			ft_free_split(shell()->alias);
-		if (shell()->env)
-			ft_free_split(shell()->env);
-		if (shell()->exp)
-			ft_free_split(shell()->exp);
-		exit(1);
-	}
+	if (!shell()->hist)
+		malloc_err(NULL, "malloc");
 	shell()->hist[0] = ft_strdup("");
-	if(!shell()->hist[0])
-	{
-		if (shell()->proc_id)
-			free(shell()->proc_id);
-		if (shell()->hist)
-			ft_free_split(shell()->hist);
-		if (shell()->alias)
-			ft_free_split(shell()->alias);
-		if (shell()->env)
-			ft_free_split(shell()->env);
-		if (shell()->exp)
-			ft_free_split(shell()->exp);
-		exit(1);
-	}
+	if (!shell()->hist[0])
+		malloc_err(NULL, "malloc");
 	shell()->exit = 0;
 	shell()->pipe_count = 0;
 	shell()->in = 0;
@@ -101,15 +65,18 @@ void	init_env(char **ev)
 			var++;
 		shell()->env = ft_calloc(sizeof(char *), var + 1);
 		if (!shell()->env)
+		{
+			ft_printf(2, "minishell: malloc error\nexit\n");
 			exit(1);
+		}
 		var = 0;
 		while (ev[var])
 		{
 			shell()->env[var] = ft_strdup(ev[var]);
 			if (!shell()->env[var])
 			{
-				if (shell()->env)
-					ft_free_split(shell()->env);
+				ft_printf(2, "minishell: malloc error\nexit\n");
+				ft_free_split(shell()->env);
 				exit(1);
 			}
 			var++;
@@ -120,10 +87,14 @@ void	init_env(char **ev)
 	{
 		shell()->env = ft_calloc(sizeof(char *), 1);
 		if (!shell()->env)
+		{
+			ft_printf(2, "minishell: malloc error\nexit\n");
 			exit(1);
+		}
 		shell()->env[0] = ft_strdup("");
 		if (!shell()->env[0])
 		{
+			ft_printf(2, "minishell: malloc error\nexit\n");
 			ft_free_split(shell()->env);
 			exit(1);
 		}
@@ -162,7 +133,7 @@ void	init_exp(char **ev)
 		}
 		exp_organize();
 		exp_lvl(0);
-		shell()->exp = quoting_set();
+		shell()->exp = quoting_set(0);
 	}
 	else
 	{

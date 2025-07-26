@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 14:47:46 by scorpot           #+#    #+#             */
-/*   Updated: 2025/07/26 14:36:52 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 18:01:14 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,55 +24,32 @@ char	*expand_arg(char *arg)
 	if (arg[1] == '?')
 	{
 		temp = ft_itoa(shell()->exit);
-		if(!temp)
-		{
-			shell()->exit = 1;
-			exit_cmd(NULL, 0);
-		}
+		if (!temp)
+			malloc_err(NULL, "malloc");
 		if (ft_strlen(arg) >= 2)
 			temp = ft_strjoin(temp, arg + 2);
-		if(!temp)
-		{
-			shell()->exit = 1;
-			exit_cmd(NULL, 0);
-		}
+		if (!temp)
+			malloc_err(NULL, "malloc");
 		return (temp);
 	}
 	else if (arg[0] == '$' && arg[1] == '$')
-	{
-		temp = ft_strdup(shell()->proc_id);
-		if (!temp)
-		{
-			free(arg);
-			shell()->exit = 1;
-			exit_cmd(NULL, 0);
-		}
-		if (ft_strlen(arg) >= 2)
-			temp = ft_strjoin(temp, arg + 2);
-		if (!temp)
-		{
-			free(arg);
-			shell()->exit = 1;
-			exit_cmd(NULL, 0);
-		}
-		return (temp);
-	}
+		return (pid_expand(temp, arg));
 	return (expand_arg_continue(arg, var, len, temp));
 }
 
-char *edge_expansion(char *arg)
+char	*edge_expansion(char *arg)
 {
-	int	var;
-	char *res;
+	int		var;
+	char	*res;
 
 	var = 1;
 	if (arg[1] && (arg[1] == '_' || ft_isalpha(arg[1])))
-		return(ft_strdup("\1"));
+		return (ft_strdup("\1"));
 	res = ft_calloc(ft_strlen(arg) + 1, sizeof(char));
-	if(!res)
-		return (NULL);
+	if (!res)
+		malloc_err(NULL, "malloc");
 	res[0] = '\1';
-	while(arg[var + 1])
+	while (arg[var + 1])
 	{
 		res[var] = arg[var + 1];
 		var++;
@@ -85,26 +62,11 @@ char	*expand_arg_continue(char *arg, int var, int len, char *temp)
 	while (shell()->exp[var])
 	{
 		len = exp_len(shell()->exp[var]);
-		if (!ft_strncmp(shell()->exp[var], arg + 1, len) && shell()->exp[var][len] == '=')
+		if (!ft_strncmp(shell()->exp[var], arg + 1, len)
+			&& shell()->exp[var][len] == '=')
 		{
 			if (arg[len] && !ft_isalnum(arg[len + 1]))
-			{
-				temp = ft_strdup(shell()->exp[var] + len + 1);
-				if (!temp)
-				{
-					free(arg);
-					shell()->exit = 1;
-					exit_cmd(NULL, 0);
-				}
-				temp = ft_strjoin(temp, arg + len + 1);
-				if (!temp)
-				{
-					free(arg);
-					shell()->exit = 1;
-					exit_cmd(NULL, 0);
-				}
-				return (temp);
-			}
+				return (normie_expander(temp, var, len, arg));
 			else if (arg[len] && ft_isalnum(arg[len + 1]))
 				len++;
 			else
@@ -113,8 +75,7 @@ char	*expand_arg_continue(char *arg, int var, int len, char *temp)
 				if (!temp)
 				{
 					free(arg);
-					shell()->exit = 1;
-					exit_cmd(NULL, 0);
+					malloc_err(NULL, "malloc");
 				}
 				return (temp);
 			}
@@ -122,4 +83,30 @@ char	*expand_arg_continue(char *arg, int var, int len, char *temp)
 		var++;
 	}
 	return (edge_expansion(arg));
+}
+
+char	*find_final(char *cmd, char *temp)
+{
+	if (cmd)
+	{
+		temp = ft_strdup(cmd);
+		if (!temp)
+			malloc_err(NULL, "malloc");
+	}
+	else
+		temp = NULL;
+	return (temp);
+}
+
+int	right_len(t_tree *temp)
+{
+	int	var;
+
+	var = 0;
+	while (temp)
+	{
+		var++;
+		temp = temp->right;
+	}
+	return (var);
 }

@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:52:38 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/26 14:18:13 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:45:00 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,58 +32,33 @@ char	*set_blank(char *msg)
 	return (temp);
 }
 
-char	**quoting_set(void)
+char	**quoting_set(int var)
 {
 	char	**temp;
-	int		var;
 
-	var = 0;
 	while (shell()->exp[var])
 		var++;
 	temp = ft_calloc(sizeof(char *), var + 1);
 	if (!temp)
-	{
-		if(shell()->env)
-			ft_free_split(shell()->env);
-		if(shell()->exp)
-			ft_free_split(shell()->exp);
-		exit(1);
-	}
+		malloc_err(NULL, "malloc");
 	var = 0;
 	while (shell()->exp[var])
 	{
 		if (shell()->exp[var][exp_len(shell()->exp[var])] == '=')
 		{
 			temp[var] = exp_strdup(shell()->exp[var]);
-			if(!temp[var])
-			{
-				if(temp)
-					ft_free_split(temp);
-				if(shell()->env)
-					ft_free_split(shell()->env);
-				if(shell()->exp)
-					ft_free_split(shell()->exp);
-				exit(1);
-			}
+			if (!temp[var])
+				malloc_err(temp, "malloc");
 		}
 		else
 		{
 			temp[var] = ft_strdup(shell()->exp[var]);
-			if(!temp[var])
-			{
-				if(temp)
-					ft_free_split(temp);
-				if(shell()->env)
-					ft_free_split(shell()->env);
-				if(shell()->exp)
-					ft_free_split(shell()->exp);
-				exit(1);
-			}
+			if (!temp[var])
+				malloc_err(temp, "malloc");
 		}
 		var++;
 	}
-	ft_free_split(shell()->exp);
-	return (temp);
+	return (ft_free_split(shell()->exp), temp);
 }
 
 char	*exp_strdup(const char *s1)

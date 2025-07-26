@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 11:57:26 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/25 16:48:54 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:36:04 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,4 +105,20 @@ int	get_token_type(char *input)
 			return (ARG);
 	}
 	return (1);
+}
+
+void	else_exec(char *path)
+{
+	char	*temp;
+
+	temp = ft_nfstrjoin("minishell: ", path);
+	if (!temp)
+	{
+		ft_printf(2, "minishell: malloc error\n");
+		ft_free_split(shell()->env);
+		exit(1);
+	}
+	perror(temp);
+	free(temp);
+	shell()->exit = 127;
 }

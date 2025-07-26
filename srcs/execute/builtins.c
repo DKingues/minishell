@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:29:13 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/26 14:21:44 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:41:07 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,27 +53,9 @@ void	echo_parser(t_tree *temp, int flag, char *str)
 			return ;
 		str = ft_strdup(temp->value);
 		if (!str)
-		{
-			shell()->exit = 1;
-			exit_cmd(NULL, 0);
-		}
+			malloc_err(NULL, "malloc");
 		temp = temp->right;
-		while (temp)
-		{
-			str = ft_strjoin(str, " ");
-			if (!str)
-			{
-				shell()->exit = 1;
-				exit_cmd(NULL, 0);
-			}
-			str = ft_strjoin(str, temp->value);
-			if (!str)
-			{
-				shell()->exit = 1;
-				exit_cmd(NULL, 0);
-			}
-			temp = temp->right;
-		}
+		str = str_loop(temp, str);
 		echo_cmd(flag, str);
 		if (str)
 			free(str);

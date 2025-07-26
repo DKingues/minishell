@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:29:47 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/24 15:42:19 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:41:20 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,19 @@ int	check_loop(char *path)
 		var++;
 	}
 	return (check);
+}
+
+char	*str_loop(t_tree *temp, char *str)
+{
+	while (temp)
+	{
+		str = ft_strjoin(str, " ");
+		if (!str)
+			malloc_err(NULL, "malloc");
+		str = ft_strjoin(str, temp->value);
+		if (!str)
+			malloc_err(NULL, "malloc");
+		temp = temp->right;
+	}
+	return (str);
 }

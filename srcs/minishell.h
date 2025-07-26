@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/26 15:04:06 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 18:05:13 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,14 +119,16 @@ void	npparent_process(void);
 
 int		parent_process(t_tree *temp2, int *check, int *fd, int var);
 void	child_process(t_tree *temp, t_tree *temp2, int check, int *fd);
-void	tree_executer(int var, int check);
+void	tree_executer(int var, int check, t_tree *temp, t_tree *temp2);
 void	exit_help2(int check2);
 
 //here_doc.c
 
+char	*pid_expand(char *temp, char *arg);
 int		check_docs(void);
 int		loop_docs(int count, t_tree *temp);
 int		manage_here_doc(void);
+void	malloc_err(char **incognito, char *msg);
 
 //redir.c
 
@@ -150,6 +152,7 @@ void	history_parser(t_tree *temp, int flag);
 void	builtin_exec2(t_tree *temp);
 void	builtin_exec(t_tree *tree);
 int		check_loop(char *path);
+char	*str_loop(t_tree *temp, char *str);
 
 //helper.c
 
@@ -159,9 +162,13 @@ char	*search_alias(char *path);
 char	**split_redef(char **args, t_tree *cmd);
 char	**split_redef2(t_tree *temp2, char **temp, char **args, int var);
 
+//helper2.c
+
+char	*normie_expander(char *temp, int var, int len, char *arg);
+
 //process.c
 
-void	execute(t_tree	*cmd);
+void	execute(t_tree	*cmd, char *temp, char *path);
 char	**args_except(t_tree *cmd, char *path, char *temp);
 char	*path_check(t_tree *cmd);
 void	execute2(char *temp, char *path, char **args, char *cmd);
@@ -192,7 +199,7 @@ void	choose_signal(t_sig_struct level);
 // custom_split.c
 
 char	**split_tokens(char *line);
-char	*fill_token(char *line, char *token);
+char	*fill_token(char *line, char *token, int i, int j);
 char	*delete_quotes(char *line, char *quoted, int start, int end);
 char	*remove_quotes(char *line, int i, char *new_line);
 size_t	token_len(char *line);
@@ -218,6 +225,7 @@ char	*create_spaces(char *line, int i, int j);
 t_token	*assign_token(char *line);
 int		get_token_type(char *input);
 t_token	*remove_redir(t_token *token);
+void	else_exec(char *path);
 
 // token_aux.c 
 
@@ -251,6 +259,8 @@ int		redir_exp_helper(char **line, int *var, int *var2, int *check);
 
 char	*expand_arg(char *arg);
 char	*expand_arg_continue(char *arg, int var, int len, char *temp);
+char	*find_final(char *cmd, char *temp);
+int		right_len(t_tree *temp);
 
 // expander_check_aux.c
 
@@ -289,6 +299,8 @@ void	set_alias2(char *line, int *len, int var, char *temp);
 
 void	init_alias(void);
 void	init_alias2(int fd, char *line, int var, char *home);
+void	just_do_it(int var, int var2, int len, char *temp);
+void	just_do_it_too(int var, int var2, int len, char *temp);
 
 // commands.c
 
@@ -302,15 +314,15 @@ void	env_cmd(t_tree *tree);
 void	singleton_free(int exit);
 void	exit_cmd(t_tree *tree, int code);
 void	cd_cmd(char *path);
-char	*find_path(char *cmd, int var);
+char	*find_path(char *cmd, int var, char *line, char *temp);
 void	exit_help(void);
 
 // cmd_utils.c
 
-char	**exp_set(char *msg);
+char	**exp_set(char *msg, char **temp, int var);
 char	**env_set(char *msg);
-char	**exp_redef(int var2, char *msg);
-char	**env_redef(int var2, char *msg);
+char	**exp_redef(int var2, char *msg, int var);
+char	**env_redef(int var2, char *msg, int var);
 size_t	exp_len(const char *s);
 
 // cmd_utils2.c
@@ -322,7 +334,7 @@ char	**re_write_env(char *msg, int v, int v2);
 // cmd_utils3.c
 
 char	*set_blank(char *msg);
-char	**quoting_set(void);
+char	**quoting_set(int var);
 char	*exp_strdup(const char *s1);
 int		error_syntax(char *array);
 int		long_check(char *str);
@@ -331,8 +343,8 @@ int		long_check(char *str);
 
 void	set_old_path(int var, int var2, int len, char *temp);
 void	old_path_exp(int var, int var2, int len, char *temp);
-void	set_new_path(int var);
-void	new_path_exp(int var);
+void	set_new_path(int var, char *newpath, char *temp);
+void	new_path_exp(int var, char *temp);
 void	mv_home(void);
 
 // cmd_utils5.c

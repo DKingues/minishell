@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 14:08:14 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/26 14:13:51 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 18:07:32 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,7 @@ int	check_docs(void)
 		return (0);
 	shell()->docs = ft_calloc(count + 1, sizeof(int));
 	if (!shell()->docs)
-	{
-		shell()->exit = 1;
-		return (exit_cmd(NULL, 0), 0);
-	}
+		malloc_err(NULL, "malloc");
 	return (1);
 }
 
@@ -47,7 +44,7 @@ int	loop_docs(int count, t_tree *temp)
 	int	fd[2];
 
 	if (pipe(fd) == -1)
-		exit(0);
+		malloc_err(NULL, "pipe");
 	shell()->pid = fork();
 	if (!shell()->pid)
 	{
@@ -95,4 +92,31 @@ int	manage_here_doc(void)
 		tree = tree->right;
 	}
 	return (0);
+}
+
+void	malloc_err(char **incognito, char *msg)
+{
+	if (incognito)
+		ft_free_split(incognito);
+	ft_printf(2, "minishell: %s error\nexit\n", msg);
+	shell()->exit = 1;
+	exit_cmd(NULL, 0);
+}
+
+char	*pid_expand(char *temp, char *arg)
+{
+	temp = ft_strdup(shell()->proc_id);
+	if (!temp)
+	{
+		free(arg);
+		malloc_err(NULL, "malloc");
+	}
+	if (ft_strlen(arg) >= 2)
+		temp = ft_strjoin(temp, arg + 2);
+	if (!temp)
+	{
+		free(arg);
+		malloc_err(NULL, "malloc");
+	}
+	return (temp);
 }

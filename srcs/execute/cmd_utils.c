@@ -6,40 +6,29 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 15:36:39 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/26 14:24:18 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:41:36 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	**exp_set(char *msg)
+char	**exp_set(char *msg, char **temp, int var)
 {
-	char	**temp;
-	int		var;
-
-	var = 0;
 	while (shell()->exp[var])
 	{
 		if (!ft_strncmp(shell()->exp[var], msg, exp_len(msg)))
-			return (exp_redef(var, msg));
+			return (exp_redef(var, msg, 0));
 		var++;
 	}
 	temp = ft_calloc(sizeof(char *), var + 2);
 	if (!temp)
-	{
-		shell()->exit = 1;
-		exit_cmd(NULL, 0);
-	}
+		malloc_err(NULL, "malloc");
 	var = 0;
 	while (shell()->exp[var])
 	{
 		temp[var] = ft_strdup(shell()->exp[var]);
 		if (!temp[var])
-		{
-			ft_free_split(temp);
-			shell()->exit = 1;
-			exit_cmd(NULL, 0);
-		}
+			malloc_err(temp, "malloc");
 		var++;
 	}
 	if (msg[exp_len(msg)] == '=')
@@ -47,13 +36,8 @@ char	**exp_set(char *msg)
 	else
 		temp[var] = ft_strdup(msg);
 	if (!temp[var])
-	{
-		ft_free_split(temp);
-		shell()->exit = 1;
-		exit_cmd(NULL, 0);
-	}
-	ft_free_split(shell()->exp);
-	return (temp);
+		malloc_err(temp, "malloc");
+	return (ft_free_split(shell()->exp), temp);
 }
 
 char	**env_set(char *msg)
@@ -65,52 +49,35 @@ char	**env_set(char *msg)
 	while (shell()->env[var])
 	{
 		if (!ft_strncmp(shell()->env[var], msg, exp_len(msg)))
-			return (env_redef(var, msg));
+			return (env_redef(var, msg, 0));
 		var++;
 	}
 	temp = ft_calloc(sizeof(char *), var + 2);
 	if (!temp)
-	{
-		shell()->exit = 1;
-		exit_cmd(NULL, 0);
-	}
+		malloc_err(NULL, "malloc");
 	var = 0;
 	while (shell()->env[var])
 	{
 		temp[var] = ft_strdup(shell()->env[var]);
 		if (!temp[var])
-		{
-			ft_free_split(temp);
-			shell()->exit = 1;
-			exit_cmd(NULL, 0);
-		}
+			malloc_err(temp, "malloc");
 		var++;
 	}
 	temp[var] = ft_strdup(msg);
 	if (!temp[var])
-	{
-		ft_free_split(temp);
-		shell()->exit = 1;
-		exit_cmd(NULL, 0);
-	}
-	ft_free_split(shell()->env);
-	return (temp);
+		malloc_err(temp, "malloc");
+	return (ft_free_split(shell()->env), temp);
 }
 
-char	**exp_redef(int var2, char *msg)
+char	**exp_redef(int var2, char *msg, int var)
 {
-	int		var;
 	char	**temp;
 
-	var = 0;
 	while (shell()->exp[var])
 		var++;
 	temp = ft_calloc(sizeof(char *), var + 1);
 	if (!temp)
-	{
-		shell()->exit = 1;
-		exit_cmd(NULL, 0);
-	}
+		malloc_err(NULL, "malloc");
 	var = 0;
 	while (shell()->exp[var])
 	{
@@ -125,30 +92,21 @@ char	**exp_redef(int var2, char *msg)
 		else
 			temp[var] = ft_strdup(shell()->exp[var]);
 		if (!temp[var])
-		{
-			ft_free_split(temp);
-			shell()->exit = 1;
-			exit_cmd(NULL, 0);
-		}
+			malloc_err(temp, "malloc");
 		var++;
 	}
 	return (ft_free_split(shell()->exp), temp);
 }
 
-char	**env_redef(int var2, char *msg)
+char	**env_redef(int var2, char *msg, int var)
 {
-	int		var;
 	char	**temp;
 
-	var = 0;
 	while (shell()->env[var])
 		var++;
 	temp = ft_calloc(sizeof(char *), var + 1);
 	if (!temp)
-	{
-		shell()->exit = 1;
-		exit_cmd(NULL, 0);
-	}
+		malloc_err(NULL, "malloc");
 	var = 0;
 	while (shell()->env[var])
 	{
@@ -163,11 +121,7 @@ char	**env_redef(int var2, char *msg)
 		else
 			temp[var] = ft_strdup(shell()->env[var]);
 		if (!temp[var])
-		{
-			ft_free_split(temp);
-			shell()->exit = 1;
-			exit_cmd(NULL, 0);
-		}
+			malloc_err(temp, "malloc");
 		var++;
 	}
 	return (ft_free_split(shell()->env), temp);

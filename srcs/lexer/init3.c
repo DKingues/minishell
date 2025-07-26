@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:36:07 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/26 15:03:51 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:46:46 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,40 @@ t_shell	*shell(void)
 	static t_shell	shell;
 
 	return (&shell);
+}
+
+void	just_do_it(int var, int var2, int len, char *temp)
+{
+	free(shell()->env[var]);
+	len = ft_strlen(shell()->env[var2]);
+	temp = ft_calloc(sizeof(char), len + 5);
+	if (!temp)
+		malloc_err(NULL, "malloc");
+	ft_strcpy(temp, "OLDPWD=");
+	ft_strcpy(temp + 7, shell()->env[var2] + 4);
+	shell()->env[var] = ft_strdup(temp);
+	if (!shell()->env[var])
+	{
+		free(temp);
+		malloc_err(NULL, "malloc");
+	}
+	free(temp);
+}
+
+void	just_do_it_too(int var, int var2, int len, char *temp)
+{
+	free(shell()->exp[var]);
+	len = ft_strlen(shell()->exp[var2]);
+	temp = ft_calloc(sizeof(char), len + 5);
+	if (!temp)
+		malloc_err(NULL, "malloc");
+	ft_strcpy(temp, "OLDPWD=");
+	ft_strcpy(temp + 7, shell()->exp[var2] + 4);
+	shell()->exp[var] = ft_strdup(temp);
+	if (!shell()->exp[var])
+	{
+		free(temp);
+		malloc_err(NULL, "malloc");
+	}
+	free(temp);
 }

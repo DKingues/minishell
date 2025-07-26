@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:40:54 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/26 14:24:42 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:44:50 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,14 @@ void	switch_str(int var)
 
 	temp = ft_strdup(shell()->exp[var]);
 	if (!temp)
-	{
-		if (shell()->env)
-			ft_free_split(shell()->env);
-		if (shell()->exp)
-			ft_free_split(shell()->exp);
-		exit(1);
-	}
+		malloc_err(NULL, "malloc");
 	free(shell()->exp[var]);
 	shell()->exp[var] = ft_strdup(shell()->exp[var + 1]);
 	if (!shell()->exp[var])
 	{
 		if (temp)
 			free(temp);
-		if (shell()->env)
-			ft_free_split(shell()->env);
-		if (shell()->exp)
-			ft_free_split(shell()->exp);
-		exit(1);
+		malloc_err(NULL, "malloc");
 	}
 	free(shell()->exp[var + 1]);
 	shell()->exp[var + 1] = ft_strdup(temp);
@@ -43,11 +33,7 @@ void	switch_str(int var)
 	{
 		if (temp)
 			free(temp);
-		if (shell()->env)
-			ft_free_split(shell()->env);
-		if (shell()->exp)
-			ft_free_split(shell()->exp);
-		exit(1);
+		malloc_err(NULL, "malloc");
 	}
 	free(temp);
 }
@@ -60,10 +46,7 @@ char	**re_write_exp(char *msg, int v, int v2)
 		v++;
 	temp = ft_calloc(sizeof(char *), v);
 	if (!temp)
-	{
-		shell()->exit = 1;
-		exit_cmd(NULL, 0);
-	}
+		malloc_err(NULL, "malloc");
 	v = 0;
 	while (shell()->exp[v + v2])
 	{
@@ -77,16 +60,11 @@ char	**re_write_exp(char *msg, int v, int v2)
 		{
 			temp[v] = ft_strdup(shell()->exp[v + v2]);
 			if (!temp[v])
-			{
-				ft_free_split(temp);
-				shell()->exit = 1;
-				exit_cmd(NULL, 0);
-			}
+				malloc_err(temp, "malloc");
 			v++;
 		}
 	}
-	ft_free_split(shell()->exp);
-	return (temp);
+	return (ft_free_split(shell()->exp), temp);
 }
 
 char	**re_write_env(char *msg, int v, int v2)
@@ -97,10 +75,7 @@ char	**re_write_env(char *msg, int v, int v2)
 		v++;
 	temp = ft_calloc(sizeof(char *), v);
 	if (!temp)
-	{
-		shell()->exit = 1;
-		exit_cmd(NULL, 0);
-	}
+		malloc_err(NULL, "malloc");
 	v = 0;
 	while (shell()->env[v + v2])
 	{
@@ -114,14 +89,9 @@ char	**re_write_env(char *msg, int v, int v2)
 		{
 			temp[v] = ft_strdup(shell()->env[v + v2]);
 			if (!temp[v])
-			{
-				ft_free_split(temp);
-				shell()->exit = 1;
-				exit_cmd(NULL, 0);
-			}
+				malloc_err(temp, "malloc");
 			v++;
 		}
 	}
-	ft_free_split(shell()->env);
-	return (temp);
+	return (ft_free_split(shell()->env), temp);
 }

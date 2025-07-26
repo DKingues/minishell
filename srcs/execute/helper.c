@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:35:48 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/26 15:03:41 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:46:15 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,9 @@ char	**args_join(t_tree	*cmd, int var)
 
 	temp = cmd;
 	home = find_home_alias();
-	while (temp)
-	{
-		var++;
-		temp = temp->right;
-	}
-	res = ft_calloc(sizeof(char *), var + 1);
+	res = ft_calloc(sizeof(char *), right_len(temp) + 1);
 	if (!res)
-	{
-		shell()->exit = 1;
-		exit_cmd(NULL, 0);
-	}
+		malloc_err(NULL, "malloc");
 	var = 0;
 	while (cmd)
 	{
@@ -62,10 +54,8 @@ char	**args_join(t_tree	*cmd, int var)
 			res[var] = ft_strdup(cmd->value);
 		if (!res[var])
 		{
-			ft_free_split(res);
 			free(home);
-			shell()->exit = 1;
-			exit_cmd(NULL, 0);
+			malloc_err(res, "malloc");
 		}
 		cmd = cmd->right;
 		var++;
@@ -110,28 +100,15 @@ char	**split_redef(char **args, t_tree *cmd)
 	temp2 = cmd->right;
 	while (args[var])
 		var++;
-	while (temp2)
-	{
-		temp2 = temp2->right;
-		var++;
-	}
-	temp = ft_calloc(sizeof(char *), var + 1);
+	temp = ft_calloc(sizeof(char *), right_len(temp2) + 1);
 	if (!temp)
-	{
-		shell()->exit = 1;
-		exit_cmd(NULL, 0);
-	}
+		malloc_err(NULL, "malloc");
 	var = 0;
 	while (args[var])
 	{
 		temp[var] = ft_strdup(args[var]);
 		if (!temp[var])
-		{
-			ft_free_split(args);
-			ft_free_split(temp);
-			shell()->exit = 1;
-			exit_cmd(NULL, 0);
-		}
+			return (ft_free_split(args), malloc_err(temp, "malloc"), NULL);
 		var++;
 	}
 	temp2 = cmd->right;

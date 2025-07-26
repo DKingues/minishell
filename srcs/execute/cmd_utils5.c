@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:03:49 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/26 14:26:43 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:45:29 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	mv_old(void)
 				var2++;
 			chdir(shell()->env[var] + var2 + 1);
 			set_old_path(0, 0, 0, NULL);
-			set_new_path(0);
+			set_new_path(0, NULL, NULL);
 			pwd_cmd();
 			return ;
 		}
@@ -39,33 +39,46 @@ void	mv_old(void)
 void	mv_abs(char *path)
 {
 	char	*abs_path;
-	int		var;
+	char	*temp;
 
-	var = 0;
-	while (ft_strncmp(shell()->env[var], "HOME=", 5))
-		var++;
-	if (!shell()->env[var])
-		return ;
-	abs_path = ft_strdup(shell()->env[var] + 5);
-	if(!abs_path)
-	{
-		free(path);
-		shell()->exit = 1;
-		exit_cmd(NULL, 0);
-	}
+	abs_path = find_home_alias();
+	if (!abs_path)
+		malloc_err(NULL, "malloc");
 	abs_path = ft_strjoin(abs_path, path + 1);
-	if(!abs_path)
-	{
-		free(path);
-		shell()->exit = 1;
-		exit_cmd(NULL, 0);
-	}
+	if (!abs_path)
+		malloc_err(NULL, "malloc");
 	if (!access(abs_path, 0))
 	{
 		chdir(abs_path);
 		set_old_path(0, 0, 0, NULL);
-		set_new_path(0);
+		set_new_path(0, NULL, NULL);
 	}
+	else
+	{
+		temp = ft_nfstrjoin("minishell: ", abs_path);
+		if (!temp)
+			malloc_err(NULL, "malloc");
+		perror(temp);
+		free(temp);
+		shell()->exit = 1;
+	}
+	free(abs_path);
+}
+
+char	**loop_history(int var, char **temp, char *line)
+{
+	var = 0;
+	while (shell()->hist[var])
+	{
+		temp[var] = ft_strdup(shell()->hist[var]);
+		if (!temp[var])
+			return (ft_free_split(temp), NULL);
+		var++;
+	}
+	temp[var] = ft_strdup(line);
+	if (!temp[var])
+		return (ft_free_split(temp), NULL);
+	return (ft_free_split(shell()->hist), temp);
 }
 
 char	**hist_manage(char *line, int flag)
@@ -90,16 +103,5 @@ char	**hist_manage(char *line, int flag)
 	temp = ft_calloc(sizeof(char *), var + 2);
 	if (!temp)
 		return (NULL);
-	var = 0;
-	while (shell()->hist[var])
-	{
-		temp[var] = ft_strdup(shell()->hist[var]);
-		if (!temp[var])
-			return (ft_free_split(temp), NULL);
-		var++;
-	}
-	temp[var] = ft_strdup(line);
-	if (!temp[var])
-			return (ft_free_split(temp), NULL);
-	return (ft_free_split(shell()->hist), temp);
+	return (loop_history(var, temp, line));
 }

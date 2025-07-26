@@ -6,7 +6,7 @@
 #    By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/07/21 18:41:36 by rmota-ma         ###   ########.fr        #
+#    Updated: 2025/07/26 18:02:29 by rmota-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ LEXER = init.c init2.c init3.c token.c custom_split.c custom_split_aux.c token_a
 
 PARSER = syntax_check.c syntax_check2.c syntax_check_aux.c binary_tree.c binary_tree_aux.c
 
-EXECUTER = cmd_utils6.c tree_pipe.c redir.c here_doc.c builtins.c builtins2.c helper.c process.c commands.c commands2.c cmd_utils.c cmd_utils2.c cmd_utils3.c cmd_utils4.c cmd_utils5.c tree.c commands3.c
+EXECUTER = cmd_utils6.c tree_pipe.c redir.c here_doc.c builtins.c builtins2.c helper.c helper2.c process.c commands.c commands2.c cmd_utils.c cmd_utils2.c cmd_utils3.c cmd_utils4.c cmd_utils5.c tree.c commands3.c
 
 SIGNALS = signals.c
 
