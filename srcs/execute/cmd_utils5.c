@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:03:49 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 13:09:11 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 14:26:43 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,19 @@ void	mv_abs(char *path)
 	if (!shell()->env[var])
 		return ;
 	abs_path = ft_strdup(shell()->env[var] + 5);
+	if(!abs_path)
+	{
+		free(path);
+		shell()->exit = 1;
+		exit_cmd(NULL, 0);
+	}
 	abs_path = ft_strjoin(abs_path, path + 1);
+	if(!abs_path)
+	{
+		free(path);
+		shell()->exit = 1;
+		exit_cmd(NULL, 0);
+	}
 	if (!access(abs_path, 0))
 	{
 		chdir(abs_path);
@@ -65,8 +77,13 @@ char	**hist_manage(char *line, int flag)
 	if (!line || ((!line[0] || line[0] == '\n') && !flag))
 		return (shell()->hist);
 	if (flag)
+	{
+		temp = ft_calloc(sizeof(char *), 2);
+		if (temp)
+			temp[0] = ft_calloc(sizeof(char *), 2);
 		return (ft_free_split(shell()->hist), rl_clear_history(),
-			ft_calloc(sizeof(char *), 2));
+			temp);
+	}
 	add_history(line);
 	while (shell()->hist[var])
 		var++;
@@ -77,8 +94,12 @@ char	**hist_manage(char *line, int flag)
 	while (shell()->hist[var])
 	{
 		temp[var] = ft_strdup(shell()->hist[var]);
+		if (!temp[var])
+			return (ft_free_split(temp), NULL);
 		var++;
 	}
 	temp[var] = ft_strdup(line);
+	if (!temp[var])
+			return (ft_free_split(temp), NULL);
 	return (ft_free_split(shell()->hist), temp);
 }

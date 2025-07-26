@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/25 16:47:18 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 15:04:06 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef enum s_sig_struct
 # endif
 
 void	print_tokens(t_token *token);
+char *find_home_alias(void);
 
 void	exp_helper2000(char **temp);
 void	env_helper2000(char **temp);

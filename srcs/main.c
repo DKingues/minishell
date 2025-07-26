@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/25 16:58:54 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 15:42:58 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,10 @@ void	reset_input(char *line)
 	shell()->pipe_count = 0;
 	shell()->hist = hist_manage(line, 0);
 	if (!shell()->hist)
-		return ;
+	{
+		shell()->exit = 1;
+		exit_cmd(NULL, 0);
+	}
 }
 
 int	main(int ac, char **av, char **ev)
@@ -98,6 +101,22 @@ int	main(int ac, char **av, char **ev)
 		{
 			shell()->exit = 0;
 			free(line);
+			continue ;
+		}
+		int acc = 0;
+		int acv = 0;
+		while(line[acc])
+		{
+			if(!ft_isspace(line[acc]))
+			{
+				break ;
+			}
+			acc++;
+		}
+		while(line[acv] && line[acv] != '\n')
+			acv++;
+		if(acv == acc)
+		{
 			continue ;
 		}
 		reset_input(line);
@@ -132,6 +151,8 @@ int	main(int ac, char **av, char **ev)
 			else
 				nptree_executer(NULL, NULL, 0);
 		}
+		else
+			shell()->exit = 0;
 	}
 	return (0);
 }

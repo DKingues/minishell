@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:52:38 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/20 23:26:40 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/26 14:18:13 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,44 @@ char	**quoting_set(void)
 		var++;
 	temp = ft_calloc(sizeof(char *), var + 1);
 	if (!temp)
-		return (NULL);
+	{
+		if(shell()->env)
+			ft_free_split(shell()->env);
+		if(shell()->exp)
+			ft_free_split(shell()->exp);
+		exit(1);
+	}
 	var = 0;
 	while (shell()->exp[var])
 	{
 		if (shell()->exp[var][exp_len(shell()->exp[var])] == '=')
+		{
 			temp[var] = exp_strdup(shell()->exp[var]);
+			if(!temp[var])
+			{
+				if(temp)
+					ft_free_split(temp);
+				if(shell()->env)
+					ft_free_split(shell()->env);
+				if(shell()->exp)
+					ft_free_split(shell()->exp);
+				exit(1);
+			}
+		}
 		else
+		{
 			temp[var] = ft_strdup(shell()->exp[var]);
+			if(!temp[var])
+			{
+				if(temp)
+					ft_free_split(temp);
+				if(shell()->env)
+					ft_free_split(shell()->env);
+				if(shell()->exp)
+					ft_free_split(shell()->exp);
+				exit(1);
+			}
+		}
 		var++;
 	}
 	ft_free_split(shell()->exp);
@@ -64,7 +94,7 @@ char	*exp_strdup(const char *s1)
 
 	len = exp_len(s1);
 	tmp = ft_calloc(sizeof(char), ft_strlen(s1) + 4);
-	if (tmp == NULL)
+	if (!tmp)
 		return (NULL);
 	i = 0;
 	while (i < len)

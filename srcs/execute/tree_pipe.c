@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 14:24:31 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/24 15:26:21 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 14:14:30 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,10 @@ void	tree_executer(int var, int check)
 
 	shell()->pids = ft_calloc(shell()->pipe_count + 2, sizeof(int));
 	if (!shell()->pids)
-		return ;
+	{
+		shell()->exit = 1;
+		exit_cmd(NULL, 0);
+	}
 	shell()->count = 0;
 	choose_signal(CHLD);
 	temp2 = shell()->tree;
@@ -93,7 +96,10 @@ void	tree_executer(int var, int check)
 		if (temp2->type == PIPE)
 		{
 			if (pipe(fd) == -1)
-				return ;
+			{
+				shell()->exit = 1;
+				exit_cmd(NULL, 0);
+			}
 			check = 1;
 		}
 		temp = temp2->left;

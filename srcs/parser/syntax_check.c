@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:37:46 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/21 19:00:31 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 12:17:14 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,35 @@
 int	syntax_check(char *line)
 {
 	if (count_quotes(line) % 2 != 0)
+	{
+		shell()->exit = 2;
 		return (free(line), ft_printf(2, RED INV NOCLR ERR_3), 0);
+	}
 	else if (check_pipes(line, skip_spaces(line)) == 0)
+	{
+		shell()->exit = 2;
 		return (free(line), 0);
+	}
 	else if (!check_pipes_rev(line, ft_strlen(line) - 1))
+	{
+		shell()->exit = 2;
 		return (free(line), 0);
+	}
 	else if (check_consecutive(line, 0, 0) == 0)
+	{
+		shell()->exit = 2;
 		return (free(line), ft_printf(2, RED INV NOCLR ERR_4), 0);
+	}
 	else if (check_redirection(line, 0) == 0)
+	{
+		shell()->exit = 2;
 		return (free(line), 0);
+	}
 	else if (!check_redir_exp(line, 0, 0, 1))
+	{
+		shell()->exit = 1;
 		return (free(line), 0);
+	}
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 15:36:39 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 17:44:12 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 14:24:18 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,32 @@ char	**exp_set(char *msg)
 	}
 	temp = ft_calloc(sizeof(char *), var + 2);
 	if (!temp)
-		return (NULL);
+	{
+		shell()->exit = 1;
+		exit_cmd(NULL, 0);
+	}
 	var = 0;
 	while (shell()->exp[var])
 	{
 		temp[var] = ft_strdup(shell()->exp[var]);
+		if (!temp[var])
+		{
+			ft_free_split(temp);
+			shell()->exit = 1;
+			exit_cmd(NULL, 0);
+		}
 		var++;
 	}
 	if (msg[exp_len(msg)] == '=')
 		temp[var] = exp_strdup(msg);
 	else
 		temp[var] = ft_strdup(msg);
+	if (!temp[var])
+	{
+		ft_free_split(temp);
+		shell()->exit = 1;
+		exit_cmd(NULL, 0);
+	}
 	ft_free_split(shell()->exp);
 	return (temp);
 }
@@ -55,14 +70,29 @@ char	**env_set(char *msg)
 	}
 	temp = ft_calloc(sizeof(char *), var + 2);
 	if (!temp)
-		return (NULL);
+	{
+		shell()->exit = 1;
+		exit_cmd(NULL, 0);
+	}
 	var = 0;
 	while (shell()->env[var])
 	{
 		temp[var] = ft_strdup(shell()->env[var]);
+		if (!temp[var])
+		{
+			ft_free_split(temp);
+			shell()->exit = 1;
+			exit_cmd(NULL, 0);
+		}
 		var++;
 	}
 	temp[var] = ft_strdup(msg);
+	if (!temp[var])
+	{
+		ft_free_split(temp);
+		shell()->exit = 1;
+		exit_cmd(NULL, 0);
+	}
 	ft_free_split(shell()->env);
 	return (temp);
 }
@@ -77,7 +107,10 @@ char	**exp_redef(int var2, char *msg)
 		var++;
 	temp = ft_calloc(sizeof(char *), var + 1);
 	if (!temp)
-		return (NULL);
+	{
+		shell()->exit = 1;
+		exit_cmd(NULL, 0);
+	}
 	var = 0;
 	while (shell()->exp[var])
 	{
@@ -91,6 +124,12 @@ char	**exp_redef(int var2, char *msg)
 		}
 		else
 			temp[var] = ft_strdup(shell()->exp[var]);
+		if (!temp[var])
+		{
+			ft_free_split(temp);
+			shell()->exit = 1;
+			exit_cmd(NULL, 0);
+		}
 		var++;
 	}
 	return (ft_free_split(shell()->exp), temp);
@@ -106,7 +145,10 @@ char	**env_redef(int var2, char *msg)
 		var++;
 	temp = ft_calloc(sizeof(char *), var + 1);
 	if (!temp)
-		return (NULL);
+	{
+		shell()->exit = 1;
+		exit_cmd(NULL, 0);
+	}
 	var = 0;
 	while (shell()->env[var])
 	{
@@ -120,6 +162,12 @@ char	**env_redef(int var2, char *msg)
 		}
 		else
 			temp[var] = ft_strdup(shell()->env[var]);
+		if (!temp[var])
+		{
+			ft_free_split(temp);
+			shell()->exit = 1;
+			exit_cmd(NULL, 0);
+		}
 		var++;
 	}
 	return (ft_free_split(shell()->env), temp);

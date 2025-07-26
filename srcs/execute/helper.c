@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:35:48 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/21 17:50:53 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 15:03:41 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	**args_join(t_tree	*cmd, int var)
 	t_tree	*temp;
 
 	temp = cmd;
-	home = find_home();
+	home = find_home_alias();
 	while (temp)
 	{
 		var++;
@@ -49,7 +49,10 @@ char	**args_join(t_tree	*cmd, int var)
 	}
 	res = ft_calloc(sizeof(char *), var + 1);
 	if (!res)
-		return (NULL);
+	{
+		shell()->exit = 1;
+		exit_cmd(NULL, 0);
+	}
 	var = 0;
 	while (cmd)
 	{
@@ -57,6 +60,13 @@ char	**args_join(t_tree	*cmd, int var)
 			res[var] = ft_nfstrjoin(home, cmd->value + 1);
 		else
 			res[var] = ft_strdup(cmd->value);
+		if (!res[var])
+		{
+			ft_free_split(res);
+			free(home);
+			shell()->exit = 1;
+			exit_cmd(NULL, 0);
+		}
 		cmd = cmd->right;
 		var++;
 	}
@@ -67,7 +77,6 @@ char	*search_alias(char *path)
 {
 	int		var;
 	int		len;
-	char	*str;
 
 	var = 0;
 	while (shell()->alias[var])
@@ -79,13 +88,16 @@ char	*search_alias(char *path)
 			free(path);
 			path = ft_strdup(shell()->alias[var]
 					+ exp_len(shell()->alias[var]) + 1);
+			if (!path)
+			{
+				shell()->exit = 1;
+				exit_cmd(NULL, 0);
+			}
 			return (path);
 		}
 		var++;
 	}
-	str = ft_strdup(path);
-	free(path);
-	return (str);
+	return (path);
 }
 
 char	**split_redef(char **args, t_tree *cmd)
@@ -105,11 +117,21 @@ char	**split_redef(char **args, t_tree *cmd)
 	}
 	temp = ft_calloc(sizeof(char *), var + 1);
 	if (!temp)
-		return (NULL);
+	{
+		shell()->exit = 1;
+		exit_cmd(NULL, 0);
+	}
 	var = 0;
 	while (args[var])
 	{
 		temp[var] = ft_strdup(args[var]);
+		if (!temp[var])
+		{
+			ft_free_split(args);
+			ft_free_split(temp);
+			shell()->exit = 1;
+			exit_cmd(NULL, 0);
+		}
 		var++;
 	}
 	temp2 = cmd->right;
@@ -121,6 +143,13 @@ char	**split_redef2(t_tree *temp2, char **temp, char **args, int var)
 	while (temp2)
 	{
 		temp[var] = ft_strdup(temp2->value);
+		if (!temp[var])
+		{
+			ft_free_split(args);
+			ft_free_split(temp);
+			shell()->exit = 1;
+			exit_cmd(NULL, 0);
+		}
 		var++;
 		temp2 = temp2->right;
 	}

@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:29:13 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/19 18:51:46 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 14:21:44 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,26 @@ void	echo_parser(t_tree *temp, int flag, char *str)
 		if (!temp && flag)
 			return ;
 		str = ft_strdup(temp->value);
+		if (!str)
+		{
+			shell()->exit = 1;
+			exit_cmd(NULL, 0);
+		}
 		temp = temp->right;
 		while (temp)
 		{
 			str = ft_strjoin(str, " ");
+			if (!str)
+			{
+				shell()->exit = 1;
+				exit_cmd(NULL, 0);
+			}
 			str = ft_strjoin(str, temp->value);
+			if (!str)
+			{
+				shell()->exit = 1;
+				exit_cmd(NULL, 0);
+			}
 			temp = temp->right;
 		}
 		echo_cmd(flag, str);

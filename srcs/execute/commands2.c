@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:29:30 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/24 16:42:44 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 14:36:22 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,17 @@ char	*find_path(char *cmd, int var)
 	while (path[var] != NULL)
 	{
 		temp = ft_nfstrjoin(path[var], "/");
+		if(!temp)
+		{
+			shell()->exit = 1;
+			exit_cmd(NULL, 0);
+		}
 		line = ft_strjoin(temp, cmd);
+		if(!line)
+		{
+			shell()->exit = 1;
+			exit_cmd(NULL, 0);
+		}
 		if (access(line, 0) == 0)
 			return (ft_free_split(path), line);
 		free(line);

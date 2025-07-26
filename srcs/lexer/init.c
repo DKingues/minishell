@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:08:01 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/24 16:42:19 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 14:42:52 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,30 @@ char *getpid_self(void)
 	char path[1000];
 	
 	current = ft_strdup(getcwd(path, sizeof(path)));
+	if (!current)
+	{
+		if (shell()->alias)
+			ft_free_split(shell()->alias);
+		if (shell()->env)
+			ft_free_split(shell()->env);
+		if (shell()->exp)
+			ft_free_split(shell()->exp);
+		exit(1);
+	}
 	chdir("/proc/self");
 	pid = ft_strdup(getcwd(path, sizeof(path)) + 6);
+	if (!pid)
+	{
+		if (current)
+			free(current);
+		if (shell()->alias)
+			ft_free_split(shell()->alias);
+		if (shell()->env)
+			ft_free_split(shell()->env);
+		if (shell()->exp)
+			ft_free_split(shell()->exp);
+		exit(1);
+	}
 	chdir(current);
 	free(current);
 	return (pid);
@@ -35,7 +57,33 @@ void	init_shell(char **ev)
 	shell()->count = 0;
 	shell()->tree = NULL;
 	shell()->hist = ft_calloc(sizeof(char *), 2);
+	if(!shell()->hist)
+	{
+		if (shell()->proc_id)
+			free(shell()->proc_id);
+		if (shell()->alias)
+			ft_free_split(shell()->alias);
+		if (shell()->env)
+			ft_free_split(shell()->env);
+		if (shell()->exp)
+			ft_free_split(shell()->exp);
+		exit(1);
+	}
 	shell()->hist[0] = ft_strdup("");
+	if(!shell()->hist[0])
+	{
+		if (shell()->proc_id)
+			free(shell()->proc_id);
+		if (shell()->hist)
+			ft_free_split(shell()->hist);
+		if (shell()->alias)
+			ft_free_split(shell()->alias);
+		if (shell()->env)
+			ft_free_split(shell()->env);
+		if (shell()->exp)
+			ft_free_split(shell()->exp);
+		exit(1);
+	}
 	shell()->exit = 0;
 	shell()->pipe_count = 0;
 	shell()->in = 0;
@@ -58,6 +106,12 @@ void	init_env(char **ev)
 		while (ev[var])
 		{
 			shell()->env[var] = ft_strdup(ev[var]);
+			if (!shell()->env[var])
+			{
+				if (shell()->env)
+					ft_free_split(shell()->env);
+				exit(1);
+			}
 			var++;
 		}
 		lvl_upd(0);
@@ -68,6 +122,11 @@ void	init_env(char **ev)
 		if (!shell()->env)
 			exit(1);
 		shell()->env[0] = ft_strdup("");
+		if (!shell()->env[0])
+		{
+			ft_free_split(shell()->env);
+			exit(1);
+		}
 	}
 }
 
@@ -81,10 +140,24 @@ void	init_exp(char **ev)
 		while (ev[var])
 			var++;
 		shell()->exp = ft_calloc(sizeof(char *), var + 1);
+		if (!shell()->exp)
+		{
+			if (shell()->env)
+				ft_free_split(shell()->env);
+			exit(1);
+		}
 		var = 0;
 		while (ev[var])
 		{
 			shell()->exp[var] = ft_strdup(ev[var]);
+			if (!shell()->exp[var])
+			{
+				if (shell()->env)
+					ft_free_split(shell()->env);
+				if (shell()->exp)
+					ft_free_split(shell()->exp);
+				exit(1);
+			}
 			var++;
 		}
 		exp_organize();
@@ -94,7 +167,21 @@ void	init_exp(char **ev)
 	else
 	{
 		shell()->exp = ft_calloc(sizeof(char *), 1);
+		if (!shell()->exp)
+		{
+			if (shell()->env)
+				ft_free_split(shell()->env);
+			exit(1);
+		}
 		shell()->exp[0] = ft_strdup("");
+		if (!shell()->exp[0])
+		{
+			if (shell()->env)
+				ft_free_split(shell()->env);
+			if (shell()->exp)
+				ft_free_split(shell()->exp);
+			exit(1);
+		}
 	}
 }
 
@@ -114,10 +201,34 @@ void	lvl_upd(int var)
 			else
 				lvl = ft_atoi(shell()->env[var] + 6);
 			temp = ft_itoa(lvl + 1);
+			if (!temp)
+			{
+				if (shell()->env)
+					ft_free_split(shell()->env);
+				exit(1);
+			}
 			free(shell()->env[var]);
 			shell()->env[var] = ft_strdup("SHLVL=");
 			temp3 = ft_strjoin(shell()->env[var], temp);
+			if (!temp3)
+			{
+				if (temp)
+					free(temp);
+				if (shell()->env)
+					ft_free_split(shell()->env);
+				exit(1);
+			}
 			shell()->env[var] = ft_strdup(temp3);
+			if (!shell()->env[var])
+			{
+				if (temp3)
+					free(temp3);
+				if (temp)
+					free(temp);
+				if (shell()->env)
+					ft_free_split(shell()->env);
+				exit(1);
+			}
 			free(temp3);
 			free(temp);
 			break ;
@@ -142,10 +253,40 @@ void	exp_lvl(int var)
 			else
 				lvl = ft_atoi(shell()->exp[var] + 6);
 			temp = ft_itoa(lvl + 1);
+			if (!temp)
+			{
+				if (shell()->env)
+					ft_free_split(shell()->env);
+				if (shell()->exp)
+					ft_free_split(shell()->exp);
+				exit(1);
+			}
 			free(shell()->exp[var]);
 			shell()->exp[var] = ft_strdup("SHLVL=");
 			temp3 = ft_strjoin(shell()->exp[var], temp);
+			if (!temp3)
+			{
+				if (temp)
+					free(temp);
+				if (shell()->env)
+					ft_free_split(shell()->env);
+				if (shell()->exp)
+					ft_free_split(shell()->exp);
+				exit(1);
+			}
 			shell()->exp[var] = ft_strdup(temp3);
+			if (!shell()->env[var])
+			{
+				if (temp3)
+					free(temp3);
+				if (temp)
+					free(temp);
+				if (shell()->env)
+					ft_free_split(shell()->env);
+				if (shell()->exp)
+					ft_free_split(shell()->exp);
+				exit(1);
+			}
 			free(temp3);
 			free(temp);
 			break ;

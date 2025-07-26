@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 14:08:14 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/20 23:39:01 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/26 14:13:51 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ int	check_docs(void)
 		return (0);
 	shell()->docs = ft_calloc(count + 1, sizeof(int));
 	if (!shell()->docs)
-		return (0);
+	{
+		shell()->exit = 1;
+		return (exit_cmd(NULL, 0), 0);
+	}
 	return (1);
 }
 

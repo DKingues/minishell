@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 18:17:03 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/25 17:01:10 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 12:22:37 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,32 +41,6 @@ int	check_pipes_rev(char *line, int i)
 	if (line[i] == '|')
 		return (ft_printf(2, RED INV NOCLR ERR_2), 0);
 	return (1);
-}
-
-int	redir_exp_helper(char **line, int *var, int *var2, int *check)
-{
-	while (shell()->env[(*var2)])
-	{
-		if (!ft_strncmp(shell()->env[(*var2)],
-				(*line) + (*var) + 1, exp_len(shell()->env[(*var2)])))
-			(*check)++;
-		(*var2)++;
-	}
-	if (!(*check))
-	{
-		shell()->exit = 1;
-		ft_printf(2, "%s: ambiguous redirect\n",
-			get_expansion((*line) + (*var)));
-		while ((*line)[(*var)])
-		{
-			if ((*line)[(*var)] == '|')
-				break ;
-			var++;
-			if (!(*line)[(*var) + 1])
-				return (1);
-		}
-	}
-	return (0);
 }
 
 int	check_spaces(char *expansion)
@@ -118,6 +92,8 @@ int	check_redir_exp(char *line, int v, int v2, int check2)
 					{
 						shell()->exit = 1;
 						char *temp22 = get_expansion(line + v);
+						if (!temp22)
+							return (singleton_free(1), free(line), exit(1), 0);
 						ft_printf(2, "%s: ambiguous redirect\n",
 							temp22);
 						if(temp22)

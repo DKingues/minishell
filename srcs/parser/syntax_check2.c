@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 19:29:35 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/25 17:31:19 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 14:11:22 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,14 @@ char *go_back(char *line, char *temp, int var)
 	while (temp[var + var2] && temp[var + var2] != line[var + 1])
 		var2++;
 	res = ft_calloc(ft_strlen(line) + var2 + 1, sizeof(char));
+	if(res)
+	{
+		free(res);
+		free(temp);
+		free(line);
+		shell()->exit = 1;
+		exit_cmd(NULL, 0);
+	}
 	var2 = 0;
 	while(var2 < var)
 	{
@@ -49,7 +57,7 @@ char *go_back(char *line, char *temp, int var)
 	return (res);
 }
 
-char *rm_noprint(char *line)
+char *rm_noprint(char *line, char *temp)
 {
 	char *res;
 	int	var;
@@ -58,6 +66,13 @@ char *rm_noprint(char *line)
 	var = 0;
 	var2 = 0;
 	res = ft_calloc(ft_strlen(line) + 1, sizeof(char));
+	if(!res)
+	{
+		free(temp);
+		free(line);
+		shell()->exit = 1;
+		exit_cmd(NULL, 0);
+	}
 	while(line[var + var2])
 	{
 		if (line[var + var2] && line[var + var2] == '\1')
@@ -91,7 +106,7 @@ char *hdoc_exp(char *line, char *temp)
 		var++;
 	}
 	if (!res)
-		res = rm_noprint(line);
+		res = rm_noprint(line, temp);
 	free(line);
 	return (res);
 }
@@ -104,11 +119,13 @@ int	parser(char *line)
 	if (syntax_check(line) == 0)
 		return (0);
 	temp = ft_strdup(line);
-	line = expand_caller(line);
+	if(!temp)
+		return (singleton_free(1), free(line), exit(1), 0);
+	line = expand_caller(line); //STILL MISSING CALLOC CHECK AND FREES
 	if (syntax_check2(line) == 0)
 		return (free(temp), 0);
 	line = hdoc_exp(line, temp);
-	token = assign_token(line);
+	token = assign_token(line); //STILL MISSING CALLOC CHECK AND FREES
 	if (token)
 	{
 		pipe_counter(token);
@@ -123,9 +140,15 @@ int	parser(char *line)
 int	syntax_check2(char *line)
 {
 	if (check_pipes2(line, 0) == 0)
+	{
+		shell()->exit = 2;
 		return (free(line), 0);
+	}
 	else if (check_consecutive2(line, 0, 0) == 0)
+	{
+		shell()->exit = 2;
 		return (free(line), ft_printf(2, "\n"), 0);
+	}
 	return (1);
 }
 

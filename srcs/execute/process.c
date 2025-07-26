@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:23:17 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/24 19:33:51 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/26 15:03:47 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ void	exec_err(char *path, char *temp)
 			temp = ft_nfstrjoin("minishell: ", path);
 		else
 			temp = ft_nfstrjoin("minishell: ", path);
+		if(!temp)
+		{
+			shell()->exit = 1;
+			exit_cmd(NULL, 0);
+		}
 		perror(temp);
 		free(temp);
 	}
@@ -38,6 +43,11 @@ void	exec_err(char *path, char *temp)
 
 void	execute2(char *temp, char *path, char **args, char *cmd)
 {
+	if(!cmd)
+	{
+		shell()->exit = 1;
+		exit_cmd(NULL, 0);
+	}
 	singleton_free(0);
 	close_fds();
 	if (execve(path, args, shell()->env) == -1)
@@ -54,6 +64,11 @@ void	execute2(char *temp, char *path, char **args, char *cmd)
 			else
 			{
 				temp = ft_nfstrjoin("minishell: ", path);
+				if(!temp)
+				{
+					ft_free_split(shell()->env);
+					exit(1);
+				}
 				perror(temp);
 				free(temp);
 				shell()->exit = 127;
@@ -81,7 +96,15 @@ char	*path_check(t_tree *cmd)
 	}
 	if (cmd->value[0] == '~' && cmd->value[1] == '/')
 	{
-		temp = ft_strjoin(find_home(), cmd->value + 1);
+		temp = find_home_alias();
+		if(!temp)
+			return (NULL);
+		temp = ft_strjoin(temp, cmd->value + 1);
+		if(!temp)
+		{
+			shell()->exit = 1;
+			exit_cmd(NULL, 0);
+		}
 		path = find_path(temp, 0);
 		free(temp);
 	}
@@ -113,6 +136,11 @@ void	execute(t_tree	*cmd)
 	if (access(path, F_OK) && access(path, X_OK))
 	{
 		temp = ft_strdup(path);
+		if(!temp)
+		{
+			shell()->exit = 1;
+			exit_cmd(NULL, 0);
+		}
 		path = search_alias(path);
 		if (!ft_strncmp(temp, path, ft_strlen(path)))
 		{
