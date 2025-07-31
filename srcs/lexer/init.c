@@ -3,36 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:08:01 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/26 18:11:47 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/31 16:15:35 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-char	*getpid_self(void)
-{
-	char	*current;
-	char	*pid;
-	char	path[1000];
-
-	current = ft_strdup(getcwd(path, sizeof(path)));
-	if (!current)
-		malloc_err(NULL, "malloc");
-	chdir("/proc/self");
-	pid = ft_strdup(getcwd(path, sizeof(path)) + 6);
-	if (!pid)
-	{
-		if (current)
-			free(current);
-		malloc_err(NULL, "malloc");
-	}
-	chdir(current);
-	free(current);
-	return (pid);
-}
 
 void	init_shell(char **ev)
 {
@@ -54,113 +32,38 @@ void	init_shell(char **ev)
 	shell()->out = 0;
 }
 
-void	init_env(char **ev)
+void	lvl_upd2(int var, char *temp, char *temp3)
 {
-	int	var;
-
-	var = 0;
-	if (ev[0])
+	free(shell()->env[var]);
+	shell()->env[var] = ft_strdup("SHLVL=");
+	temp3 = ft_strjoin(shell()->env[var], temp);
+	if (!temp3)
 	{
-		while (ev[var])
-			var++;
-		shell()->env = ft_calloc(sizeof(char *), var + 1);
-		if (!shell()->env)
-		{
-			ft_printf(2, "minishell: malloc error\nexit\n");
-			exit(1);
-		}
-		var = 0;
-		while (ev[var])
-		{
-			shell()->env[var] = ft_strdup(ev[var]);
-			if (!shell()->env[var])
-			{
-				ft_printf(2, "minishell: malloc error\nexit\n");
-				ft_free_split(shell()->env);
-				exit(1);
-			}
-			var++;
-		}
-		lvl_upd(0);
-	}
-	else
-	{
-		shell()->env = ft_calloc(sizeof(char *), 1);
-		if (!shell()->env)
-		{
-			ft_printf(2, "minishell: malloc error\nexit\n");
-			exit(1);
-		}
-		shell()->env[0] = ft_strdup("");
-		if (!shell()->env[0])
-		{
-			ft_printf(2, "minishell: malloc error\nexit\n");
+		if (temp)
+			free(temp);
+		if (shell()->env)
 			ft_free_split(shell()->env);
-			exit(1);
-		}
+		exit(1);
 	}
-}
-
-void	init_exp(char **ev)
-{
-	int	var;
-
-	var = 0;
-	if (ev[0])
+	shell()->env[var] = ft_strdup(temp3);
+	if (!shell()->env[var])
 	{
-		while (ev[var])
-			var++;
-		shell()->exp = ft_calloc(sizeof(char *), var + 1);
-		if (!shell()->exp)
-		{
-			if (shell()->env)
-				ft_free_split(shell()->env);
-			exit(1);
-		}
-		var = 0;
-		while (ev[var])
-		{
-			shell()->exp[var] = ft_strdup(ev[var]);
-			if (!shell()->exp[var])
-			{
-				if (shell()->env)
-					ft_free_split(shell()->env);
-				if (shell()->exp)
-					ft_free_split(shell()->exp);
-				exit(1);
-			}
-			var++;
-		}
-		exp_organize();
-		exp_lvl(0);
-		shell()->exp = quoting_set(0);
+		if (temp3)
+			free(temp3);
+		if (temp)
+			free(temp);
+		if (shell()->env)
+			ft_free_split(shell()->env);
+		exit(1);
 	}
-	else
-	{
-		shell()->exp = ft_calloc(sizeof(char *), 1);
-		if (!shell()->exp)
-		{
-			if (shell()->env)
-				ft_free_split(shell()->env);
-			exit(1);
-		}
-		shell()->exp[0] = ft_strdup("");
-		if (!shell()->exp[0])
-		{
-			if (shell()->env)
-				ft_free_split(shell()->env);
-			if (shell()->exp)
-				ft_free_split(shell()->exp);
-			exit(1);
-		}
-	}
+	free(temp3);
+	free(temp);
 }
 
 void	lvl_upd(int var)
 {
 	int		lvl;
 	char	*temp;
-	char	*temp3;
 
 	while (shell()->env[var])
 	{
@@ -178,41 +81,45 @@ void	lvl_upd(int var)
 					ft_free_split(shell()->env);
 				exit(1);
 			}
-			free(shell()->env[var]);
-			shell()->env[var] = ft_strdup("SHLVL=");
-			temp3 = ft_strjoin(shell()->env[var], temp);
-			if (!temp3)
-			{
-				if (temp)
-					free(temp);
-				if (shell()->env)
-					ft_free_split(shell()->env);
-				exit(1);
-			}
-			shell()->env[var] = ft_strdup(temp3);
-			if (!shell()->env[var])
-			{
-				if (temp3)
-					free(temp3);
-				if (temp)
-					free(temp);
-				if (shell()->env)
-					ft_free_split(shell()->env);
-				exit(1);
-			}
-			free(temp3);
-			free(temp);
+			lvl_upd2(var, temp, NULL);
 			break ;
 		}
 		var++;
 	}
 }
 
-void	exp_lvl(int var)
+void	exp_lvl2(int var, char *temp, char *temp3)
 {
-	int		lvl;
+	free(shell()->exp[var]);
+	shell()->exp[var] = ft_strdup("SHLVL=");
+	temp3 = ft_strjoin(shell()->exp[var], temp);
+	if (!temp3)
+	{
+		free(temp);
+		if (shell()->env)
+			ft_free_split(shell()->env);
+		if (shell()->exp)
+			ft_free_split(shell()->exp);
+		exit(1);
+	}
+	shell()->exp[var] = ft_strdup(temp3);
+	if (!shell()->env[var])
+	{
+		free(temp3);
+		free(temp);
+		if (shell()->env)
+			ft_free_split(shell()->env);
+		if (shell()->exp)
+			ft_free_split(shell()->exp);
+		exit(1);
+	}
+	free(temp3);
+	free(temp);
+}
+
+void	exp_lvl(int var, int lvl)
+{
 	char	*temp;
-	char	*temp3;
 
 	while (shell()->exp[var])
 	{
@@ -232,34 +139,7 @@ void	exp_lvl(int var)
 					ft_free_split(shell()->exp);
 				exit(1);
 			}
-			free(shell()->exp[var]);
-			shell()->exp[var] = ft_strdup("SHLVL=");
-			temp3 = ft_strjoin(shell()->exp[var], temp);
-			if (!temp3)
-			{
-				if (temp)
-					free(temp);
-				if (shell()->env)
-					ft_free_split(shell()->env);
-				if (shell()->exp)
-					ft_free_split(shell()->exp);
-				exit(1);
-			}
-			shell()->exp[var] = ft_strdup(temp3);
-			if (!shell()->env[var])
-			{
-				if (temp3)
-					free(temp3);
-				if (temp)
-					free(temp);
-				if (shell()->env)
-					ft_free_split(shell()->env);
-				if (shell()->exp)
-					ft_free_split(shell()->exp);
-				exit(1);
-			}
-			free(temp3);
-			free(temp);
+			exp_lvl2(var, temp, NULL);
 			break ;
 		}
 		var++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 14:06:06 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/26 17:46:34 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/31 16:00:56 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,21 @@ int	redir_input2(t_tree *redir, int fd, char *temp)
 	{
 		directory = opendir(redir->value);
 		fd = open(redir->value, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-		if (fd < 0 || directory)
-			return (trunc_help(temp, redir->value));
-		closedir(directory);
-		return (dup2(fd, 1), 0);
+		if (fd > 0 && !directory)
+			return (dup2(fd, 1), 0);
 	}
 	else if (redir->type == APPEND)
 	{
 		directory = opendir(redir->value);
 		fd = open(redir->value, O_WRONLY | O_APPEND | O_CREAT, 0644);
-		if (fd < 0 || directory)
-			return (trunc_help(temp, redir->value));
-		return (dup2(fd, 1), 0);
+		if (fd < 0 && !directory)
+			return (dup2(fd, 1), 0);
+	}
+	if (fd > 0 || directory)
+	{
+		if (directory)
+			closedir(directory);
+		return (trunc_help(temp, redir->value));
 	}
 	return (1);
 }

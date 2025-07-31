@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 19:29:35 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/26 14:11:22 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/31 15:56:16 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,11 +121,11 @@ int	parser(char *line)
 	temp = ft_strdup(line);
 	if(!temp)
 		return (singleton_free(1), free(line), exit(1), 0);
-	line = expand_caller(line); //STILL MISSING CALLOC CHECK AND FREES
+	line = expand_caller(line);
 	if (syntax_check2(line) == 0)
 		return (free(temp), 0);
 	line = hdoc_exp(line, temp);
-	token = assign_token(line); //STILL MISSING CALLOC CHECK AND FREES
+	token = assign_token(line);
 	if (token)
 	{
 		pipe_counter(token);

@@ -3,31 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   init2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 18:32:35 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/26 15:04:33 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/31 16:17:52 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char *find_home_alias(void)
+char	*find_home_alias(void)
 {
-	char *current;
-	char path[1000];
-	int var = 7;
-	int	var2 = 0;
-	char *res;
+	char	*current;
+	char	*res;
+	char	path[1000];
+	int		var;
+	int		var2;
+
+	var = 7;
+	var2 = 0;
 	current = ft_strdup(getcwd(path, sizeof(path)));
 	if (!ft_strncmp(current, "/home/", 6))
 	{
-		while(current[var] && current[var] != '/')
+		while (current[var] && current[var] != '/')
 			var++;
 		res = ft_calloc(sizeof(char), var + 1);
 		if (!res)
 			return (NULL);
-		while(current[var2] && var2 < var)
+		while (current[var2] && var2 < var)
 		{
 			res[var2] = current[var2];
 			var2++;

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dicosta- <dicosta-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:14:34 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/06/24 18:14:56 by dicosta-         ###   ########.fr       */
+/*   Updated: 2025/07/31 15:55:39 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "../../srcs/minishell.h"
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
@@ -33,4 +34,14 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		i++;
 	}
 	return (mal);
+}
+
+char	*proc_ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char	*temp;
+
+	temp = ft_substr(s, start, len);
+	if(!temp)
+		exit_cmd(NULL, 0);
+	return(temp);
 }

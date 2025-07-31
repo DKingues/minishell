@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_check.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:44:06 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/26 17:56:30 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/31 15:58:18 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ char	*expand(char *line, char *key, int start, int end)
 	char	*new_line;
 
 	value = expand_arg(key);
-	str_start = ft_substr(line, 0, start);
-	str_end = ft_substr(line, end, ft_strlen(line) - end);
+	str_start = proc_ft_substr(line, 0, start);
+	str_end = proc_ft_substr(line, end, ft_strlen(line) - end);
 	new_line = ft_strjoin(str_start, value);
 	free(value);
 	free(key);
@@ -53,10 +53,10 @@ char	*expand(char *line, char *key, int start, int end)
 char	*expand_caller(char *line)
 {
 	int		i;
-	int		start;
+	int		s;
 	char	quote;
 
-	start = -1;
+	s = -1;
 	i = 0;
 	quote = 0;
 	while (line[i])
@@ -65,17 +65,17 @@ char	*expand_caller(char *line)
 			quote = line[i];
 		else if (quote == line[i])
 			quote = 0;
-		if ((quote == 0 || quote == '\"') && (start == -1 && line[i] == '$')
+		if ((quote == 0 || quote == '\"') && (s == -1 && line[i] == '$')
 			&& (ft_isalnum(line[i + 1]) || line[i + 1] == '?'
 				|| line[i + 1] == '$'))
-			start = i;
-		else if ((quote == 0 || quote == '\"') && start != -1
+			s = i;
+		else if ((quote == 0 || quote == '\"') && s != -1
 			&& (!ft_isalnum(line[i + 1]) || line[i + 1] == '\0') && ++i)
 			break ;
 		i++;
 	}
-	if (start != -1)
-		return (expand(line, ft_substr(line, start, (i - start)), start, i));
+	if (s != -1)
+		return (expand(line, proc_ft_substr(line, s, (i - s)), s, i));
 	return (line);
 }
 

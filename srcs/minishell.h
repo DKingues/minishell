@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/26 18:05:13 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/31 16:19:54 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ typedef enum s_sig_struct
 # endif
 
 void	print_tokens(t_token *token);
-char *find_home_alias(void);
+char	*find_home_alias(void);
 
 void	exp_helper2000(char **temp);
 void	env_helper2000(char **temp);
@@ -281,11 +281,15 @@ char	*get_expansion(char *line);
 // init.c
 
 void	init_shell(char **ev);
+void	lvl_upd(int var);
+void	exp_lvl(int var, int lvl);
+t_shell	*shell(void);
+
+// init1,5.c
+
+char	*getpid_self(void);
 void	init_env(char **ev);
 void	init_exp(char **ev);
-void	lvl_upd(int var);
-void	exp_lvl(int var);
-t_shell	*shell(void);
 
 // init2.c
 

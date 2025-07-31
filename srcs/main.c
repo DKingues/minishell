@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/26 17:54:10 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/31 15:56:53 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,9 +121,7 @@ int	main(int ac, char **av, char **ev)
 		}
 		reset_input(line);
 		if (!parser(line))
-		{
 			continue ;
-		}
 		if (shell()->tree)
 		{
 			if (manage_here_doc() == 1)

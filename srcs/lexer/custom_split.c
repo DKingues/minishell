@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   custom_split.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:51:07 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/26 18:05:20 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/07/31 15:51:21 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ char	*delete_quotes(char *line, char *quoted, int start, int end)
 	char	*str_end;
 	char	*temp;
 
-	str_start = ft_substr(line, 0, start);
+	str_start = proc_ft_substr(line, 0, start);
 	temp = ft_strjoin(str_start, quoted);
-	str_end = ft_substr(line, end, ft_strlen(line));
+	str_end = proc_ft_substr(line, end, ft_strlen(line));
 	new_line = ft_strjoin(temp, str_end);
 	free(str_end);
 	free(quoted);
@@ -98,7 +98,7 @@ char	*remove_quotes(char *line, int i, char *new_line)
 		}
 		else if (new_line == NULL && quote != 0 && quote == line[i])
 		{
-			new_line = ft_substr(line, start + 1, (i - (start + 1)));
+			new_line = proc_ft_substr(line, start + 1, (i - (start + 1)));
 			break ;
 		}
 		i++;
