@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/31 16:19:54 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/08/02 16:34:55 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,14 +100,7 @@ typedef enum s_sig_struct
 #  define BUFFER_SIZE 42
 # endif
 
-void	print_tokens(t_token *token);
-char	*find_home_alias(void);
-
-void	exp_helper2000(char **temp);
-void	env_helper2000(char **temp);
 int		check_pipes2(char *line, int i);
-void	print_tree(t_tree *tree);
-
 //tree.c
 
 void	nptree_executer(t_tree *temp, t_tree *temp2, int pid);
@@ -248,12 +241,26 @@ void	free_list(t_token *token);
 int		syntax_check2(char *line);
 int		check_consecutive2(char *line, int i, char temp);
 
+// syntax_check3.c
+
+int		syntax_checkerer(char *line);
+char	*rm_noprint(char *line, char *temp);
+char	*go_back(char *line, char *temp, int var, int var2);
+char	*hdoc_exp(char *line, char *temp);
+void	go_go_back(char *res, char *temp, char *line);
+
+// syntax_check4.c
+
+int		check_malandro(char *line, int *v);
+int		seilamare(int *v, int v2, char *line, int check);
+
 // syntax_check_aux.c
 
 int		check_pipes_aux(char *line, int i);
 int		check_pipes_rev(char *line, int i);
 int		check_redir_exp(char *line, int v, int v2, int check2);
 int		redir_exp_helper(char **line, int *var, int *var2, int *check);
+int		check_spaces(char *expansion);
 
 // expand.c
 
@@ -297,7 +304,6 @@ char	*find_home(void);
 char	*str_redef(char *str, int var, int var2, int except);
 char	*copy_no_nl(char *temp);
 void	set_alias(int len, int fd);
-void	set_alias2(char *line, int *len, int var, char *temp);
 
 // init3.c
 
@@ -305,6 +311,15 @@ void	init_alias(void);
 void	init_alias2(int fd, char *line, int var, char *home);
 void	just_do_it(int var, int var2, int len, char *temp);
 void	just_do_it_too(int var, int var2, int len, char *temp);
+
+// init_errs.c
+
+void	init_err1(int check);
+void	init_err2(char *temp);
+void	init_err3(char *temp, char *temp3);
+void	set_alias3(char *line, char *temp, int var, int *len);
+void	set_alias2(char *line, int *len, int var, char *temp);
+char	*find_home_alias(void);
 
 // commands.c
 

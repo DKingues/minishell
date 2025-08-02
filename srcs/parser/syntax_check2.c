@@ -6,120 +6,30 @@
 /*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 19:29:35 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/31 15:56:16 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/08/02 15:21:12 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	print_tokens(t_token *token)
-{
-	while (token)
-	{
-		ft_printf(1, "Value: [%s]\t Type: [%d]\n", token->value, token->type);	
-		token = token->next;
-	}
-}
-
-char *go_back(char *line, char *temp, int var)
-{
-	int	var2;
-	char *res;
-
-	var2 = 0;
-	while (temp[var + var2] && temp[var + var2] != line[var + 1])
-		var2++;
-	res = ft_calloc(ft_strlen(line) + var2 + 1, sizeof(char));
-	if(res)
-	{
-		free(res);
-		free(temp);
-		free(line);
-		shell()->exit = 1;
-		exit_cmd(NULL, 0);
-	}
-	var2 = 0;
-	while(var2 < var)
-	{
-		res[var2] = line[var2];
-		var2++;
-	}
-	while (temp[var2] && temp[var2] != line[var + 1])
-	{
-		res[var2] = temp[var2];
-		var2++;
-	}
-	while (temp[var2] && line[var2])
-	{
-		res[var2] = line[var2];
-		var2++;
-	}
-	return (res);
-}
-
-char *rm_noprint(char *line, char *temp)
-{
-	char *res;
-	int	var;
-	int	var2;
-
-	var = 0;
-	var2 = 0;
-	res = ft_calloc(ft_strlen(line) + 1, sizeof(char));
-	if(!res)
-	{
-		free(temp);
-		free(line);
-		shell()->exit = 1;
-		exit_cmd(NULL, 0);
-	}
-	while(line[var + var2])
-	{
-		if (line[var + var2] && line[var + var2] == '\1')
-			var2++;
-		if (line[var + var2])
-		{
-			res[var] = line[var + var2];
-			var++;
-		}
-	}
-	return (res);
-}
-
-char *hdoc_exp(char *line, char *temp)
-{
-	int	var;
-	char *res;
-
-	var = 0;
-	res = NULL;
-	while (line[var])
-	{
-		if(line[var] == '<' && line[var + 1] && line[var + 1] == '<')
-		{
-			var += 2;
-			while(line[var] && ft_isspace(line[var]))
-				var++;
-			if(line[var] && (line[var] == '\1' || temp[var] == '$'))
-				res = go_back(line, temp, var);
-		}
-		var++;
-	}
-	if (!res)
-		res = rm_noprint(line, temp);
-	free(line);
-	return (res);
-}
+// void	print_tokens(t_token *token)
+// {
+// 	while (token)
+// 	{
+// 		ft_printf(1, "Value: [%s]\t Type: [%d]\n", token->value, token->type);
+// 		token = token->next;
+// 	}
+// }
 
 int	parser(char *line)
 {
 	t_token	*token;
-	char *temp;
+	char	*temp;
 
 	if (syntax_check(line) == 0)
 		return (0);
 	temp = ft_strdup(line);
-	if(!temp)
+	if (!temp)
 		return (singleton_free(1), free(line), exit(1), 0);
 	line = expand_caller(line);
 	if (syntax_check2(line) == 0)

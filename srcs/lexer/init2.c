@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 18:32:35 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/31 16:17:52 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/08/02 16:23:35 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,89 +130,4 @@ void	set_alias(int len, int fd)
 	}
 	free(line);
 	close(fd);
-}
-
-void	set_alias2(char *line, int *len, int var, char *temp)
-{
-	char	*temp2;
-	char	*temp3;
-
-	temp = str_redef(line + exp_len(line) + 1, 0, 1, 0);
-	if (!temp)
-	{
-		if (shell()->alias)
-			ft_free_split(shell()->alias);
-		if (shell()->env)
-			ft_free_split(shell()->env);
-		if (shell()->exp)
-			ft_free_split(shell()->exp);
-		exit(1);
-	}
-	if (temp[ft_strlen(temp) - 1] == '\n')
-	{
-		temp = copy_no_nl(temp);
-		if (temp)
-		{
-			if (shell()->alias)
-				ft_free_split(shell()->alias);
-			if (shell()->env)
-				ft_free_split(shell()->env);
-			if (shell()->exp)
-				ft_free_split(shell()->exp);
-			exit(1);
-		}
-	}
-	while (line[var] != '=')
-		var++;
-	temp2 = ft_calloc(sizeof(char), var + 2);
-	if (!temp2)
-	{
-		if (temp)
-			free(temp);
-		if (shell()->alias)
-			ft_free_split(shell()->alias);
-		if (shell()->env)
-			ft_free_split(shell()->env);
-		if (shell()->exp)
-			ft_free_split(shell()->exp);
-		exit(1);
-	}
-	var = 0;
-	while (line[var + 6] != '=')
-	{
-		temp2[var] = line[var + 6];
-		var++;
-	}
-	temp2[var] = '=';
-	temp3 = ft_strjoin(temp2, temp);
-	if (!temp3)
-	{
-		if (temp)
-			free(temp);
-		if (shell()->alias)
-			ft_free_split(shell()->alias);
-		if (shell()->env)
-			ft_free_split(shell()->env);
-		if (shell()->exp)
-			ft_free_split(shell()->exp);
-		exit(1);
-	}
-	shell()->alias[*len] = ft_strdup(temp3);
-	if (!shell()->alias[*len])
-	{
-		if (temp)
-			free(temp);
-		if (temp3)
-			free(temp3);
-		if (shell()->alias)
-			ft_free_split(shell()->alias);
-		if (shell()->env)
-			ft_free_split(shell()->env);
-		if (shell()->exp)
-			ft_free_split(shell()->exp);
-		exit(1);
-	}
-	free(temp3);
-	(*len)++;
-	free(temp);
 }

@@ -6,7 +6,7 @@
 #    By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/07/31 16:16:37 by rmota-ma         ###   ########.fr        #
+#    Updated: 2025/08/02 16:15:51 by rmota-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,9 +26,9 @@ LIBFT = includes/libft/libft.a
 
 SRCS = main.c
 
-LEXER = init.c init1,5.c init2.c init3.c token.c custom_split.c custom_split_aux.c token_aux.c format_line.c get_next_line_utils.c get_next_line.c
+LEXER = init.c init1,5.c init2.c init3.c init_errs.c token.c custom_split.c custom_split_aux.c token_aux.c format_line.c get_next_line_utils.c get_next_line.c
 
-PARSER = syntax_check.c syntax_check2.c syntax_check_aux.c binary_tree.c binary_tree_aux.c
+PARSER = syntax_check.c syntax_check2.c syntax_check3.c syntax_check4.c syntax_check_aux.c binary_tree.c binary_tree_aux.c
 
 EXECUTER = cmd_utils6.c tree_pipe.c redir.c here_doc.c builtins.c builtins2.c helper.c helper2.c process.c commands.c commands2.c cmd_utils.c cmd_utils2.c cmd_utils3.c cmd_utils4.c cmd_utils5.c tree.c commands3.c
 

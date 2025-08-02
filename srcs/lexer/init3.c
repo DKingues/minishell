@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init3.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:36:07 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/07/26 17:46:46 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/08/02 16:26:27 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,10 @@ void	init_alias(void)
 			free(home);
 		shell()->alias = ft_calloc(1, sizeof(char *));
 		if (!shell()->alias)
-		{
-			if (shell()->env)
-				ft_free_split(shell()->env);
-			if (shell()->exp)
-				ft_free_split(shell()->exp);
-			exit(1);
-		}
+			init_err1(0);
 		shell()->alias[0] = ft_strdup("");
 		if (!shell()->alias[0])
-		{
-			if (shell()->alias)
-				ft_free_split(shell()->alias);
-			if (shell()->env)
-				ft_free_split(shell()->env);
-			if (shell()->exp)
-				ft_free_split(shell()->exp);
-			exit(1);
-		}
+			init_err1(1);
 		return ;
 	}
 	init_alias2(fd, line, var, home);
@@ -73,24 +59,10 @@ void	init_alias2(int fd, char *line, int var, char *home)
 	{
 		shell()->alias = ft_calloc(1, sizeof(char *));
 		if (!shell()->alias)
-		{
-			if (shell()->env)
-				ft_free_split(shell()->env);
-			if (shell()->exp)
-				ft_free_split(shell()->exp);
-			exit(1);
-		}
+			init_err1(0);
 		shell()->alias[0] = ft_strdup("");
 		if (!shell()->alias[0])
-		{
-			if (shell()->alias)
-				ft_free_split(shell()->alias);
-			if (shell()->env)
-				ft_free_split(shell()->env);
-			if (shell()->exp)
-				ft_free_split(shell()->exp);
-			exit(1);
-		}
+			init_err1(1);
 		return ;
 	}
 	set_alias(var, fd);
