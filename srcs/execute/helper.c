@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:35:48 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/08/04 15:57:10 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:16:27 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	**args_join(t_tree	*cmd, int var)
 	t_tree	*temp;
 
 	temp = cmd;
-	home = find_home_alias();
+	home = ft_strdup(shell()->safe_home);
 	res = ft_calloc(sizeof(char *), right_len(temp) + 1);
 	if (!res)
 		malloc_err(NULL, "malloc");

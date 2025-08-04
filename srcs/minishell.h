@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:53:25 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/08/02 16:34:55 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:26:21 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_token
 
 typedef struct s_shell
 {
+	char	*safe_home;
 	char	*proc_id;
 	int		*pids;
 	char	**alias;
@@ -253,6 +254,7 @@ void	go_go_back(char *res, char *temp, char *line);
 
 int		check_malandro(char *line, int *v);
 int		seilamare(int *v, int v2, char *line, int check);
+void	singleton_free_docs(int exit);
 
 // syntax_check_aux.c
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:08:01 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/31 16:15:35 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:17:50 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@ void	init_shell(char **ev)
 	shell()->pipe_count = 0;
 	shell()->in = 0;
 	shell()->out = 0;
+	shell()->safe_home = find_home_alias();
+	if (!shell()->safe_home)
+	{
+		ft_printf(2, "minishell: malloc error\n");
+		exit(1);
+	}
 }
 
 void	lvl_upd2(int var, char *temp, char *temp3)

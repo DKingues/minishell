@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:29:30 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/26 17:45:40 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:53:36 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,13 @@ void	singleton_free(int exit)
 	ft_free_split(shell()->alias);
 	ft_free_split(shell()->hist);
 	ft_free_split(shell()->exp);
-	if (shell()->docs)
-	{
-		free(shell()->docs);
-	}
+	free(shell()->docs);
 	if (shell()->tree)
 		tree_free(shell()->tree);
 	if (shell()->proc_id)
 		free(shell()->proc_id);
+	if (shell()->safe_home)
+		free(shell()->safe_home);
 }
 
 void	exit_help(void)

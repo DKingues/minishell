@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 13:23:17 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/08/04 18:06:50 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:16:31 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*path_check(t_tree *cmd)
 	}
 	if (cmd->value[0] == '~' && cmd->value[1] == '/')
 	{
-		temp = find_home_alias();
+		temp = ft_strdup(shell()->safe_home);
 		if (!temp)
 			return (NULL);
 		temp = ft_strjoin(temp, cmd->value + 1);

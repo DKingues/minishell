@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:50:02 by dicosta-          #+#    #+#             */
-/*   Updated: 2025/08/02 16:35:39 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/08/04 20:16:34 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,6 @@ int	main_tree_parser(void)
 {
 	if (manage_here_doc() == 1)
 	{
-		if (shell()->docs)
-			free(shell()->docs);
 		return (0);
 	}
 	if (shell()->tree->type == PIPE)
@@ -122,6 +120,9 @@ void	reset_input(char *line)
 	shell()->in = dup(0);
 	shell()->out = dup(1);
 	tree_free(shell()->tree);
+	if (shell()->docs)
+		free(shell()->docs);
+	shell()->docs = NULL;
 	shell()->tree = NULL;
 	shell()->count = 0;
 	shell()->pipe_count = 0;

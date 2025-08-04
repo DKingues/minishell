@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 17:08:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/26 17:45:18 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:20:07 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	set_new_path(int var, char *newpath, char *temp)
 	var = 0;
 	newpath = getcwd(buf, sizeof(buf));
 	if (!newpath)
-		malloc_err(NULL, "malloc");
+		return ;
 	while (shell()->env[var])
 	{
 		if (!ft_strncmp(shell()->env[var], "PWD=", 4))
@@ -89,7 +89,7 @@ void	new_path_exp(int var, char *temp)
 
 	newpath = getcwd(buf, sizeof(buf));
 	if (!newpath)
-		malloc_err(NULL, "malloc");
+		return ;
 	while (shell()->exp[var])
 	{
 		if (!ft_strncmp(shell()->exp[var], "PWD=", 4))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check4.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:35:02 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/08/02 15:35:51 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:26:11 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,22 @@ int	seilamare(int *v, int v2, char *line, int check)
 				return (0);
 	}
 	return (1);
+}
+
+void	singleton_free_docs(int exit)
+{
+	if (exit)
+	{
+		ft_free_split(shell()->env);
+		close_fds();
+	}
+	ft_free_split(shell()->alias);
+	ft_free_split(shell()->hist);
+	ft_free_split(shell()->exp);
+	if (shell()->tree)
+		tree_free(shell()->tree);
+	if (shell()->proc_id)
+		free(shell()->proc_id);
+	if (shell()->safe_home)
+		free(shell()->safe_home);
 }
