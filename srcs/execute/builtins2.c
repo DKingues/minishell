@@ -6,7 +6,7 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:29:47 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/26 17:41:20 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/08/04 17:53:02 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,23 +84,21 @@ void	builtin_exec(t_tree *tree)
 int	check_loop(char *path)
 {
 	int	var;
-	int	check;
 
 	var = 0;
-	check = 0;
 	while (path[var])
 	{
 		if (path[var] == '/')
-			check = 1;
-		if (path[var] == '/' && path[var + 1]
-			&& path[var + 1] == '.' && !path[var + 2])
-			return (0);
-		else if (path[var] == '/' && path[var + 2]
-			&& path[var + 2] == '.' && !path[var + 3])
-			return (0);
+			return (1);
 		var++;
 	}
-	return (check);
+	var = 0;
+	while (shell()->env[var] && !ft_strnstr(shell()->env[var], "PATH", 4)
+		&& shell()->env[var + 1])
+		var++;
+	if (!shell()->env[var + 1])
+		return (1);
+	return (0);
 }
 
 char	*str_loop(t_tree *temp, char *str)

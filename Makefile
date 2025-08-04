@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rmota-ma <rmota-ma@student.42lisboa.com    +#+  +:+       +#+         #
+#    By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/26 14:52:42 by dicosta-          #+#    #+#              #
-#    Updated: 2025/08/02 16:15:51 by rmota-ma         ###   ########.fr        #
+#    Updated: 2025/08/04 18:11:48 by rmota-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -138,17 +138,18 @@ fclean:
 
 re: fclean all
 
-r:
-	@make re && clear && ./minishell
-
-rv:
-	@make re && clear && valgrind --leak-check=full --show-leak-kinds=all  --track-fds=yes --track-origins=yes  --suppressions=readline.supp -s ./minishell
-
-gdb:
-	@make re && gdb ./minishell
-
-music:
-	@paplay WTHELLY.ogg &
-	@make r
-	
 .PHONY: all clean fclean re
+
+#r:
+#	@make re && clear && ./minishell
+#
+#rv:
+#	@make re && clear && valgrind --leak-check=full --show-leak-kinds=all  --track-fds=yes --track-origins=yes  --suppressions=readline.supp -s ./minishell
+#
+#gdb:
+#	@make re && gdb ./minishell
+#
+#music:
+#	@paplay WTHELLY.ogg &
+#	@make r
+	

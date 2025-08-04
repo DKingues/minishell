@@ -6,11 +6,17 @@
 /*   By: rmota-ma <rmota-ma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:41:40 by rmota-ma          #+#    #+#             */
-/*   Updated: 2025/07/26 17:34:11 by rmota-ma         ###   ########.fr       */
+/*   Updated: 2025/08/04 18:10:58 by rmota-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	npchildparent_process(int pid)
+{
+	choose_signal(IGNORE);
+	waitpid(pid, &shell()->exit, 0);
+}
 
 void	npparent_process(void)
 {
@@ -91,7 +97,7 @@ void	nptree_executer(t_tree *temp, t_tree *temp2, int pid)
 			if (!pid)
 				npchild_process(temp, temp2, 0);
 			else
-				waitpid(pid, &shell()->exit, 0);
+				npchildparent_process(pid);
 			singleton_free(1);
 			exit(shell()->exit / 256);
 		}
