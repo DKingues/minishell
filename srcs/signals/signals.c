@@ -33,6 +33,13 @@ void	child_handler(int signal)
 			free(shell()->pids);
 		exit(130);
 	}
+	else if (signal == SIGQUIT)
+	{
+		ft_printf(1, "\n");
+		if (shell()->pids)
+			free(shell()->pids);
+		exit(131);
+	}
 }
 
 void	heredoc_handler(int signal)
@@ -80,7 +87,6 @@ void	choose_signal(t_sig_struct level)
 	{
 		sa.sa_handler = child_handler;
 		sigaction(SIGINT, &sa, NULL);
-		sa.sa_handler = SIG_IGN;
 		sigaction(SIGQUIT, &sa, NULL);
 	}
 	else

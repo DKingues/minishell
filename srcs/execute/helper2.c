@@ -30,9 +30,13 @@ char	*normie_expander(char *temp, int var, int len, char *arg)
 	}
 	res = ft_calloc(ft_strlen(temp), sizeof(char));
 	var = 0;
-	while (temp[var + 1])
+	while (temp[var + 2])
 	{
-		if(temp[var + 1] != '\"')
+		if (temp[var + 1] == '\'')
+			res[var] = '\2';
+		else if (temp[var + 1] == '\"')
+			res[var] = '\3';
+		else
 			res[var] = temp[var + 1];
 		var++;
 	}

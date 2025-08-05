@@ -68,19 +68,19 @@ void	lvl_upd2(int var, char *temp, char *temp3)
 
 void	lvl_upd(int var)
 {
-	int		lvl;
 	char	*temp;
 
 	while (shell()->env[var])
 	{
 		if (!ft_strncmp(shell()->env[var], "SHLVL=", 6))
 		{
-			if (shell()->env[var][6] == '-'
-				|| ft_atoui(shell()->env[var] + 6) >= INT_MAX)
-				lvl = -1;
+			if (!ft_isdigit(shell()->env[var][6])
+				|| ft_atoui(shell()->env[var] + 6) >= 999)
+				temp = ft_itoa(0);
 			else
-				lvl = ft_atoi(shell()->env[var] + 6);
-			temp = ft_itoa(lvl + 1);
+				temp = ft_itoa(ft_atoi(shell()->env[var] + 6) + 1);
+			if (ft_atoui(shell()->env[var] + 6) >= 999 && ft_atoui(shell()->env[var] + 6) < INT_MAX)
+				ft_printf(2, "minishell: warning: shell level (%d) too high, resetting to 1\n", ft_atoui(shell()->env[var] + 6) + 1);
 			if (!temp)
 			{
 				if (shell()->env)
@@ -131,8 +131,8 @@ void	exp_lvl(int var, int lvl)
 	{
 		if (!ft_strncmp(shell()->exp[var], "SHLVL=", 6))
 		{
-			if (shell()->exp[var][6] == '-'
-				|| ft_atoui(shell()->exp[var] + 6) >= INT_MAX)
+			if (!ft_isdigit(shell()->env[var][6])
+				|| ft_atoui(shell()->exp[var] + 6) >= 999)
 				lvl = -1;
 			else
 				lvl = ft_atoi(shell()->exp[var] + 6);

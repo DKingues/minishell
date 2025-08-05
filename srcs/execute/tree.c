@@ -91,7 +91,7 @@ void	nptree_executer(t_tree *temp, t_tree *temp2, int pid)
 		shell()->pid = fork();
 		if (!shell()->pid)
 		{
-			choose_signal(HDOC);
+			choose_signal(CHLD);
 			shell()->exit = 0;
 			pid = fork();
 			if (!pid)

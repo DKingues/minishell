@@ -94,6 +94,35 @@ char	*rm_noprint(char *line, char *temp)
 	return (res);
 }
 
+char	*noprint_pt2(char *line, char *temp, char *lol)
+{
+	char	*res;
+	int	var;
+	int	var2 = 0;
+
+	var = 0;
+	res = ft_calloc(ft_strlen(line) + 1, sizeof(char));
+	if (!res)
+	{
+		free(lol);
+		free(temp);
+		free(line);
+		shell()->exit = 1;
+		exit_cmd(NULL, 0);
+	}
+	while (line[var + var2])
+	{
+		if (line[var + var2] == '$' && line[var + var2 + 1])
+		{
+			if ((line[var + var2 + 1] == '\'' || line[var + var2 + 1] == '\"') &&count_quotes(line + var) % 2 == 0)
+				var2++;
+		}
+		res[var] = line[var + var2];
+		var++;
+	}
+	return (free(line), res);
+}
+
 char	*hdoc_exp(char *line, char *temp)
 {
 	int		var;
@@ -114,7 +143,10 @@ char	*hdoc_exp(char *line, char *temp)
 		var++;
 	}
 	if (!res)
+	{
 		res = rm_noprint(line, temp);
+		res = noprint_pt2(res, temp, line);
+	}
 	free(line);
 	return (res);
 }

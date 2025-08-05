@@ -76,7 +76,7 @@ void	cd_cmd(char *path)
 	else if (!path)
 		mv_home();
 	else if (path[0] == '~' && !path[1])
-		mv_home();
+		mv_abs(" ");
 	else if (path[0] == '-')
 		mv_old();
 	else if (path[0] == '~' && path[1])

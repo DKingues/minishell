@@ -71,7 +71,11 @@ int	parent_process(t_tree *temp2, int *check, int *fd, int var)
 		temp = temp->left;
 	}
 	if (*check == 1)
+	{
+		close(fd[1]);
 		dup2(fd[0], 0);
+		close(fd[0]);
+	}
 	if ((temp2 && temp2->value && temp2->type == COMMAND)
 		|| (temp2->left && temp2->left->value
 			&& temp2->left->type == COMMAND))
