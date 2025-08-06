@@ -42,6 +42,8 @@
 # define ERR_5 "no command before pipe.\n"
 # define ERR_6 "no file after"
 # define AMB "ambiguous redirect."
+# define E1 "minishell: warning: shell level"
+# define E2 " (%d) too high, resetting to 1\n"
 
 typedef enum s_token_type
 {
@@ -49,7 +51,8 @@ typedef enum s_token_type
 	COMMAND,
 	PIPE,
 	READ,
-	HERE_DOC,
+	HD,
+	HD2,
 	TRUNCATE,
 	APPEND,
 }	t_token_type;
@@ -69,6 +72,8 @@ typedef struct s_token
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
+
+void	print_tokens(t_token *token);
 
 typedef struct s_shell
 {
@@ -101,7 +106,6 @@ typedef enum s_sig_struct
 #  define BUFFER_SIZE 42
 # endif
 
-int		check_pipes2(char *line, int i);
 //tree.c
 
 void	nptree_executer(t_tree *temp, t_tree *temp2, int pid);
@@ -128,8 +132,8 @@ void	malloc_err(char **incognito, char *msg);
 
 int		redir_input(t_tree	*redir);
 int		redir_input2(t_tree *redir, int fd, char *temp);
-void	here_doc(char *eof, int fd);
-void	close_fds(void);
+void	here_doc(char *eof, int fd, char *line, char *temp);
+void	here_doc2(char *eof, int fd);
 int		waitpids(int var);
 
 //builtins.c
@@ -159,6 +163,8 @@ char	**split_redef2(t_tree *temp2, char **temp, char **args, int var);
 //helper2.c
 
 char	*normie_expander(char *temp, int var, int len, char *arg);
+void	close_fds(void);
+char	*hdoc_exp(char *line, char *temp);
 
 //process.c
 
@@ -240,21 +246,22 @@ int		consec_counter(int *i, char *line, char temp);
 int		parser(char *line);
 void	free_list(t_token *token);
 int		syntax_check2(char *line);
-int		check_consecutive2(char *line, int i, char temp);
 
 // syntax_check3.c
 
 int		syntax_checkerer(char *line);
 char	*rm_noprint(char *line, char *temp);
 char	*go_back(char *line, char *temp, int var, int var2);
-char	*hdoc_exp(char *line, char *temp);
 void	go_go_back(char *res, char *temp, char *line);
+char	*noprint_pt2(char *line, char *temp, char *lol);
 
 // syntax_check4.c
 
-int		check_malandro(char *line, int *v);
-int		seilamare(int *v, int v2, char *line, int check);
+int		final_check(char *line, int *v);
+int		check_redir_next(int *v, int v2, char *line, int check);
 void	singleton_free_docs(int exit);
+int		check_pipes2(char *line, int i);
+int		check_consecutive2(char *line, int i, char temp);
 
 // syntax_check_aux.c
 
@@ -290,7 +297,7 @@ char	*get_expansion(char *line);
 // init.c
 
 void	init_shell(char **ev);
-void	lvl_upd(int var);
+void	lvl_upd(int var, char *temp);
 void	exp_lvl(int var, int lvl);
 t_shell	*shell(void);
 

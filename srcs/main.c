@@ -36,28 +36,28 @@
 //	ft_printf(1, " & dicosta-       \033[0m\n\n");
 //}
 
-void	print_tree(t_tree *tree)
-{
-	if (tree == NULL)
-	{
-		ft_printf(1, "NULL\n");
-		return ;
-	}
-	ft_printf(1, "Value: [%s]\t Type: [%d]\n", tree->value, tree->type);	
-	ft_printf(1, "LEFT: ");
-	print_tree(tree->left);
-	ft_printf(1, "RIGHT: ");
-	print_tree(tree->right);
-}
+// void	print_tree(t_tree *tree)
+// {
+// 	if (tree == NULL)
+// 	{
+// 		ft_printf(1, "NULL\n");
+// 		return ;
+// 	}
+// 	ft_printf(1, "Value: [%s]\t Type: [%d]\n", tree->value, tree->type);	
+// 	ft_printf(1, "LEFT: ");
+// 	print_tree(tree->left);
+// 	ft_printf(1, "RIGHT: ");
+// 	print_tree(tree->right);
+// }
 
-void	print_tokens(t_token *token)
-{
-	while (token)
-	{
-		ft_printf(1, "Value: [%s]\t Type: [%d]\n", token->value, token->type);	
-		token = token->next;
-	}
-}
+// void	print_tokens(t_token *token)
+// {
+// 	while (token)
+// 	{
+// 		ft_printf(1, "Value: [%s]\t Type: [%d]\n", token->value, token->type);	
+// 		token = token->next;
+// 	}
+// }
 
 int	main_line_checks(char *line)
 {

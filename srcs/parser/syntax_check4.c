@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-int	check_malandro(char *line, int *v)
+int	final_check(char *line, int *v)
 {
 	char	*temp22;
 
@@ -35,7 +35,7 @@ int	check_malandro(char *line, int *v)
 	return (1);
 }
 
-int	seilamare(int *v, int v2, char *line, int check)
+int	check_redir_next(int *v, int v2, char *line, int check)
 {
 	(*v)++;
 	while (line[(*v)] && ft_isspace(line[(*v)]))
@@ -51,7 +51,7 @@ int	seilamare(int *v, int v2, char *line, int check)
 			v2++;
 		}
 		if (!check)
-			if (!check_malandro(line, v))
+			if (!final_check(line, v))
 				return (0);
 	}
 	return (1);
@@ -73,4 +73,58 @@ void	singleton_free_docs(int exit)
 		free(shell()->proc_id);
 	if (shell()->safe_home)
 		free(shell()->safe_home);
+}
+
+int	check_pipes2(char *line, int i)
+{
+	i += skip_spaces(&line[i]);
+	if (line && line[i] == '|')
+		return (0);
+	while (line && line[i])
+	{
+		if (line[i] == '\"' || line[i] == '\'')
+			i = check_pipes_aux(line, i);
+		else
+		{
+			if (line[i] == '|' && line[i + 1] == '|')
+				return (0);
+			else if (line[i] == '|')
+			{
+				i++;
+				i += skip_spaces(&line[i]);
+				if (line[i] == '\0')
+					return (0);
+			}
+			i++;
+		}
+	}
+	return (1);
+}
+
+int	check_consecutive2(char *line, int i, char temp)
+{
+	while (line[i])
+	{
+		if (line[i] == '\"' || line[i] == '\'')
+		{
+			i++;
+			i += skip_quotes(&line[i], line[i - 1]) + 1;
+		}
+		else
+		{
+			if (is_token(line[i]))
+			{
+				temp = line[i++];
+				if ((temp == '>' || temp == '<')
+					&& consec_counter(&i, line, temp) > 1)
+					return (0);
+				else if ((temp != '>' && temp != '<')
+					&& consec_counter(&i, line, temp) > 0)
+					return (0);
+			}
+			else
+				i++;
+		}
+	}
+	return (1);
 }

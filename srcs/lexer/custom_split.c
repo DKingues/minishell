@@ -19,13 +19,13 @@ char	*fill_token(char *line, char *token, int i, int j)
 	token = ft_calloc(sizeof(char), token_len(line) + 1);
 	if (!token)
 		return (NULL);
-	if (line[i] == '\"' || line[i] == '\'')
-	{
-		quote_copy(line, token, &i, &j);
-		return (token);
-	}
 	while (line[i] && !ft_isspace(line[i]))
 	{
+		if (line[i] == '\"' || line[i] == '\'')
+		{
+			quote_copy(line, token, &i, &j);
+			return (token);
+		}
 		if (line[i] && line[i] == '=' && (line[i + 1] == '\"'
 				|| line[i + 1] == '\''))
 		{

@@ -43,7 +43,7 @@ t_token	*assign_token(char *line)
 		if (tokens[i][0] != 0)
 		{
 			token_type = get_token_type(tokens[i]);
-			if ((token_type == READ || token_type == HERE_DOC
+			if ((token_type == READ || token_type == HD
 					|| token_type == TRUNCATE || token_type == APPEND)
 				&& get_token_type(tokens[i + 1]) != PIPE)
 				token = append_node(token, tokens[++i], token_type);
@@ -94,7 +94,7 @@ int	get_token_type(char *input)
 		if (input[i] == '|')
 			return (PIPE);
 		else if (input[i] == '<' && input[i + 1] == '<')
-			return (HERE_DOC);
+			return (HD);
 		else if (input[i] == '<')
 			return (READ);
 		else if (input[i] == '>' && input[i + 1] == '>')

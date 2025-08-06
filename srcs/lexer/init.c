@@ -66,10 +66,8 @@ void	lvl_upd2(int var, char *temp, char *temp3)
 	free(temp);
 }
 
-void	lvl_upd(int var)
+void	lvl_upd(int var, char *temp)
 {
-	char	*temp;
-
 	while (shell()->env[var])
 	{
 		if (!ft_strncmp(shell()->env[var], "SHLVL=", 6))
@@ -79,8 +77,9 @@ void	lvl_upd(int var)
 				temp = ft_itoa(0);
 			else
 				temp = ft_itoa(ft_atoi(shell()->env[var] + 6) + 1);
-			if (ft_atoui(shell()->env[var] + 6) >= 999 && ft_atoui(shell()->env[var] + 6) < INT_MAX)
-				ft_printf(2, "minishell: warning: shell level (%d) too high, resetting to 1\n", ft_atoui(shell()->env[var] + 6) + 1);
+			if (ft_atoui(shell()->env[var] + 6) >= 999
+				&& ft_atoui(shell()->env[var] + 6) < INT_MAX)
+				ft_printf(2, E1 E2, ft_atoui(shell()->env[var] + 6) + 1);
 			if (!temp)
 			{
 				if (shell()->env)

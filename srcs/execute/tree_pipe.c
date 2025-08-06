@@ -42,7 +42,7 @@ void	child_process(t_tree *temp, t_tree *temp2, int check, int *fd)
 	while (temp)
 	{
 		check2 = 1;
-		if (temp->type == READ || temp->type == HERE_DOC
+		if (temp->type == READ || temp->type == HD || temp->type == HD2
 			|| temp->type == TRUNCATE || temp->type == APPEND)
 			if (redir_input(temp))
 				break ;
@@ -66,7 +66,7 @@ int	parent_process(t_tree *temp2, int *check, int *fd, int var)
 	temp = temp2;
 	while (temp)
 	{
-		if (temp->type == HERE_DOC)
+		if (temp->type == HD || temp->type == HD2)
 			shell()->count++;
 		temp = temp->left;
 	}

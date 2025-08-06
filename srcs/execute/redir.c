@@ -59,7 +59,7 @@ int	redir_input(t_tree	*redir)
 		dup2(fd, 0);
 		return (0);
 	}
-	else if (redir->type == HERE_DOC)
+	else if (redir->type == HD || redir->type == HD2)
 	{
 		dup2(shell()->docs[shell()->count], 0);
 		shell()->count++;
@@ -88,19 +88,7 @@ int	waitpids(int var)
 	return (code / 256);
 }
 
-void	close_fds(void)
-{
-	int	var;
-
-	var = 3;
-	while (var < 1024)
-	{
-		close(var);
-		var++;
-	}
-}
-
-void	here_doc(char *eof, int fd)
+void	here_doc2(char *eof, int fd)
 {
 	int		len;
 	char	*line;
@@ -123,5 +111,34 @@ void	here_doc(char *eof, int fd)
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free(line);
+	}
+}
+
+void	here_doc(char *eof, int fd, char *line, char *temp)
+{
+	int		len;
+
+	len = ft_strlen(eof);
+	while (1)
+	{
+		line = readline(">");
+		if (!line || !ft_strncmp(eof, line, len + 1))
+		{
+			if (line)
+				free(line);
+			else
+				ft_printf(2, "minishell: warning: here-document at line 1\
+					delimited by end-of-file (wanted `%s')\n", eof);
+			singleton_free(1);
+			close_fds();
+			exit(0);
+		}
+		temp = ft_strdup(line);
+		line = expand_caller(line);
+		line = hdoc_exp(line, temp);
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
+		free(line);
+		free(temp);
 	}
 }

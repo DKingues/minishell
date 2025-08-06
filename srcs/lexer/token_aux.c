@@ -23,7 +23,10 @@ t_token	*append_node(t_token *tokens, char *token_value, int token_type)
 	node->next = NULL;
 	node->prev = NULL;
 	node->value = ft_strdup(token_value);
-	node->type = token_type;
+	if (token_type == HD && count_quotes(token_value) > 0)
+		node->type = HD2;
+	else
+		node->type = token_type;
 	if (!tokens)
 		tokens = node;
 	else

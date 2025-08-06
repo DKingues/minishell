@@ -59,7 +59,7 @@ void	init_env2(char **ev)
 		}
 		var++;
 	}
-	lvl_upd(0);
+	lvl_upd(0, NULL);
 }
 
 void	init_env(char **ev)

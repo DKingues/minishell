@@ -97,56 +97,28 @@ char	*rm_noprint(char *line, char *temp)
 char	*noprint_pt2(char *line, char *temp, char *lol)
 {
 	char	*res;
-	int	var;
-	int	var2 = 0;
+	int		var;
+	int		var2;
 
 	var = 0;
+	var2 = 0;
 	res = ft_calloc(ft_strlen(line) + 1, sizeof(char));
 	if (!res)
 	{
-		free(lol);
-		free(temp);
 		free(line);
 		shell()->exit = 1;
-		exit_cmd(NULL, 0);
+		return (free(lol), free(temp), exit_cmd(NULL, 0), NULL);
 	}
 	while (line[var + var2])
 	{
 		if (line[var + var2] == '$' && line[var + var2 + 1])
 		{
-			if ((line[var + var2 + 1] == '\'' || line[var + var2 + 1] == '\"') &&count_quotes(line + var) % 2 == 0)
+			if ((line[var + var2 + 1] == '\'' || line[var + var2 + 1] == '\"')
+				&& count_quotes(line + var) % 2 == 0)
 				var2++;
 		}
 		res[var] = line[var + var2];
 		var++;
 	}
 	return (free(line), res);
-}
-
-char	*hdoc_exp(char *line, char *temp)
-{
-	int		var;
-	char	*res;
-
-	var = 0;
-	res = NULL;
-	while (line[var])
-	{
-		if (line[var] == '<' && line[var + 1] && line[var + 1] == '<')
-		{
-			var += 2;
-			while (line[var] && ft_isspace(line[var]))
-				var++;
-			if (line[var] && (line[var] == '\1' || temp[var] == '$'))
-				res = go_back(line, temp, var, 0);
-		}
-		var++;
-	}
-	if (!res)
-	{
-		res = rm_noprint(line, temp);
-		res = noprint_pt2(res, temp, line);
-	}
-	free(line);
-	return (res);
 }

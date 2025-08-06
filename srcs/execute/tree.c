@@ -29,13 +29,13 @@ void	npparent_process(void)
 void	npchild_process(t_tree *temp, t_tree *temp2, int check2)
 {
 	check2 = 0;
-	if (temp2->type == READ || temp2->type == HERE_DOC
+	if (temp2->type == READ || temp2->type == HD || temp2->type == HD2
 		|| temp2->type == TRUNCATE || temp2->type == APPEND)
 		redir_input(temp2);
 	while (temp)
 	{
 		check2 = 1;
-		if (temp->type == READ || temp->type == HERE_DOC
+		if (temp->type == READ || temp->type == HD || temp->type == HD2
 			|| temp->type == TRUNCATE || temp->type == APPEND)
 			if (redir_input(temp))
 				break ;
@@ -54,7 +54,7 @@ void	nptree_builtin(t_tree *temp, t_tree *temp2, int check2)
 	while (temp)
 	{
 		check2 = 1;
-		if (temp->type == READ || temp->type == HERE_DOC
+		if (temp->type == READ || temp->type == HD || temp->type == HD2
 			|| temp->type == TRUNCATE || temp->type == APPEND)
 			if (redir_input(temp))
 				break ;

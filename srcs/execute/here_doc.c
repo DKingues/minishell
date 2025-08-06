@@ -25,7 +25,7 @@ int	check_docs(void)
 		temp = tree;
 		while (temp)
 		{
-			if (temp->type == HERE_DOC)
+			if (temp->type == HD || temp->type == HD2)
 				count++;
 			temp = temp->left;
 		}
@@ -50,7 +50,9 @@ int	loop_docs(int count, t_tree *temp)
 	{
 		choose_signal(HDOC);
 		close(fd[0]);
-		here_doc(temp->value, fd[1]);
+		if (temp->type == HD)
+			return (here_doc(temp->value, fd[1], NULL, NULL), 0);
+		here_doc2(temp->value, fd[1]);
 	}
 	else
 	{
@@ -81,7 +83,7 @@ int	manage_here_doc(void)
 		temp = tree;
 		while (temp)
 		{
-			if (temp->type == HERE_DOC)
+			if (temp->type == HD || temp->type == HD2)
 			{
 				if (!loop_docs(count, temp))
 					return (1);

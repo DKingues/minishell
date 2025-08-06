@@ -55,6 +55,8 @@ int	check_pipes(char *line, int i)
 			{
 				i++;
 				i += skip_spaces(&line[i]);
+				if (line[i] == '|')
+					return (ft_printf(2, RED INV NOCLR ERR_1), 0);
 				if (line[i] == '\0')
 					return (ft_printf(2, RED INV NOCLR ERR_2), 0);
 			}

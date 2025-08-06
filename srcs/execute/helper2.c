@@ -18,16 +18,10 @@ char	*normie_expander(char *temp, int var, int len, char *arg)
 
 	temp = ft_strdup(shell()->exp[var] + len + 1);
 	if (!temp)
-	{
-		free(arg);
-		malloc_err(NULL, "malloc");
-	}
+		return (free(arg), malloc_err(NULL, "malloc"), NULL);
 	temp = ft_strjoin(temp, arg + len + 1);
 	if (!temp)
-	{
-		free(arg);
-		malloc_err(NULL, "malloc");
-	}
+		return (free(arg), malloc_err(NULL, "malloc"), NULL);
 	res = ft_calloc(ft_strlen(temp), sizeof(char));
 	var = 0;
 	while (temp[var + 2])
@@ -41,4 +35,44 @@ char	*normie_expander(char *temp, int var, int len, char *arg)
 		var++;
 	}
 	return (free(temp), res);
+}
+
+void	close_fds(void)
+{
+	int	var;
+
+	var = 3;
+	while (var < 1024)
+	{
+		close(var);
+		var++;
+	}
+}
+
+char	*hdoc_exp(char *line, char *temp)
+{
+	int		var;
+	char	*res;
+
+	var = 0;
+	res = NULL;
+	while (line[var])
+	{
+		if (line[var] == '<' && line[var + 1] && line[var + 1] == '<')
+		{
+			var += 2;
+			while (line[var] && ft_isspace(line[var]))
+				var++;
+			if (line[var] && (line[var] == '\1' || temp[var] == '$'))
+				res = go_back(line, temp, var, 0);
+		}
+		var++;
+	}
+	if (!res)
+	{
+		res = rm_noprint(line, temp);
+		res = noprint_pt2(res, temp, line);
+	}
+	free(line);
+	return (res);
 }

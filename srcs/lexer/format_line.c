@@ -102,7 +102,6 @@ char	*create_spaces(char *line, int i, int j)
 	}
 	return (new_line);
 }
-// echo asd | e
 
 char	*format_line(char *line)
 {

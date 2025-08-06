@@ -74,7 +74,7 @@ int	check_redir_exp(char *line, int v, int v2, int check2)
 			if (line[v] == '<' && line[v + 1] == '<')
 				v++;
 			else
-				if (!seilamare(&v, v2, line, check))
+				if (!check_redir_next(&v, v2, line, check))
 					return (0);
 		}
 		v++;
