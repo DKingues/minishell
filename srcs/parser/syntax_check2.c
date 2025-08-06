@@ -12,15 +12,6 @@
 
 #include "../minishell.h"
 
-// void	print_tokens(t_token *token)
-// {
-// 	while (token)
-// 	{
-// 		ft_printf(1, "Value: [%s]\t Type: [%d]\n", token->value, token->type);
-// 		token = token->next;
-// 	}
-// }
-
 char	*redef_token_value(char *value)
 {
 	int		var;
